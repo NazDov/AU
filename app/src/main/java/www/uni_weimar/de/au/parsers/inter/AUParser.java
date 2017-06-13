@@ -1,9 +1,8 @@
-package www.uni_weimar.de.au.parsers;
+package www.uni_weimar.de.au.parsers.inter;
 
 import java.util.List;
 
 import io.realm.RealmObject;
-import www.uni_weimar.de.au.models.AUItem;
 
 /**
  * Created by nazar on 12.06.17.
@@ -11,7 +10,8 @@ import www.uni_weimar.de.au.models.AUItem;
 
 public interface AUParser<T extends RealmObject> {
 
-    List<T> parseAllAU();
+    List<T> parseAllAU(String url);
 
+    List<T> parseAllAU();
 
 }

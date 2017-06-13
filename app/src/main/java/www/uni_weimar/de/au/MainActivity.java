@@ -3,6 +3,7 @@ package www.uni_weimar.de.au;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +14,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.realm.Realm;
+import www.uni_weimar.de.au.service.MainMenuContentProviderService;
+import www.uni_weimar.de.www.R;
+import www.uni_weimar.de.au.models.AUMainMenuTab;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +54,22 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        realm = Realm.getDefaultInstance();
+        MainMenuContentProviderService mainMenuContentProviderService = new MainMenuContentProviderService(this, realm);
+
+        Disposable subscriber = mainMenuContentProviderService.provideContent()
+                .subscribe(new Consumer<List<AUMainMenuTab>>() {
+                    @Override
+                    public void accept(@NonNull List<AUMainMenuTab> auMainMenuTabs) throws Exception {
+                        for (AUMainMenuTab auMainMenuTab : auMainMenuTabs) {
+                            Log.i("ITEM", auMainMenuTab.getTitle());
+                        }
+                    }
+                });
+
+
     }
 
     @Override

@@ -1,4 +1,4 @@
-package www.uni_weimar.de.au;
+package www.uni_weimar.de.www;
 
 import org.junit.Test;
 

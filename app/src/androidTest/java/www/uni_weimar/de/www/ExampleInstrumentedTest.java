@@ -1,4 +1,4 @@
-package www.uni_weimar.de.au;
+package www.uni_weimar.de.www;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("www.uni_weimar.de.au", appContext.getPackageName());
+        assertEquals("au.de.uni_weimar.www.uni_weimar.de.au", appContext.getPackageName());
     }
 }

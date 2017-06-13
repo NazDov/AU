@@ -12,15 +12,16 @@ import io.realm.RealmConfiguration;
 
 public class AUApplicationConfiguration extends Application {
 
-    private static String TAG = AUApplicationConfiguration.class.getName();
+    private static String TAG = "AUConfiguration";
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.v(TAG, "application started....");
+        Log.i(TAG, "application started....");
         Realm.init(this);
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(realmConfiguration);
-        Log.v(TAG, "realm database configured");
+        Log.i(TAG, "realm database configured");
+
     }
 }

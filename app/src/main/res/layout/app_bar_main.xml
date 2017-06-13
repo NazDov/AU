@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="www.uni_weimar.de.au.MainActivity">
+    tools:context="www.uni_weimar.de.www.www.uni_weimar.de.au.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
