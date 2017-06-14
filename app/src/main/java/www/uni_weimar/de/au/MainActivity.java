@@ -1,10 +1,7 @@
 package www.uni_weimar.de.au;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,35 +13,26 @@ import android.view.MenuItem;
 
 import java.util.List;
 
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.realm.Realm;
+import www.uni_weimar.de.au.application.AUApplicationConfiguration;
 import www.uni_weimar.de.au.service.MainMenuContentProviderService;
-import www.uni_weimar.de.www.R;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    Realm realm;
+    private Realm realmUI;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AUApplicationConfiguration.setContext(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -56,20 +44,35 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        realm = Realm.getDefaultInstance();
-        MainMenuContentProviderService mainMenuContentProviderService = new MainMenuContentProviderService(this, realm);
+        realmUI = Realm.getDefaultInstance();
+        disposable = new MainMenuContentProviderService(realmUI, this.getString(R.string.MAIN_MENU))
+                .provideContent()
+                .subscribe(this::displayContent, this::onError);
 
-        Disposable subscriber = mainMenuContentProviderService.provideContent()
-                .subscribe(new Consumer<List<AUMainMenuTab>>() {
-                    @Override
-                    public void accept(@NonNull List<AUMainMenuTab> auMainMenuTabs) throws Exception {
-                        for (AUMainMenuTab auMainMenuTab : auMainMenuTabs) {
-                            Log.i("ITEM", auMainMenuTab.getTitle());
-                        }
-                    }
-                });
+        List<AUMainMenuTab> auMainMenuTabs = realmUI.where(AUMainMenuTab.class).findAll();
+        for (AUMainMenuTab au : auMainMenuTabs) {
+            Log.v("CACHED ITEM", au.getTitle());
+        }
 
+    }
 
+    private void onError(Throwable throwable) {
+        throw new RuntimeException(throwable);
+    }
+
+    private void displayContent(List<AUMainMenuTab> auMainMenuTabs) {
+        for (AUMainMenuTab au : auMainMenuTabs) {
+            Log.v("ITEM", au.getTitle());
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realmUI.close();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
     }
 
     @Override

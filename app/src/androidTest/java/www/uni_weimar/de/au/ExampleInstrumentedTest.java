@@ -1,4 +1,4 @@
-package www.uni_weimar.de.www;
+package www.uni_weimar.de.au;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

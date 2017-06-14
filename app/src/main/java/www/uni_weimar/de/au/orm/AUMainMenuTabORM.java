@@ -11,25 +11,29 @@ import www.uni_weimar.de.au.models.AUMainMenuTab;
 
 public class AUMainMenuTabORM implements AUBaseORM<AUMainMenuTab> {
 
-    private Realm realm;
+    private Realm realmUI;
 
-    public AUMainMenuTabORM(Realm realm) {
-        this.realm = realm;
+    public AUMainMenuTabORM(Realm realm){
+        this.realmUI = realm;
     }
 
     @Override
     public AUMainMenuTab add(AUMainMenuTab item) {
+        Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         item = realm.copyToRealm(item);
         realm.commitTransaction();
+        realm.close();
         return item;
     }
 
     @Override
     public List<AUMainMenuTab> addAll(List<AUMainMenuTab> items) {
+        Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        List<AUMainMenuTab> auMainMenuTabList = realm.copyToRealm(items);
+        List<AUMainMenuTab> auMainMenuTabList = realm.copyToRealmOrUpdate(items);
         realm.commitTransaction();
+        realm.close();
         return auMainMenuTabList;
     }
 
@@ -40,11 +44,11 @@ public class AUMainMenuTabORM implements AUBaseORM<AUMainMenuTab> {
 
     @Override
     public List<AUMainMenuTab> findAll() {
-        return realm.where(AUMainMenuTab.class).findAll();
+        return realmUI.where(AUMainMenuTab.class).findAll();
     }
 
     @Override
     public AUMainMenuTab findBy(String key, String name) {
-        return realm.where(AUMainMenuTab.class).equalTo(key, name).findFirst();
+        return realmUI.where(AUMainMenuTab.class).equalTo(key, name).findFirst();
     }
 }

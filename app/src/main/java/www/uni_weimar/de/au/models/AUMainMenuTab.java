@@ -13,6 +13,7 @@ import io.realm.annotations.PrimaryKey;
 public class AUMainMenuTab extends RealmObject implements AUItem {
 
     public static final String AUTYPE = "TAB";
+    public static final String TITLE = "title";
 
     @PrimaryKey
     private String title;

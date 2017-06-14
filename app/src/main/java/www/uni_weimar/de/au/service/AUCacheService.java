@@ -8,8 +8,8 @@ import java.util.List;
 
 interface AUCacheService<T> {
 
-    void writeToCache(List<T> objects);
+    List<T> writeToCache(List<T> objects);
 
-    List<T> readFromCache();
+    List<T> readFromCache(List<T> objects);
 
 }

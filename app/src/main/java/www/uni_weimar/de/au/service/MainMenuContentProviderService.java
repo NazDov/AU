@@ -1,13 +1,13 @@
 package www.uni_weimar.de.au.service;
 
-import android.content.Context;
+import android.util.Log;
 
 import java.util.List;
+import java.util.Optional;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.annotations.NonNull;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
@@ -18,58 +18,59 @@ import www.uni_weimar.de.au.parsers.impl.AUMainMenuTabParser;
  * Created by nazar on 13.06.17.
  */
 
-public class MainMenuContentProviderService
-        extends AUAbstractContentProviderService<AUMainMenuTab>
-        implements AUCacheService<AUMainMenuTab> {
+public class MainMenuContentProviderService implements AUAbstractContentProviderService<AUMainMenuTab> {
 
     private AUMainMenuTabParser auMainMenuTabParser;
     private AUMainMenuTabORM auMainMenuTabORM;
+    private String url;
 
-    public MainMenuContentProviderService(Context context, Realm realm) {
-        super(context);
+
+    public MainMenuContentProviderService() {
+
+    }
+
+    public MainMenuContentProviderService(Realm realm, String url) {
+        this.url = url;
         auMainMenuTabParser = new AUMainMenuTabParser();
         auMainMenuTabORM = new AUMainMenuTabORM(realm);
     }
-
 
     /**
      * provide content to the UI. first we will always obtain copy of the cached data
      * if it's available. The non-blocking processing will provide parsing
      * and the new data will be updated when it's available
+     * <p>
+     * the logic behind this:
+     * <p>
+     * first the readFromCache function will be ran, populating the cached data to the UI.
+     * then on the parallel computation thread the writeToCache function will be triggered
      *
      * @return
      */
     @Override
     public Observable<List<AUMainMenuTab>> provideContent() {
-        Observable<List<AUMainMenuTab>> observable = Observable.create(new ObservableOnSubscribe<List<AUMainMenuTab>>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<List<AUMainMenuTab>> e) throws Exception {
-                try {
-                    List<AUMainMenuTab> auMainMenuTabList = auMainMenuTabParser.parseAllAU();
-                    e.onNext(auMainMenuTabList);
-                    e.onComplete();
-                } catch (Exception throwable) {
-                    e.onError(throwable);
-                }
-
+        Observable<List<AUMainMenuTab>> observable = Observable.create((ObservableOnSubscribe<List<AUMainMenuTab>>) e -> {
+            try {
+                List<AUMainMenuTab> auMainMenuTabList = auMainMenuTabParser.parseAllAU(url);
+                e.onNext(auMainMenuTabList);
+                e.onComplete();
+            } catch (Exception throwable) {
+                e.onError(throwable);
             }
         }).subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.computation());
+                .observeOn(Schedulers.computation())
+                .map(auMainMenuTabORM::addAll)
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(this::readFromCache);
 
-        List<AUMainMenuTab> cachedResultList = readFromCache();
-        if (cachedResultList != null) {
+        List<AUMainMenuTab> cachedResultList = readFromCache(null);
+        if (cachedResultList != null && !cachedResultList.isEmpty())
             observable.mergeWith(Observable.just(cachedResultList));
-        }
         return observable;
     }
 
-    @Override
-    public void writeToCache(List<AUMainMenuTab> objects) {
-        auMainMenuTabORM.addAll(objects);
-    }
-
-    @Override
-    public List<AUMainMenuTab> readFromCache() {
+    private List<AUMainMenuTab> readFromCache(List<AUMainMenuTab> auMainMenuTabs) {
         return auMainMenuTabORM.findAll();
     }
+
 }

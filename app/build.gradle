@@ -6,7 +6,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "au.de.uni_weimar.www.uni_weimar.de.au"
+        applicationId "au.de.uni_weimar.www"
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
@@ -21,8 +21,8 @@ android {
     }
 
     compileOptions{
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -36,5 +36,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.0.8'
+    compile 'org.jsoup:jsoup:1.9.1'
     testCompile 'junit:junit:4.12'
+    testCompile group: 'org.jmockit', name: 'jmockit', version: '1.8'
 }
