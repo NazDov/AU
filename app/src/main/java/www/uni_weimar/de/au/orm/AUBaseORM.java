@@ -8,14 +8,14 @@ import io.realm.RealmObject;
  * Created by nazar on 13.06.17.
  */
 
-interface AUBaseORM<T extends RealmObject> {
+public interface AUBaseORM<T extends RealmObject> {
 
 
     T add(T item);
 
     List<T> addAll(List<T> items);
 
-    boolean delete(T item);
+    boolean deleteAll(Class<T> tClass);
 
     List<T> findAll();
 

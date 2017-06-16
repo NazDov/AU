@@ -1,9 +1,6 @@
-package www.uni_weimar.de.au.service;
-
-import android.util.Log;
+package www.uni_weimar.de.au.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
@@ -12,27 +9,29 @@ import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.orm.AUMainMenuTabORM;
+import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.impl.AUMainMenuTabParser;
+import www.uni_weimar.de.au.service.inter.AUAbstractContentRequestService;
+import www.uni_weimar.de.au.service.inter.AUContentChangeListener;
 
 /**
  * Created by nazar on 13.06.17.
  */
 
-public class MainMenuContentProviderService implements AUAbstractContentProviderService<AUMainMenuTab> {
+public class AUMainMenuContentRequestService extends AUAbstractContentRequestService<AUMainMenuTab> {
 
     private AUMainMenuTabParser auMainMenuTabParser;
-    private AUMainMenuTabORM auMainMenuTabORM;
     private String url;
 
 
-    public MainMenuContentProviderService() {
+    protected AUMainMenuContentRequestService() {
 
     }
 
-    public MainMenuContentProviderService(Realm realm, String url) {
+    public AUMainMenuContentRequestService(Realm realm, String url) {
+        super(new AUMainMenuTabORM(realm));
         this.url = url;
         auMainMenuTabParser = new AUMainMenuTabParser();
-        auMainMenuTabORM = new AUMainMenuTabORM(realm);
     }
 
     /**
@@ -48,29 +47,22 @@ public class MainMenuContentProviderService implements AUAbstractContentProvider
      * @return
      */
     @Override
-    public Observable<List<AUMainMenuTab>> provideContent() {
-        Observable<List<AUMainMenuTab>> observable = Observable.create((ObservableOnSubscribe<List<AUMainMenuTab>>) e -> {
+    public Observable<List<AUMainMenuTab>> requestContent(AUContentChangeListener<AUMainMenuTab> AUContentChangeListener) {
+        notifyContentOnCacheUpdate(AUContentChangeListener);
+        return Observable.create((ObservableOnSubscribe<List<AUMainMenuTab>>) e -> {
             try {
                 List<AUMainMenuTab> auMainMenuTabList = auMainMenuTabParser.parseAllAU(url);
                 e.onNext(auMainMenuTabList);
                 e.onComplete();
-            } catch (Exception throwable) {
-                e.onError(throwable);
+            } catch (AUParseException a) {
+                e.onError(a);
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
-                .map(auMainMenuTabORM::addAll)
+                .map(this::writeToCache)
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(this::readFromCache);
-
-        List<AUMainMenuTab> cachedResultList = readFromCache(null);
-        if (cachedResultList != null && !cachedResultList.isEmpty())
-            observable.mergeWith(Observable.just(cachedResultList));
-        return observable;
     }
 
-    private List<AUMainMenuTab> readFromCache(List<AUMainMenuTab> auMainMenuTabs) {
-        return auMainMenuTabORM.findAll();
-    }
 
 }

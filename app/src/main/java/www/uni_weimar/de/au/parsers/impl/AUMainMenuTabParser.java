@@ -1,5 +1,6 @@
 package www.uni_weimar.de.au.parsers.impl;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.jsoup.Jsoup;
@@ -11,7 +12,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
+import www.uni_weimar.de.au.R;
+import www.uni_weimar.de.au.application.AUApplicationConfiguration;
+import www.uni_weimar.de.au.models.AUItem;
+import www.uni_weimar.de.au.models.AUMainMenuItem;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
+import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.inter.AUParser;
 
 /**
@@ -20,32 +27,51 @@ import www.uni_weimar.de.au.parsers.inter.AUParser;
 
 public class AUMainMenuTabParser implements AUParser<AUMainMenuTab> {
 
+    private Context context;
+
+    public AUMainMenuTabParser() {
+        context = AUApplicationConfiguration.getContext();
+    }
 
     @Override
-    public List<AUMainMenuTab> parseAllAU(String url) {
-        List<AUMainMenuTab> list = null;
+    public List<AUMainMenuTab> parseAllAU(String url) throws AUParseException {
+        List<AUMainMenuTab> auMainMenuTabList = new ArrayList<>();
+        String allNewsUrl = context.getString(R.string.ALL_NEWS);
 
         if (url == null) {
-            list = parseAllAU();
+            auMainMenuTabList = parseAllAU();
         }
-//
-//        Document document;
-//        try {
-//            document = Jsoup.connect(url).get();
-//            Elements tabs = document.getElementsByAttributeValue("autype", AUMainMenuTab.AUTYPE);
-//            for (Element tab : tabs) {
-//                String tabTitle = tab.attr("title");
-//                Log.v("TAB: ", tabTitle);
-//            }
-//
-//
-//        } catch (IOException e) {
-//            Log.e("URL CONNECT ERROR", e.getMessage());
-//            throw new IllegalArgumentException(e);
-//        }
+
+        Document document;
+        try {
+            document = Jsoup.connect(url).get();
+            Elements tabs = document.getElementsByAttributeValue("autype", AUMainMenuTab.AUTYPE);
+            for (Element tab : tabs) {
+                String tabTitle = tab.attr(AUItem.TITLE);
+                Log.v("TAB_PARENT: ", tabTitle);
+                AUMainMenuTab auMainMenuTab = new AUMainMenuTab();
+                auMainMenuTab.setTitle(tabTitle);
+                Elements tabItems = tab.children();
+                RealmList<AUMainMenuItem> mainMenuTabItems = new RealmList<>();
+                for (Element tabItem : tabItems) {
+                    String tabItemTitle = tabItem.attr(AUItem.TITLE);
+                    String tabItemUrl = tabItem.attr(AUItem.URL);
+                    Log.v("TAB_CHILD: ", tabItemUrl);
+                    AUMainMenuItem auMainMenuItem = new AUMainMenuItem();
+                    auMainMenuItem.setTitle(tabItemTitle);
+                    auMainMenuItem.setUrl(tabItemTitle.equals("All News") ? allNewsUrl : tabItemUrl);
+                    mainMenuTabItems.add(auMainMenuItem);
+                }
+                auMainMenuTab.setAUMainMenuItemList(mainMenuTabItems);
+                auMainMenuTabList.add(auMainMenuTab);
+            }
+        } catch (IOException e) {
+            Log.e("SYSTEM:ROOT CNX ERROR", e.getMessage());
+            throw new AUParseException(e.getMessage());
+        }
 
 
-        return parseAllAU();
+        return auMainMenuTabList;
 
     }
 

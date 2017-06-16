@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">AU</string>
     <string name="MAIN_MENU">http://ec2-35-157-27-16.eu-central-1.compute.amazonaws.com/menu.xml</string>
+    <string name="ALL_NEWS">https://www.uni-weimar.de/de/universitaet/aktuell/pinnwaende/rss/</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>

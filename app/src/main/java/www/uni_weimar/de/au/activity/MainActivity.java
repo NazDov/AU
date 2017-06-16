@@ -1,4 +1,4 @@
-package www.uni_weimar.de.au;
+package www.uni_weimar.de.au.activity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -15,9 +15,13 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
+import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.application.AUApplicationConfiguration;
-import www.uni_weimar.de.au.service.MainMenuContentProviderService;
+import www.uni_weimar.de.au.models.AUMainMenuItem;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
+import www.uni_weimar.de.au.models.AUNewsFeed;
+import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
+import www.uni_weimar.de.au.service.impl.AUNewsFeedContentRequestService;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -25,6 +29,7 @@ public class MainActivity extends AppCompatActivity
 
     private Realm realmUI;
     private Disposable disposable;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -40,29 +47,49 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
         realmUI = Realm.getDefaultInstance();
-        disposable = new MainMenuContentProviderService(realmUI, this.getString(R.string.MAIN_MENU))
-                .provideContent()
-                .subscribe(this::displayContent, this::onError);
+//        AUMainMenuContentRequestService auMainMenuContentProviderService = new AUMainMenuContentRequestService(realmUI, this.getString(R.string.MAIN_MENU));
+//        disposable = auMainMenuContentProviderService
+//                .requestContent(content -> {
+//                    for (AUMainMenuTab auMainMenuTab : content) {
+//                        Log.v("CACHED TAB ITEM", auMainMenuTab.getTitle());
+//                        for (AUMainMenuItem auMainMenuItem : auMainMenuTab.getAUMainMenuItemList()) {
+//                            Log.v("CACHED MENU ITEM", auMainMenuItem.getTitle());
+//                        }
+//                    }
+//                })
+//                .subscribe(this::updateUI, this::onError);
 
-        List<AUMainMenuTab> auMainMenuTabs = realmUI.where(AUMainMenuTab.class).findAll();
-        for (AUMainMenuTab au : auMainMenuTabs) {
-            Log.v("CACHED ITEM", au.getTitle());
-        }
+
+
+        AUNewsFeedContentRequestService auNewsFeedContentProviderService = new AUNewsFeedContentRequestService(realmUI, null);
+        auNewsFeedContentProviderService
+                .requestContent(content -> {
+                    for (AUNewsFeed auNewsFeed : content) {
+                        Log.v("CACHED NewsFeed: ", auNewsFeed.toString());
+                    }
+                }).subscribe(content -> {
+                    for (AUNewsFeed auNewsFeed : content) {
+                        Log.v("NewsFeed: ", auNewsFeed.toString());
+                    }
+        }, this::onError);
 
     }
 
-    private void onError(Throwable throwable) {
-        throw new RuntimeException(throwable);
+    private void onError(Throwable e) {
+        Log.e("exception: ", e.getMessage());
     }
 
-    private void displayContent(List<AUMainMenuTab> auMainMenuTabs) {
-        for (AUMainMenuTab au : auMainMenuTabs) {
-            Log.v("ITEM", au.getTitle());
+    private void updateUI(List<AUMainMenuTab> auMainMenuTabs) {
+        for (AUMainMenuTab auMainMenuTab : auMainMenuTabs) {
+            Log.v("TAB ITEM", auMainMenuTab.getTitle());
+            for (AUMainMenuItem auMainMenuItem : auMainMenuTab.getAUMainMenuItemList()) {
+                Log.v("MENU ITEM", auMainMenuItem.getTitle());
+            }
         }
     }
 
@@ -113,20 +140,15 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.news) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.courses) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.library) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.cafeteria) {
 
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

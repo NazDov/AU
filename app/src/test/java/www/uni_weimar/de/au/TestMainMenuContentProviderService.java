@@ -9,16 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
 import mockit.Expectations;
 import mockit.Injectable;
-import mockit.Mock;
-import mockit.MockUp;
 import mockit.Tested;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.orm.AUMainMenuTabORM;
 import www.uni_weimar.de.au.parsers.impl.AUMainMenuTabParser;
-import www.uni_weimar.de.au.service.MainMenuContentProviderService;
+import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
 
 /**
  * Created by ndovhuy on 14.06.2017.
@@ -32,10 +29,12 @@ public class TestMainMenuContentProviderService {
     @Injectable
     private AUMainMenuTabORM auMainMenuTabORM;
 
+    private List<AUMainMenuTab> actualList;
+
     @Tested
-    private MainMenuContentProviderService mainMenuContentProviderService = new MainMenuContentProviderService() {
+    private AUMainMenuContentRequestService AUMainMenuContentProviderService = new AUMainMenuContentRequestService() {
         @Override
-        public Observable<List<AUMainMenuTab>> provideContent() {
+        public Observable<List<AUMainMenuTab>> requestContent() {
             return Observable.create(e -> {
                 try {
                     List<AUMainMenuTab> auMainMenuTabList = auMainMenuTabParser.parseAllAU();
@@ -59,12 +58,15 @@ public class TestMainMenuContentProviderService {
             }
         };
 
-        mainMenuContentProviderService
-                .provideContent()
-                .subscribe(contents -> {
-                    assertEquals("News", contents.get(0));
-                }, error -> {
+        AUMainMenuContentProviderService
+                .requestContent()
+                .subscribe(auMainMenuTabs -> {
+                    actualList = auMainMenuTabs;
                 });
+
+
+        assertEquals(0, actualList.size());
+
 
     }
 

@@ -5,6 +5,16 @@ package www.uni_weimar.de.au.models;
  */
 
 public interface AUItem {
-
-
+    String AUTYPE = "MENUITEM";
+    String ITEM = "item";
+    String URL = "url";
+    String LINK = "link";
+    String TITLE = "title";
+    String GUID = "guid";
+    String AUTHOR = "author";
+    String CATEGORY = "category";
+    String DESCR = "description";
+    String PUB_DATE = "pubDate";
+    String ENCLOSURE = "enclosure";
+    String IMG_URL = "url";
 }
