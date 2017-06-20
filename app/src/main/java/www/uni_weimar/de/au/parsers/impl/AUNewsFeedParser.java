@@ -7,9 +7,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.application.AUApplicationConfiguration;
 import www.uni_weimar.de.au.models.AUItem;
@@ -63,7 +65,6 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
                 auNewsFeed.setImgUrl(itemImgUrl);
                 auNewsFeeds.add(auNewsFeed);
             }
-
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
             throw new AUParseException(e.getMessage());

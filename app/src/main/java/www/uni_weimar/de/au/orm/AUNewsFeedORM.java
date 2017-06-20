@@ -50,9 +50,7 @@ public class AUNewsFeedORM implements AUBaseORM<AUNewsFeed> {
 
     @Override
     public List<AUNewsFeed> findAll() {
-        List<AUNewsFeed> allNewsFeed = realm.where(AUNewsFeed.class).findAll();
-        Log.v("ORM NEWSFEED FOUND: ", allNewsFeed.size() + "");
-        return allNewsFeed;
+        return realm.where(AUNewsFeed.class).findAll();
     }
 
     @Override

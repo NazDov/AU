@@ -1,0 +1,196 @@
+package www.uni_weimar.de.au.view.activity;
+
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ImageView;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import io.reactivex.disposables.Disposable;
+import io.realm.Realm;
+import www.uni_weimar.de.au.R;
+import www.uni_weimar.de.au.application.AUApplicationConfiguration;
+import www.uni_weimar.de.au.models.AUMainMenuTab;
+import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
+import www.uni_weimar.de.au.view.adapters.AUMainMenuViewPagerAdapter;
+import www.uni_weimar.de.au.view.fragments.tabs.AUEventsTabFragment;
+import www.uni_weimar.de.au.view.fragments.tabs.AUMainMenuTabFragment;
+import www.uni_weimar.de.au.view.fragments.tabs.AUNewsFeedTabFragment;
+
+public class AUMainMenuActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    @InjectView(R.id.au_main_menu_nav_view)
+    NavigationView auMainMenuTabNavigationView;
+    @InjectView(R.id.au_main_menu_drawer_layout)
+    DrawerLayout auMainMenuDrawerLayout;
+    @InjectView(R.id.auMainMenuViewPager)
+    ViewPager auMainMenuViewPager;
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
+    @InjectView(R.id.au_main_menu_image_header)
+    ImageView auMainMenuImageHeader;
+    @InjectView(R.id.au_main_menu_category_icon)
+    ImageView auMainMenuCategoryIcon;
+    AUMainMenuViewPagerAdapter auMainMenuViewPagerAdapter;
+    Realm realmUI;
+    Disposable disposable;
+    List<AUMainMenuTabFragment> auMainMenuTabFragments;
+    List<AUMainMenuTab> mainMenuTabList;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AUApplicationConfiguration.setContext(this);
+        setContentView(R.layout.au_main_menu_activity);
+        ButterKnife.inject(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, auMainMenuDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        auMainMenuDrawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+        auMainMenuTabNavigationView.setNavigationItemSelectedListener(this);
+        realmUI = Realm.getDefaultInstance();
+        disposable = new AUMainMenuContentRequestService(realmUI, this.getString(R.string.MAIN_MENU))
+                .requestContent(cacheContent -> {
+                    this.mainMenuTabList = cacheContent;
+                    setAuMainMenuTabFragments(cacheContent);
+                }).subscribe(this::onNewContentArriveUpdateUI, this::onError);
+
+
+        auMainMenuViewPagerAdapter = new AUMainMenuViewPagerAdapter(getSupportFragmentManager(),
+                auMainMenuTabFragments);
+        auMainMenuViewPager.setAdapter(auMainMenuViewPagerAdapter);
+        auMainMenuViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                switch (position) {
+                    case 0:
+                        auMainMenuCategoryIcon.setBackgroundResource(R.drawable.news_icon);
+                        auMainMenuImageHeader.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.news_bg_compressed));
+                        break;
+                    case 1:
+                        auMainMenuCategoryIcon.setBackgroundResource(R.drawable.lecture_shedule_icon);
+                        auMainMenuImageHeader.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.lecture_schedule_bg_compressed));
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+    }
+
+    private void onError(Throwable e) {
+        Log.e("exception: ", e.getMessage());
+    }
+
+    private void onNewContentArriveUpdateUI(List<AUMainMenuTab> auMainMenuTabs) {
+        this.mainMenuTabList = auMainMenuTabs;
+        setAuMainMenuTabFragments(auMainMenuTabs);
+        auMainMenuViewPagerAdapter = new AUMainMenuViewPagerAdapter(getSupportFragmentManager(), auMainMenuTabFragments);
+        auMainMenuViewPager.setAdapter(auMainMenuViewPagerAdapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realmUI.close();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (auMainMenuDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            auMainMenuDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        auMainMenuDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    public void setAuMainMenuTabFragments(List<AUMainMenuTab> auMainMenuTabsList) {
+        List<AUMainMenuTabFragment> auMainMenuTabFragmentList = new ArrayList<>();
+        for (AUMainMenuTab auMainMenuTab : auMainMenuTabsList) {
+            AUMainMenuTabFragment auMainMenuTabFragment = null;
+            String mainMenuTabTitle = auMainMenuTab.getTitle();
+            if ("News".equalsIgnoreCase(mainMenuTabTitle)) {
+                auMainMenuTabFragment = AUNewsFeedTabFragment.newInstance(auMainMenuTab);
+                auMainMenuTabFragmentList.add(auMainMenuTabFragment);
+            }
+            if ("Veranstaltungen".equalsIgnoreCase(mainMenuTabTitle)) {
+                auMainMenuTabFragment = AUEventsTabFragment.newInstance(mainMenuTabTitle);
+                auMainMenuTabFragmentList.add(auMainMenuTabFragment);
+            }
+
+        }
+
+        this.auMainMenuTabFragments = auMainMenuTabFragmentList;
+    }
+}

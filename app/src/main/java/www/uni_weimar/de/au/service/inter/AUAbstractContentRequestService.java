@@ -37,6 +37,6 @@ public abstract class AUAbstractContentRequestService<T extends RealmObject> imp
 
     @Override
     public List<T> readFromCache(List<T> objects) {
-        return auBaseORM.findAll();
+        return  auBaseORM.findAll();
     }
 }

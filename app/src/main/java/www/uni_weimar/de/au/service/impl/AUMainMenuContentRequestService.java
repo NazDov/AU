@@ -24,10 +24,6 @@ public class AUMainMenuContentRequestService extends AUAbstractContentRequestSer
     private String url;
 
 
-    protected AUMainMenuContentRequestService() {
-
-    }
-
     public AUMainMenuContentRequestService(Realm realm, String url) {
         super(new AUMainMenuTabORM(realm));
         this.url = url;

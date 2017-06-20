@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/au_news_feed_card_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        card_view:cardElevation="2dp"
+        card_view:cardCornerRadius="5dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/title_time_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/news_feed_title"
+                        android:text="News Title"
+                        android:padding="@dimen/news_title_padding"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.8"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.4"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/news_feed_clock_img"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:background="@drawable/small_clock"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/news_feed_clock_img_margin_left"
+                            />
+
+                        <TextView
+                            android:id="@+id/news_feed_time_since"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="15 min ago"
+                            android:layout_marginLeft="@dimen/news_feed_time_since_margin_left"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/news_feed_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:layout_below="@id/title_time_wrapper"/>
+
+                <TextView
+                    android:id="@+id/news_feed_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/news_feed_description_height"
+                    android:padding="15dp"
+                    android:text="Hello, this is a custom description..."
+                    android:layout_below="@+id/news_feed_image"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <LinearLayout
+                    android:id="@+id/news_feed_button_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/news_feed_button_group_color"
+                    android:layout_below="@id/news_feed_description">
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_weight="0.3"
+                        android:layout_margin="0dp"
+                        android:text="Like"
+                        android:gravity="center"
+                        android:background="@color/news_feed_button_group_color"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/news_feed_button_divider"/>
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_weight="0.3"
+                        android:text="Comment"
+                        android:layout_height="wrap_content"
+                        android:background="@color/news_feed_button_group_color"
+                        android:id="@+id/button" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/news_feed_button_divider"/>
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_weight="0.3"
+                        android:background="@color/news_feed_button_group_color"
+                        android:text="Share"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/button2" />
+                </LinearLayout>
+
+
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

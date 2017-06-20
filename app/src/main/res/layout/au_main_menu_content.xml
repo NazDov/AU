@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="www.uni_weimar.de.au.view.activity.AUMainMenuActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        android:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:fitsSystemWindows="true"
+            android:background="@android:color/transparent"
+            android:layout_height="?attr/actionBarSize"
+            style="@style/AppTheme.PopupOverlay"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ImageView
+        android:id="@+id/au_main_menu_image_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_bg_image_height"
+        android:background="@drawable/news_bg_compressed"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:id="@+id/au_main_menu_category_icon"
+        android:layout_width="@dimen/category_icon"
+        android:layout_height="@dimen/category_icon"
+        android:layout_below="@+id/app_bar_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/padding_5"
+        android:background="@drawable/news_icon"
+        android:scaleType="fitXY" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/auMainMenuViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/au_main_menu_category_icon">
+
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pager_title_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@drawable/background_toolbar_transparent"
+            android:paddingBottom="5dp"
+            android:paddingTop="25dp"
+            android:textColor="@android:color/white" />
+
+    </android.support.v4.view.ViewPager>
+
+</RelativeLayout>

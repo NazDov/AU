@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.TimeZone;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -24,6 +26,7 @@ public class AUApplicationConfiguration extends Application {
         Log.i(TAG, "application started....");
         configRealmDatabase();
         Log.i(TAG, "realm database configured");
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+2:00"));
 
     }
 
