@@ -36,7 +36,7 @@ public class AUMainMenuTabParser implements AUParser<AUMainMenuTab> {
     @Override
     public List<AUMainMenuTab> parseAllAU(String url) throws AUParseException {
         List<AUMainMenuTab> auMainMenuTabList = new ArrayList<>();
-        String allNewsUrl = context.getString(R.string.ALL_NEWS);
+        String allNewsUrl = "";
 
         if (url == null) {
             auMainMenuTabList = parseAllAU();

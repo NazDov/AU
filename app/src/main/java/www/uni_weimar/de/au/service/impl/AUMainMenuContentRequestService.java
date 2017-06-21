@@ -45,19 +45,7 @@ public class AUMainMenuContentRequestService extends AUAbstractContentRequestSer
     @Override
     public Observable<List<AUMainMenuTab>> requestContent(AUContentChangeListener<AUMainMenuTab> AUContentChangeListener) {
         notifyContentOnCacheUpdate(AUContentChangeListener);
-        return Observable.create((ObservableOnSubscribe<List<AUMainMenuTab>>) e -> {
-            try {
-                List<AUMainMenuTab> auMainMenuTabList = auMainMenuTabParser.parseAllAU(url);
-                e.onNext(auMainMenuTabList);
-                e.onComplete();
-            } catch (AUParseException a) {
-                e.onError(a);
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.computation())
-                .map(this::writeToCache)
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(this::readFromCache);
+        return null;
     }
 
 

@@ -36,7 +36,6 @@ public class AUNewsFeedContentRequestService extends AUAbstractContentRequestSer
         return Observable.create((ObservableOnSubscribe<List<AUNewsFeed>>) e -> {
             try {
                 List<AUNewsFeed> auNewsFeeds = auNewsFeedParser.parseAllAU(null);
-                Log.e("PARSED SIZE: ", auNewsFeeds.size() + "");
                 e.onNext(auNewsFeeds);
                 e.onComplete();
             } catch (AUParseException a) {

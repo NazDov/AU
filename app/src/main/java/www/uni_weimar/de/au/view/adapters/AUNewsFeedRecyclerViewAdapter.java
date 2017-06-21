@@ -53,18 +53,17 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
         AUNewsFeed auNewsFeedItem = auNewsFeedList.get(position);
         holder.newsFeedTitle.setText(auNewsFeedItem.getTitle());
         holder.newsFeedDescription.setText(auNewsFeedItem.getDesciption());
-        holder.newsFeedImage.setImageResource(R.drawable.news_article);
         Glide.with(context).load(auNewsFeedItem.getImgUrl())
                 .thumbnail(0.4f)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.newsFeedImage)
                 .onLoadFailed(null, context.getResources().getDrawable(R.drawable.news_article));
         SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss");
         String pubDate = auNewsFeedItem.getPubDate();
         try {
-            Date date = formatter.parse(pubDate);
-            Date dateNow = new Date();
-            long duration = dateNow.getTime() - date.getTime();
+            Date dateOfPublication = formatter.parse(pubDate);
+            Date currentDate = new Date();
+            long duration = currentDate.getTime() - dateOfPublication.getTime();
             long diffInHours = TimeUnit.MILLISECONDS.toHours(duration);
             long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration - TimeUnit.HOURS.toMillis(diffInHours));
             if (diffInHours != 0) {
@@ -73,7 +72,7 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
                 holder.newsFeedTimeSince.setText(Long.toString(diffInMinutes) + " min ago ");
             }
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
     }

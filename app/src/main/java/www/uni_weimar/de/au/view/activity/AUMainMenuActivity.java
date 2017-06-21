@@ -1,6 +1,8 @@
 package www.uni_weimar.de.au.view.activity;
 
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
@@ -13,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import java.text.DateFormat;
@@ -67,6 +71,12 @@ public class AUMainMenuActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         AUApplicationConfiguration.setContext(this);
         setContentView(R.layout.au_main_menu_activity);
+        Window window = getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
+
         ButterKnife.inject(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -77,13 +87,11 @@ public class AUMainMenuActivity extends AppCompatActivity
         toggle.syncState();
         auMainMenuTabNavigationView.setNavigationItemSelectedListener(this);
         realmUI = Realm.getDefaultInstance();
-        disposable = new AUMainMenuContentRequestService(realmUI, this.getString(R.string.MAIN_MENU))
+        new AUMainMenuContentRequestService(realmUI, this.getString(R.string.MAIN_MENU))
                 .requestContent(cacheContent -> {
                     this.mainMenuTabList = cacheContent;
                     setAuMainMenuTabFragments(cacheContent);
-                }).subscribe(this::onNewContentArriveUpdateUI, this::onError);
-
-
+                });
         auMainMenuViewPagerAdapter = new AUMainMenuViewPagerAdapter(getSupportFragmentManager(),
                 auMainMenuTabFragments);
         auMainMenuViewPager.setAdapter(auMainMenuViewPagerAdapter);
@@ -113,17 +121,7 @@ public class AUMainMenuActivity extends AppCompatActivity
             }
         });
 
-    }
 
-    private void onError(Throwable e) {
-        Log.e("exception: ", e.getMessage());
-    }
-
-    private void onNewContentArriveUpdateUI(List<AUMainMenuTab> auMainMenuTabs) {
-        this.mainMenuTabList = auMainMenuTabs;
-        setAuMainMenuTabFragments(auMainMenuTabs);
-        auMainMenuViewPagerAdapter = new AUMainMenuViewPagerAdapter(getSupportFragmentManager(), auMainMenuTabFragments);
-        auMainMenuViewPager.setAdapter(auMainMenuViewPagerAdapter);
     }
 
     @Override

@@ -22,6 +22,7 @@ import io.realm.Realm;
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.service.impl.AUNewsFeedContentRequestService;
+import www.uni_weimar.de.au.service.inter.AUContentChangeListener;
 import www.uni_weimar.de.au.view.adapters.AUNewsFeedRecyclerViewAdapter;
 
 /**
@@ -50,33 +51,26 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = null;
-        rootView = inflater.inflate(R.layout.au_all_news_feed_layout, container, false);
+        View rootView = inflater.inflate(R.layout.au_all_news_feed_layout, container, false);
         ButterKnife.inject(this, rootView);
         newsFeedSwipeRefreshLayout.setOnRefreshListener(this);
         realm = Realm.getDefaultInstance();
-        auAllNewsFeedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        auAllNewsFeedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         auNewsFeedContentRequestService = new AUNewsFeedContentRequestService(realm, null);
-        auNewsFeedObservable = auNewsFeedContentRequestService.requestContent(cachedContent -> {
-            Toast.makeText(getContext(), "cache data loaded!", Toast.LENGTH_LONG).show();
-            auNewsFeedList = cachedContent;
-            auNewsFeedRecyclerViewAdapter = new AUNewsFeedRecyclerViewAdapter(getContext(), auNewsFeedList);
-            auAllNewsFeedRecyclerView.setAdapter(auNewsFeedRecyclerViewAdapter);
-        });
+        auNewsFeedObservable = auNewsFeedContentRequestService.requestContent(content -> auNewsFeedList = content);
+        auNewsFeedRecyclerViewAdapter = new AUNewsFeedRecyclerViewAdapter(getContext(), auNewsFeedList);
+        auAllNewsFeedRecyclerView.setAdapter(auNewsFeedRecyclerViewAdapter);
         disposable = auNewsFeedObservable.subscribe(this::onSuccess, this::onError);
         return rootView;
-
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        auNewsFeedContentRequestService.requestContent(cachedContent -> {
-            Toast.makeText(getContext(), "cache data loaded onResume()!", Toast.LENGTH_SHORT).show();
-            auNewsFeedList = cachedContent;
-            auNewsFeedRecyclerViewAdapter.notifyDataSetChanged();
-        });
 
+    private void onSuccess(final List<AUNewsFeed> auNewsFeeds) {
+        auNewsFeedList = auNewsFeeds;
+        auNewsFeedRecyclerViewAdapter.notifyDataSetChanged();
+        if (newsFeedSwipeRefreshLayout.isRefreshing()) {
+            newsFeedSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     private void onError(Throwable throwable) {
@@ -84,12 +78,6 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         if (newsFeedSwipeRefreshLayout.isRefreshing()) {
             newsFeedSwipeRefreshLayout.setRefreshing(false);
         }
-    }
-
-    private void onSuccess(final List<AUNewsFeed> auNewsFeeds) {
-        auNewsFeedList = auNewsFeeds;
-        auNewsFeedRecyclerViewAdapter.notifyDataSetChanged();
-        newsFeedSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -109,4 +97,5 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
     public void onRefresh() {
         auNewsFeedObservable.subscribe(this::onSuccess, this::onError);
     }
+
 }

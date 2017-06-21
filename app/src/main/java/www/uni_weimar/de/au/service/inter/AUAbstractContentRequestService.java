@@ -31,7 +31,6 @@ public abstract class AUAbstractContentRequestService<T extends RealmObject> imp
 
     @Override
     public List<T> writeToCache(List<T> realmObjects) {
-        Log.v("CACHE_SERVICE", "writeToCache: " + realmObjects.size());
         return auBaseORM.addAll(realmObjects);
     }
 
