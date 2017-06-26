@@ -11,16 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:fitsSystemWindows="true"
-        android:elevation="0dp">
+        android:elevation="0dp"
+        android:fitsSystemWindows="true">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
+            style="@style/AppTheme.PopupOverlay"
             android:layout_width="match_parent"
-            android:fitsSystemWindows="true"
-            android:background="@android:color/transparent"
             android:layout_height="?attr/actionBarSize"
-            style="@style/AppTheme.PopupOverlay"/>
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -58,5 +58,33 @@
             android:textColor="@android:color/white" />
 
     </android.support.v4.view.ViewPager>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/app_bar_layout">
+
+        <TextView
+            android:id="@+id/noIntentetConnexTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="10dp"
+            android:text="No Internet Connection"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/noIntentetConnexImageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_below="@+id/noIntentetConnexTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/spinner"
+            android:onClick="refreshOnNoConnection"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

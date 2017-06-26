@@ -1,12 +1,11 @@
 package www.uni_weimar.de.au.view.activity;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,21 +14,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -43,6 +38,8 @@ import www.uni_weimar.de.au.view.adapters.AUMainMenuViewPagerAdapter;
 import www.uni_weimar.de.au.view.fragments.tabs.AUEventsTabFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AUMainMenuTabFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AUNewsFeedTabFragment;
+
+import static www.uni_weimar.de.au.application.AUApplicationConfiguration.*;
 
 public class AUMainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -60,6 +57,10 @@ public class AUMainMenuActivity extends AppCompatActivity
     ImageView auMainMenuImageHeader;
     @InjectView(R.id.au_main_menu_category_icon)
     ImageView auMainMenuCategoryIcon;
+    @InjectView(R.id.noIntentetConnexTextView)
+    TextView noInternetConnexTextView;
+    @InjectView(R.id.noIntentetConnexImageView)
+    ImageButton noInternetConnexImageView;
     AUMainMenuViewPagerAdapter auMainMenuViewPagerAdapter;
     Realm realmUI;
     Disposable disposable;
@@ -69,7 +70,7 @@ public class AUMainMenuActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AUApplicationConfiguration.setContext(this);
+        setContext(this);
         setContentView(R.layout.au_main_menu_activity);
         Window window = getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -86,11 +87,19 @@ public class AUMainMenuActivity extends AppCompatActivity
         auMainMenuDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         auMainMenuTabNavigationView.setNavigationItemSelectedListener(this);
+        if (!hasInternetConnex(this)) {
+            noInternetConnexTextView.setVisibility(View.VISIBLE);
+            noInternetConnexImageView.setVisibility(View.VISIBLE);
+        }
         realmUI = Realm.getDefaultInstance();
         new AUMainMenuContentRequestService(realmUI, this.getString(R.string.MAIN_MENU))
                 .requestContent(cacheContent -> {
                     this.mainMenuTabList = cacheContent;
                     setAuMainMenuTabFragments(cacheContent);
+                    if (!cacheContent.isEmpty()) {
+                        noInternetConnexTextView.setVisibility(View.GONE);
+                        noInternetConnexImageView.setVisibility(View.GONE);
+                    }
                 });
         auMainMenuViewPagerAdapter = new AUMainMenuViewPagerAdapter(getSupportFragmentManager(),
                 auMainMenuTabFragments);
@@ -190,5 +199,30 @@ public class AUMainMenuActivity extends AppCompatActivity
         }
 
         this.auMainMenuTabFragments = auMainMenuTabFragmentList;
+    }
+
+    public void refreshOnNoConnection(View view) {
+        Animation rotateAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate);
+        rotateAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (hasInternetConnex(getApplicationContext())) {
+                    initSystemMainMenuComponents(getContext());
+                    recreate();
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        noInternetConnexImageView.startAnimation(rotateAnimation);
+
     }
 }

@@ -3,8 +3,10 @@ package www.uni_weimar.de.au.application;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.orm.AUMainMenuTabORM;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.impl.AUMainMenuTabParser;
+import www.uni_weimar.de.au.view.activity.AUMainMenuActivity;
 
 /**
  * Created by nazar on 12.06.17.
@@ -35,15 +38,19 @@ public class AUApplicationConfiguration extends Application {
         configRealmDatabase();
         Log.i(TAG, "realm database configured");
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+2:00"));
-
     }
 
-    private void configRealmDatabase() {
-        Realm.init(this);
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(realmConfiguration);
 
-        realm = Realm.getDefaultInstance();
+
+    public static boolean hasInternetConnex(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = networkInfo != null && networkInfo.isConnectedOrConnecting();
+        return isConnected;
+    }
+
+    public static void initSystemMainMenuComponents(Context context) {
+        Realm realm = Realm.getDefaultInstance();
         new AsyncTask<Object, Void, Object>() {
 
             @Override
@@ -52,14 +59,29 @@ public class AUApplicationConfiguration extends Application {
                 AUMainMenuTabORM auMainMenuTabORM = new AUMainMenuTabORM(realm);
                 AUMainMenuTabParser auMainMenuTabParser = new AUMainMenuTabParser();
                 try {
-                    auMainMenuTabList = auMainMenuTabParser.parseAllAU("http://ec2-35-157-27-16.eu-central-1.compute.amazonaws.com/menu.xml");
+                    auMainMenuTabList = auMainMenuTabParser.parseAllAU(context.getString(R.string.MAIN_MENU));
                     auMainMenuTabORM.addAll(auMainMenuTabList);
                 } catch (AUParseException e) {
                     e.printStackTrace();
                 }
                 return null;
             }
-        };
+
+
+            @Override
+            protected void onPostExecute(Object o) {
+                Intent intent = new Intent(context, AUMainMenuActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        }.execute(new Object[0]);
+    }
+
+    private void configRealmDatabase() {
+        Realm.init(this);
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(realmConfiguration);
+
 
     }
 

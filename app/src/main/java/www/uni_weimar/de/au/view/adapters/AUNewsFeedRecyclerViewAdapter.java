@@ -54,10 +54,9 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
         holder.newsFeedTitle.setText(auNewsFeedItem.getTitle());
         holder.newsFeedDescription.setText(auNewsFeedItem.getDesciption());
         Glide.with(context).load(auNewsFeedItem.getImgUrl())
-                .thumbnail(0.4f)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(holder.newsFeedImage)
-                .onLoadFailed(null, context.getResources().getDrawable(R.drawable.news_article));
+                .onLoadStarted(context.getResources().getDrawable(R.drawable.news_article));
         SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss");
         String pubDate = auNewsFeedItem.getPubDate();
         try {
