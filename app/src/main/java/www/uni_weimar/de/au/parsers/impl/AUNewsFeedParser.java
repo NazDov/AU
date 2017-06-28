@@ -10,7 +10,9 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.application.AUApplicationConfiguration;
@@ -42,6 +44,7 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
             url = newsFeedUrl;
         }
         Document document;
+        Set<String> newsFeedCategories = new HashSet<>();
         try {
             document = Jsoup.connect(url).get();
             Elements newsFeedItems = document.getElementsByTag(AUItem.ITEM);
@@ -56,6 +59,7 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
                 auNewsFeed.setAuthor(itemAuthor);
                 String itemCategory = newsFeedItem.getElementsByTag(AUItem.CATEGORY).text();
                 auNewsFeed.setCategory(itemCategory);
+                newsFeedCategories.add(itemCategory);
                 String itemDescription = newsFeedItem.getElementsByTag(AUItem.DESCR).text();
                 auNewsFeed.setDesciption(itemDescription);
                 String itemPubDate = newsFeedItem.getElementsByTag(AUItem.PUB_DATE).text();
@@ -65,6 +69,7 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
                 auNewsFeed.setImgUrl(itemImgUrl);
                 auNewsFeeds.add(auNewsFeed);
             }
+            Log.v(TAG, newsFeedCategories.toString());
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
             throw new AUParseException(e.getMessage());

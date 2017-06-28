@@ -1,8 +1,6 @@
 package www.uni_weimar.de.au.view.adapters;
 
 import android.content.Context;
-import android.os.Build;
-import android.os.Handler;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,16 +14,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import io.realm.RealmResults;
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUNewsFeed;
+import www.uni_weimar.de.au.utils.StaticDateUtils;
 
 /**
  * Created by ndovhuy on 19.06.2017.
@@ -55,25 +52,40 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
         holder.newsFeedDescription.setText(auNewsFeedItem.getDesciption());
         Glide.with(context).load(auNewsFeedItem.getImgUrl())
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .into(holder.newsFeedImage)
-                .onLoadStarted(context.getResources().getDrawable(R.drawable.news_article));
-        SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss");
-        String pubDate = auNewsFeedItem.getPubDate();
+                .placeholder(context.getResources().getDrawable(R.drawable.news_article))
+                .into(holder.newsFeedImage);
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
+        String pubDate = auNewsFeedItem.getPubDate().replace("CEST", "").trim();
         try {
-            Date dateOfPublication = formatter.parse(pubDate);
             Date currentDate = new Date();
-            long duration = currentDate.getTime() - dateOfPublication.getTime();
-            long diffInHours = TimeUnit.MILLISECONDS.toHours(duration);
-            long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration - TimeUnit.HOURS.toMillis(diffInHours));
-            if (diffInHours != 0) {
-                holder.newsFeedTimeSince.setText(Long.toString(diffInHours) + " h " + Long.toString(diffInMinutes) + " min ago ");
-            } else {
-                holder.newsFeedTimeSince.setText(Long.toString(diffInMinutes) + " min ago ");
-            }
+            Date dateOfPublication = formatter.parse(pubDate);
+            populateTimeAfterPubIndicator(holder, dateOfPublication, currentDate);
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            String[] dates = pubDate.split(" ");
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.DAY_OF_MONTH, Integer.valueOf(dates[1]));
+            cal.set(Calendar.MONTH, StaticDateUtils.months.get(dates[2]));
+            cal.set(Calendar.YEAR, Integer.valueOf(dates[3]));
+            String[] hours = dates[4].split(":");
+            cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(hours[0]));
+            cal.set(Calendar.MINUTE, Integer.valueOf(hours[1]));
+            cal.set(Calendar.SECOND, Integer.valueOf(hours[2]));
+            Date dateOfPublication = cal.getTime();
+            populateTimeAfterPubIndicator(holder, dateOfPublication, new Date());
+            e.printStackTrace();
         }
 
+    }
+
+    private void populateTimeAfterPubIndicator(NewsFeedVH holder, Date dateOfPublication, Date currentDate) {
+        long duration = currentDate.getTime() - dateOfPublication.getTime();
+        long diffInHours = TimeUnit.MILLISECONDS.toHours(duration);
+        long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration - TimeUnit.HOURS.toMillis(diffInHours));
+        if (diffInHours != 0) {
+            holder.newsFeedTimeSince.setText(Long.toString(diffInHours) + " h " + Long.toString(diffInMinutes) + " min ago ");
+        } else {
+            holder.newsFeedTimeSince.setText(Long.toString(diffInMinutes) + " min ago ");
+        }
     }
 
     @Override

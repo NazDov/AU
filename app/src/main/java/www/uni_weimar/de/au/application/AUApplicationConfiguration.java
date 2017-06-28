@@ -19,6 +19,7 @@ import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.orm.AUMainMenuTabORM;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.impl.AUMainMenuTabParser;
+import www.uni_weimar.de.au.utils.SSLUtilities;
 import www.uni_weimar.de.au.view.activity.AUMainMenuActivity;
 
 /**
@@ -38,12 +39,12 @@ public class AUApplicationConfiguration extends Application {
         configRealmDatabase();
         Log.i(TAG, "realm database configured");
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+2:00"));
+        SSLUtilities.trustAllCerts();
     }
 
 
-
-    public static boolean hasInternetConnex(Context context){
-        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean hasInternetConnex(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         boolean isConnected = networkInfo != null && networkInfo.isConnectedOrConnecting();
         return isConnected;
@@ -73,8 +74,9 @@ public class AUApplicationConfiguration extends Application {
                 Intent intent = new Intent(context, AUMainMenuActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+                ((Activity) context).finish();
             }
-        }.execute(new Object[0]);
+        }.execute();
     }
 
     private void configRealmDatabase() {

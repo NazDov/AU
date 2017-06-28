@@ -15,7 +15,7 @@
     <dimen name="drawer_padding_default">20dp</dimen>
     <dimen name="category_icon">80dp</dimen>
     <dimen name="book_height">110dp</dimen>
-    <dimen name="padding_2">2dp</dimen>
+    <dimen name="padding_2">10dp</dimen>
     <dimen name="text12">12sp</dimen>
     <dimen name="text14">14sp</dimen>
     <dimen name="text16">16sp</dimen>
