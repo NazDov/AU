@@ -55,6 +55,11 @@ public class AUNewsFeedORM implements AUBaseORM<AUNewsFeed> {
 
     @Override
     public AUNewsFeed findBy(String key, String name) {
-        return null;
+        return realm.where(AUNewsFeed.class).equalTo(key, name).findFirst();
+    }
+
+    @Override
+    public List<AUNewsFeed> findAllBy(String key, String name) {
+        return realm.where(AUNewsFeed.class).equalTo(key, name).findAll();
     }
 }

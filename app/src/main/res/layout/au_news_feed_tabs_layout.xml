@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/news_feed_tab_layout_height"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/news_feed_tab_margin_top"
             android:layout_weight="0.9"
             app:tabTextColor="#64ffffff"
             app:tabSelectedTextColor="#fff"

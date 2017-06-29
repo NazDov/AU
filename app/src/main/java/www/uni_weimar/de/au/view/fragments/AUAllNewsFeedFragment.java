@@ -9,9 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -22,7 +24,6 @@ import io.realm.Realm;
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.service.impl.AUNewsFeedContentRequestService;
-import www.uni_weimar.de.au.service.inter.AUContentChangeListener;
 import www.uni_weimar.de.au.view.adapters.AUNewsFeedRecyclerViewAdapter;
 
 /**
@@ -34,6 +35,8 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
     RecyclerView auAllNewsFeedRecyclerView;
     @InjectView(R.id.news_feed_swipe_refresh)
     SwipeRefreshLayout newsFeedSwipeRefreshLayout;
+    @InjectView(R.id.android_material_design_spinner)
+    Spinner auSpinner;
     AUNewsFeedRecyclerViewAdapter auNewsFeedRecyclerViewAdapter;
     AUNewsFeedContentRequestService auNewsFeedContentRequestService;
     Observable<List<AUNewsFeed>> auNewsFeedObservable;
@@ -61,6 +64,35 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         auNewsFeedRecyclerViewAdapter = new AUNewsFeedRecyclerViewAdapter(getContext(), auNewsFeedList);
         auAllNewsFeedRecyclerView.setAdapter(auNewsFeedRecyclerViewAdapter);
         disposable = auNewsFeedObservable.subscribe(this::onSuccess, this::onError);
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.news_feed_categories, android.R.layout.simple_spinner_dropdown_item);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        auSpinner.setAdapter(arrayAdapter);
+        auSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String categoryName = parent.getSelectedItem().toString();
+
+                if ("All".equalsIgnoreCase(categoryName)) {
+                    auNewsFeedContentRequestService.requestContent(content -> auNewsFeedList = content);
+                } else {
+                    auNewsFeedList = auNewsFeedContentRequestService
+                            .getAuBaseORM()
+                            .findAllBy("category", categoryName);
+                    if (auNewsFeedList.isEmpty()) {
+                        Toast.makeText(getContext(), "no items found for: "+categoryName, Toast.LENGTH_SHORT).show();
+                    }
+                }
+                auNewsFeedRecyclerViewAdapter.setAuNewsFeedList(auNewsFeedList);
+                auNewsFeedRecyclerViewAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         return rootView;
     }
 

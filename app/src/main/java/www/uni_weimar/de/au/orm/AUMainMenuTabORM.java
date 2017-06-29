@@ -51,4 +51,9 @@ public class AUMainMenuTabORM implements AUBaseORM<AUMainMenuTab> {
     public AUMainMenuTab findBy(String key, String name) {
         return realm.where(AUMainMenuTab.class).equalTo(key, name).findFirst();
     }
+
+    @Override
+    public List<AUMainMenuTab> findAllBy(String key, String name) {
+        throw new UnsupportedOperationException();
+    }
 }

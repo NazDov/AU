@@ -120,4 +120,8 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
         }
     }
 
+
+    public void setAuNewsFeedList(List<AUNewsFeed> auNewsFeedList) {
+        this.auNewsFeedList = auNewsFeedList;
+    }
 }

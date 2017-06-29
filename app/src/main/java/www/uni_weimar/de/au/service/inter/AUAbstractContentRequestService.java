@@ -38,4 +38,8 @@ public abstract class AUAbstractContentRequestService<T extends RealmObject> imp
     public List<T> readFromCache(List<T> objects) {
         return  auBaseORM.findAll();
     }
+
+    public AUBaseORM<T> getAuBaseORM() {
+        return auBaseORM;
+    }
 }

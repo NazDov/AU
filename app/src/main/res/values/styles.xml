@@ -8,6 +8,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:textSize">@dimen/au_global_text_size</item>
     </style>
 
     <style name="AppToolbar" parent="ThemeOverlay.AppCompat.ActionBar">
@@ -37,6 +38,14 @@
         <item name="android:windowActionBarOverlay">true</item>
         <!-- Support library compatibility -->
         <item name="windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="ThemeSpinner">
+        <!-- Color when pressed -->
+        <item name="colorAccent">#2bb449</item>
+        <!-- Default color for the dropdown arrow and line -->
+        <item name="colorControlNormal">#2bb449</item>
+        <item name="color">#808080</item>
     </style>
 
 </resources>

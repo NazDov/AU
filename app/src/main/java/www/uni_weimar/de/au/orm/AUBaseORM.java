@@ -21,5 +21,7 @@ public interface AUBaseORM<T extends RealmObject> {
 
     T findBy(String key, String name);
 
+    List<T> findAllBy(String key, String name);
+
 
 }

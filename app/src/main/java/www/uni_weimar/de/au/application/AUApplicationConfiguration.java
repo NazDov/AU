@@ -30,7 +30,6 @@ public class AUApplicationConfiguration extends Application {
 
     private static String TAG = "AUConfiguration";
     private static Context context;
-    private Realm realm;
 
     @Override
     public void onCreate() {

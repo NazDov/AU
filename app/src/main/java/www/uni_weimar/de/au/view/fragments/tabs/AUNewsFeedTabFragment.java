@@ -48,21 +48,16 @@ public class AUNewsFeedTabFragment extends AUMainMenuTabFragment implements TabL
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = null;
-        try {
-            rootView = inflater.inflate(R.layout.au_news_feed_tabs_layout, container, false);
-            ButterKnife.inject(this, rootView);
-            initAuNewsFeedTabs();
-        } catch (Exception e) {
-            Log.e("TAb Exception", e.getMessage());
-        }
+        View rootView = inflater.inflate(R.layout.au_news_feed_tabs_layout, container, false);
+        ButterKnife.inject(this, rootView);
+        initAuNewsFeedTabs();
         return rootView;
     }
 
     private void initAuNewsFeedTabs() {
         List<AUMainMenuItem> auMainMenuItemList = auMainMenuTab.getAUMainMenuItemList();
         for (AUMainMenuItem auMainMenuItem : auMainMenuItemList) {
-            auNewsFeedTabLayout.addTab(auNewsFeedTabLayout.newTab().setText(auMainMenuItem.getTitle()));
+            auNewsFeedTabLayout.addTab(auNewsFeedTabLayout.newTab().setText(auMainMenuItem.getTitle().replace("All","").trim()));
         }
         auTabFragmentViewPagerAdapter = new AUNewsFeedTabFragmentViewPagerAdapter(getChildFragmentManager(), auNewsFeedTabLayout.getTabCount());
         auNewsFeedTabsViewPager.setAdapter(auTabFragmentViewPagerAdapter);

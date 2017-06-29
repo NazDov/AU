@@ -52,9 +52,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
+            android:textSize="@dimen/au_global_text_size"
             android:background="@drawable/background_toolbar_transparent"
-            android:paddingBottom="5dp"
-            android:paddingTop="20dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="@dimen/pager_tab_strip_margin_top"
             android:textColor="@android:color/white" />
 
     </android.support.v4.view.ViewPager>

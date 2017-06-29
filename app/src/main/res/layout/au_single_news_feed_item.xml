@@ -9,8 +9,8 @@
         android:id="@+id/au_news_feed_card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="@dimen/card_view_margin_left"
+        android:layout_marginRight="@dimen/card_view_margin_right"
         android:layout_marginTop="10dp"
         card_view:cardElevation="2dp"
         card_view:cardCornerRadius="5dp">
@@ -64,7 +64,7 @@
 
                 <ImageView
                     android:id="@+id/news_feed_image"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"

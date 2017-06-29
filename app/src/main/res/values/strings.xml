@@ -6,5 +6,20 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
 
+    <string-array name="news_feed_categories">
+        <item>All</item>
+        <item>Pinnwand: Universität</item>
+        <item>Pinnwand: Architektur und Urbanistik</item>
+        <item>Pinnwand: Bauingenieurwesen</item>
+        <item>Pinnwand: Kunst und Gestaltung</item>
+        <item>Pinnwand: Medien</item>
+        <item>Pinnwand: SCC</item>
+        <item>Pinnwand: Sprachen</item>
+        <item>Pinnwand: Universitätssport </item>
+        <item>Pinnwand: Bibliothek</item>
+        <item>Pinnwand: Piazza</item>
+        <item>Pinnwand: Wohnen</item>
+        <item>Pinnwand: International</item>
+    </string-array>
 
 </resources>
