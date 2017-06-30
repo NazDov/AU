@@ -62,4 +62,9 @@ public class AUNewsFeedORM implements AUBaseORM<AUNewsFeed> {
     public List<AUNewsFeed> findAllBy(String key, String name) {
         return realm.where(AUNewsFeed.class).equalTo(key, name).findAll();
     }
+
+
+    public List<AUNewsFeed> findAllIn(String key, String[] data) {
+        return realm.where(AUNewsFeed.class).in(key, data).findAll();
+    }
 }

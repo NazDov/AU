@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,6 +24,8 @@ import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUNewsFeed;
+import www.uni_weimar.de.au.models.AUNewsFeedFavourite;
+import www.uni_weimar.de.au.orm.AUNewsFeedFavouriteORM;
 import www.uni_weimar.de.au.service.impl.AUNewsFeedContentRequestService;
 import www.uni_weimar.de.au.view.adapters.AUNewsFeedRecyclerViewAdapter;
 
@@ -36,13 +39,14 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
     @InjectView(R.id.news_feed_swipe_refresh)
     SwipeRefreshLayout newsFeedSwipeRefreshLayout;
     @InjectView(R.id.android_material_design_spinner)
-    Spinner auSpinner;
+    AppCompatSpinner auSpinner;
     AUNewsFeedRecyclerViewAdapter auNewsFeedRecyclerViewAdapter;
     AUNewsFeedContentRequestService auNewsFeedContentRequestService;
     Observable<List<AUNewsFeed>> auNewsFeedObservable;
     List<AUNewsFeed> auNewsFeedList;
     Disposable disposable;
     Realm realm;
+    AUNewsFeedFavouriteORM auNewsFeedFavouriteORM;
 
     public static AUAllNewsFeedFragment newInstance() {
         Bundle args = new Bundle();
@@ -58,12 +62,24 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         ButterKnife.inject(this, rootView);
         newsFeedSwipeRefreshLayout.setOnRefreshListener(this);
         realm = Realm.getDefaultInstance();
+        auNewsFeedFavouriteORM = new AUNewsFeedFavouriteORM(realm);
         auAllNewsFeedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         auNewsFeedContentRequestService = new AUNewsFeedContentRequestService(realm, null);
         auNewsFeedObservable = auNewsFeedContentRequestService.requestContent(content -> auNewsFeedList = content);
         auNewsFeedRecyclerViewAdapter = new AUNewsFeedRecyclerViewAdapter(getContext(), auNewsFeedList);
+        auNewsFeedRecyclerViewAdapter.setAuNewsFeedLikedItemListener(auItem -> {
+            Toast.makeText(getContext(), "news item " + auItem.getTitle() + " was added to favourites", Toast.LENGTH_SHORT).show();
+            AUNewsFeedFavourite auNewsFeedFavourite = new AUNewsFeedFavourite();
+            auNewsFeedFavourite.setLink(auItem.getLink());
+            auNewsFeedFavouriteORM.add(auNewsFeedFavourite);
+        });
         auAllNewsFeedRecyclerView.setAdapter(auNewsFeedRecyclerViewAdapter);
         disposable = auNewsFeedObservable.subscribe(this::onSuccess, this::onError);
+        configureAUNewsItemSpinner();
+        return rootView;
+    }
+
+    private void configureAUNewsItemSpinner() {
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.news_feed_categories, android.R.layout.simple_spinner_dropdown_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -80,7 +96,7 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
                             .getAuBaseORM()
                             .findAllBy("category", categoryName);
                     if (auNewsFeedList.isEmpty()) {
-                        Toast.makeText(getContext(), "no items found for: "+categoryName, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "no items found for: " + categoryName, Toast.LENGTH_SHORT).show();
                     }
                 }
                 auNewsFeedRecyclerViewAdapter.setAuNewsFeedList(auNewsFeedList);
@@ -92,8 +108,6 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
 
             }
         });
-
-        return rootView;
     }
 
 

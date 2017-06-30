@@ -20,28 +20,11 @@ import www.uni_weimar.de.au.service.inter.AUContentChangeListener;
 
 public class AUMainMenuContentRequestService extends AUAbstractContentRequestService<AUMainMenuTab> {
 
-    private AUMainMenuTabParser auMainMenuTabParser;
-    private String url;
-
-
-    public AUMainMenuContentRequestService(Realm realm, String url) {
-        super(new AUMainMenuTabORM(realm));
-        this.url = url;
-        auMainMenuTabParser = new AUMainMenuTabParser();
+    public AUMainMenuContentRequestService(Realm realm) {
+        super(new AUMainMenuTabORM(realm), new AUMainMenuTabParser());
     }
 
-    /**
-     * provide content to the UI. first we will always obtain copy of the cached data
-     * if it's available. The non-blocking processing will provide parsing
-     * and the new data will be updated when it's available
-     * <p>
-     * the logic behind this:
-     * <p>
-     * first the readFromCache function will be ran, populating the cached data to the UI.
-     * then on the parallel computation thread the writeToCache function will be triggered
-     *
-     * @return
-     */
+
     @Override
     public Observable<List<AUMainMenuTab>> requestContent(AUContentChangeListener<AUMainMenuTab> AUContentChangeListener) {
         notifyContentOnCacheUpdate(AUContentChangeListener);

@@ -1,18 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
-    android:background="@drawable/background_toolbar_transparent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/transparent"
     android:orientation="horizontal"
-    android:weightSum="1">
+    android:weightSum="1"
+    tools:context=".view.activity.AUMainMenuActivity">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="246dp"
-        android:background="#3b485e"
-        android:id="@+id/view"
-       />
+        android:layout_height="fill_parent"
+        android:background="#42505e"
+        android:id="@+id/view">
 
-</LinearLayout>
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:columnCount="3"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:layout_marginTop="100dp"
+            android:padding="0dp">
+
+            <RelativeLayout
+                android:id="@+id/news_feed_menu_btn_wrapper"
+                android:layout_width="@dimen/au_menu_circle"
+                android:layout_height="@dimen/au_menu_circle"
+                android:layout_margin="20dp"
+                android:background="@drawable/circle_shape_inactive">
+               <ImageButton
+                   android:id="@+id/news_feed_menu_btn_img"
+                   android:layout_width="20dp"
+                   android:layout_height="20dp"
+                   android:layout_centerHorizontal="true"
+                   android:layout_centerVertical="true"
+                   android:background="@mipmap/news_rss_inactive"
+                   />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/schedule_menu_btn_wrapper"
+                android:layout_width="@dimen/au_menu_circle"
+                android:layout_height="@dimen/au_menu_circle"
+                android:layout_margin="20dp"
+                android:background="@drawable/circle_shape_inactive">
+                <ImageButton
+                    android:id="@+id/schedule_menu_btn_img"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/schedule_inactive"
+                    />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/cafeteria_menu_btn_wrapper"
+                android:layout_width="@dimen/au_menu_circle"
+                android:layout_height="@dimen/au_menu_circle"
+                android:layout_margin="20dp"
+                android:background="@drawable/circle_shape_inactive">
+                <ImageButton
+                    android:id="@+id/cafeteria_menu_btn_img"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/cafeteria_inactive"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="@dimen/au_menu_circle"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="-10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="#fff"
+                    android:text="@string/au_menu_news_item"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="@dimen/au_menu_circle"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="-10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="#fff"
+                    android:text="@string/au_menu_schedule_item"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="@dimen/au_menu_circle"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="-10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="#fff"
+                    android:text="@string/au_menu_cafeteria_item"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/library_menu_btn_wrapper"
+                android:layout_width="@dimen/au_menu_circle"
+                android:layout_height="@dimen/au_menu_circle"
+                android:layout_margin="20dp"
+                android:background="@drawable/circle_shape_inactive">
+                <ImageButton
+                    android:id="@+id/library_menu_btn_img"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/library_inactive"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/profile_menu_btn_wrapper"
+                android:layout_width="@dimen/au_menu_circle"
+                android:layout_height="@dimen/au_menu_circle"
+                android:layout_margin="20dp"
+                android:background="@drawable/circle_shape_inactive">
+                <ImageButton
+                    android:id="@+id/profile_menu_btn_img"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/profile_inactive"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/settings_menu_btn_wrapper"
+                android:layout_width="@dimen/au_menu_circle"
+                android:layout_height="@dimen/au_menu_circle"
+                android:layout_margin="20dp"
+                android:background="@drawable/circle_shape_inactive">
+                <ImageButton
+                    android:id="@+id/settings_menu_btn_img"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/settings_inactive"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="@dimen/au_menu_circle"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="-10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="#fff"
+                    android:text="@string/au_menu_library_item"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="@dimen/au_menu_circle"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="-10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="#fff"
+                    android:text="@string/au_menu_profile_item"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="@dimen/au_menu_circle"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="-10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="#fff"
+                    android:text="@string/au_menu_settings_item"/>
+            </RelativeLayout>
+        </GridLayout>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

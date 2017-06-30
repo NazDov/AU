@@ -6,8 +6,14 @@ import java.util.List;
 
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.RealmObject;
+import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.orm.AUBaseORM;
+import www.uni_weimar.de.au.parsers.exception.AUParseException;
+import www.uni_weimar.de.au.parsers.inter.AUParser;
 
 /**
  * Created by nazar on 13.06.17.
@@ -16,12 +22,29 @@ import www.uni_weimar.de.au.orm.AUBaseORM;
 public abstract class AUAbstractContentRequestService<T extends RealmObject> implements AUCacheService<T>, AUCacheNotifier<T> {
 
     private AUBaseORM<T> auBaseORM;
+    private AUParser<T> auParser;
 
-    public AUAbstractContentRequestService(AUBaseORM<T> auBaseORm) {
+    public AUAbstractContentRequestService(AUBaseORM<T> auBaseORm, AUParser<T> auParser) {
         this.auBaseORM = auBaseORm;
+        this.auParser = auParser;
     }
 
-    public abstract Observable<List<T>> requestContent(AUContentChangeListener<T> AUContentChangeListener);
+    public Observable<List<T>> requestContent(AUContentChangeListener<T> auContentChangeListener) {
+        notifyContentOnCacheUpdate(auContentChangeListener);
+        return Observable.create((ObservableOnSubscribe<List<T>>) e -> {
+            try {
+                e.onNext(auParser.parseAllAU(null));
+                e.onComplete();
+            } catch (AUParseException a) {
+                e.onError(a);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .map(this::writeToCache)
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(this::readFromCache);
+    }
+
 
     @Override
     public void notifyContentOnCacheUpdate(AUContentChangeListener<T> auContentChangeListener) {

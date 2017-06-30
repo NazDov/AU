@@ -39,5 +39,9 @@
     <dimen name="spinner_margin_end">20dp</dimen>
     <dimen name="card_view_margin_left">10dp</dimen>
     <dimen name="card_view_margin_right">10dp</dimen>
-    <dimen name="au_global_text_size">12sp</dimen>
+    <dimen name="au_global_text_size">14sp</dimen>
+
+    <dimen name="navigation_views_width">350dp</dimen>
+
+    <dimen name="au_menu_circle">60dp</dimen>
 </resources>

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,12 +18,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.utils.StaticDateUtils;
+import www.uni_weimar.de.au.view.listeners.AUItemStateListener;
 
 /**
  * Created by ndovhuy on 19.06.2017.
@@ -30,6 +31,7 @@ import www.uni_weimar.de.au.utils.StaticDateUtils;
 
 public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFeedRecyclerViewAdapter.NewsFeedVH> {
 
+    private AUItemStateListener<AUNewsFeed> auNewsFeedLikedItemListener;
     private List<AUNewsFeed> auNewsFeedList;
     private Context context;
 
@@ -51,6 +53,7 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
         holder.newsFeedTitle.setText(auNewsFeedItem.getTitle());
         holder.newsFeedDescription.setText(auNewsFeedItem.getDesciption());
         Glide.with(context).load(auNewsFeedItem.getImgUrl())
+                .thumbnail(0.4f)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .placeholder(context.getResources().getDrawable(R.drawable.news_article))
                 .into(holder.newsFeedImage);
@@ -101,13 +104,14 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    static class NewsFeedVH extends RecyclerView.ViewHolder {
+    class NewsFeedVH extends RecyclerView.ViewHolder {
 
         CardView auNewsFeedCardView;
         TextView newsFeedTitle;
         TextView newsFeedTimeSince;
         ImageView newsFeedImage;
         TextView newsFeedDescription;
+        Button newsFeedLikeBtn;
 
 
         NewsFeedVH(View itemView) {
@@ -117,11 +121,19 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
             newsFeedTimeSince = (TextView) itemView.findViewById(R.id.news_feed_time_since);
             newsFeedImage = (ImageView) itemView.findViewById(R.id.news_feed_image);
             newsFeedDescription = (TextView) itemView.findViewById(R.id.news_feed_description);
+            newsFeedLikeBtn = (Button) itemView.findViewById(R.id.news_feed_like_btn);
+            newsFeedLikeBtn.setOnClickListener(v -> {
+                auNewsFeedLikedItemListener.onLiked(auNewsFeedList.get(getAdapterPosition()));
+            });
         }
     }
 
 
     public void setAuNewsFeedList(List<AUNewsFeed> auNewsFeedList) {
         this.auNewsFeedList = auNewsFeedList;
+    }
+
+    public void setAuNewsFeedLikedItemListener(AUItemStateListener<AUNewsFeed> auNewsFeedLikedItemListener) {
+        this.auNewsFeedLikedItemListener = auNewsFeedLikedItemListener;
     }
 }

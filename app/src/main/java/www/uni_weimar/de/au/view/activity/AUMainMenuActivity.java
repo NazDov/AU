@@ -1,10 +1,10 @@
 package www.uni_weimar.de.au.view.activity;
 
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.internal.NavigationMenuView;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,15 +19,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
-
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +33,6 @@ import butterknife.InjectView;
 import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
-import www.uni_weimar.de.au.application.AUApplicationConfiguration;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
 import www.uni_weimar.de.au.view.adapters.AUMainMenuViewPagerAdapter;
@@ -46,9 +42,7 @@ import www.uni_weimar.de.au.view.fragments.tabs.AUNewsFeedTabFragment;
 
 import static www.uni_weimar.de.au.application.AUApplicationConfiguration.*;
 
-public class AUMainMenuActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
+public class AUMainMenuActivity extends AppCompatActivity implements View.OnClickListener {
 
     @InjectView(R.id.au_main_menu_nav_view)
     NavigationView auMainMenuTabNavigationView;
@@ -71,33 +65,40 @@ public class AUMainMenuActivity extends AppCompatActivity
     Disposable disposable;
     List<AUMainMenuTabFragment> auMainMenuTabFragments;
     List<AUMainMenuTab> mainMenuTabList;
+    RelativeLayout newsFeedMenuBtnWrapper;
+    RelativeLayout scheduleMenuBtnWrapper;
+    RelativeLayout cafeteriaMenuBtnWrapper;
+    RelativeLayout libraryMenuBtnWrapper;
+    RelativeLayout profileMenuBtnWrapper;
+    RelativeLayout settingsMenuBtnWrapper;
+    ImageButton newsFeedMenuBtn;
+    ImageButton scheduleMenuBtn;
+    ImageButton cafeteriaMenuBtn;
+    ImageButton libraryMenuBtn;
+    ImageButton profileMenuBtn;
+    ImageButton settingsMenuBtn;
+    List<Integer> navMenuButtonIds = new ArrayList<>(6);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContext(this);
         setContentView(R.layout.au_main_menu_activity);
-        Window window = getWindow();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-
         ButterKnife.inject(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        fixMinDrawerMargin(auMainMenuDrawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, auMainMenuDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         auMainMenuDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-        auMainMenuTabNavigationView.setNavigationItemSelectedListener(this);
         if (!hasInternetConnex(this)) {
             noInternetConnexTextView.setVisibility(View.VISIBLE);
             noInternetConnexImageView.setVisibility(View.VISIBLE);
         }
         realmUI = Realm.getDefaultInstance();
-        new AUMainMenuContentRequestService(realmUI, this.getString(R.string.MAIN_MENU))
+        new AUMainMenuContentRequestService(realmUI)
                 .requestContent(cacheContent -> {
                     this.mainMenuTabList = cacheContent;
                     setAuMainMenuTabFragments(cacheContent);
@@ -134,8 +135,108 @@ public class AUMainMenuActivity extends AppCompatActivity
 
             }
         });
+        auMainMenuTabNavigationView.setVerticalScrollBarEnabled(false);
+        auMainMenuTabNavigationView.refreshDrawableState();
+        View auMainMenuHeaderView = auMainMenuTabNavigationView.getHeaderView(0);
+        newsFeedMenuBtnWrapper = (RelativeLayout) auMainMenuHeaderView.findViewById(R.id.news_feed_menu_btn_wrapper);
+        scheduleMenuBtnWrapper = (RelativeLayout) auMainMenuHeaderView.findViewById(R.id.schedule_menu_btn_wrapper);
+        cafeteriaMenuBtnWrapper = (RelativeLayout) auMainMenuHeaderView.findViewById(R.id.cafeteria_menu_btn_wrapper);
+        libraryMenuBtnWrapper = (RelativeLayout) auMainMenuHeaderView.findViewById(R.id.library_menu_btn_wrapper);
+        profileMenuBtnWrapper = (RelativeLayout) auMainMenuHeaderView.findViewById(R.id.profile_menu_btn_wrapper);
+        settingsMenuBtnWrapper = (RelativeLayout) auMainMenuHeaderView.findViewById(R.id.settings_menu_btn_wrapper);
+        newsFeedMenuBtn = (ImageButton) auMainMenuHeaderView.findViewById(R.id.news_feed_menu_btn_img);
+        newsFeedMenuBtn.setOnClickListener(this);
+        scheduleMenuBtn = (ImageButton) auMainMenuHeaderView.findViewById(R.id.schedule_menu_btn_img);
+        scheduleMenuBtn.setOnClickListener(this);
+        cafeteriaMenuBtn = (ImageButton) auMainMenuHeaderView.findViewById(R.id.cafeteria_menu_btn_img);
+        cafeteriaMenuBtn.setOnClickListener(this);
+        libraryMenuBtn = (ImageButton) auMainMenuHeaderView.findViewById(R.id.library_menu_btn_img);
+        libraryMenuBtn.setOnClickListener(this);
+        profileMenuBtn = (ImageButton) auMainMenuHeaderView.findViewById(R.id.profile_menu_btn_img);
+        profileMenuBtn.setOnClickListener(this);
+        settingsMenuBtn = (ImageButton) auMainMenuHeaderView.findViewById(R.id.settings_menu_btn_img);
+        settingsMenuBtn.setOnClickListener(this);
+        navMenuButtonIds.add(R.id.news_feed_menu_btn_img);
+        navMenuButtonIds.add(R.id.schedule_menu_btn_img);
+        navMenuButtonIds.add(R.id.cafeteria_menu_btn_img);
+        navMenuButtonIds.add(R.id.library_menu_btn_img);
+        navMenuButtonIds.add(R.id.profile_menu_btn_img);
+        navMenuButtonIds.add(R.id.settings_menu_btn_img);
+    }
 
+    @Override
+    public void onClick(View menuBtnView) {
+        int currentItem = 0;
+        int menuBtnId = menuBtnView.getId();
+        deactivateAllNavMenuBtnExcept(menuBtnId);
+        if (menuBtnId == R.id.news_feed_menu_btn_img) {
+            newsFeedMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
+            newsFeedMenuBtn.setBackgroundResource(R.mipmap.news_rss_active);
+        }
 
+        if (menuBtnId == R.id.schedule_menu_btn_img) {
+            scheduleMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
+            scheduleMenuBtn.setBackgroundResource(R.mipmap.schedule_active);
+        }
+
+        if (menuBtnId == R.id.cafeteria_menu_btn_img) {
+            cafeteriaMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
+            cafeteriaMenuBtn.setBackgroundResource(R.mipmap.cafeteria_active);
+        }
+
+        if (menuBtnId == R.id.library_menu_btn_img) {
+            libraryMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
+            libraryMenuBtn.setBackgroundResource(R.mipmap.library_active);
+        }
+
+        if (menuBtnId == R.id.profile_menu_btn_img) {
+            profileMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
+            profileMenuBtn.setBackgroundResource(R.mipmap.profile_active);
+        }
+
+        if (menuBtnId == R.id.settings_menu_btn_img) {
+            settingsMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
+            settingsMenuBtn.setBackgroundResource(R.mipmap.settings_active);
+        }
+
+        auMainMenuViewPager.setCurrentItem(currentItem);
+        auMainMenuDrawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    private void deactivateAllNavMenuBtnExcept(int toBeActiveNavMenuBtnId) {
+        for (int navMenuBtn : navMenuButtonIds) {
+            if (navMenuBtn != toBeActiveNavMenuBtnId) {
+                if (navMenuBtn == R.id.news_feed_menu_btn_img) {
+                    newsFeedMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_inactive);
+                    newsFeedMenuBtn.setBackgroundResource(R.mipmap.news_rss_inactive);
+                }
+
+                if (navMenuBtn == R.id.schedule_menu_btn_img) {
+                    scheduleMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_inactive);
+                    scheduleMenuBtn.setBackgroundResource(R.mipmap.schedule_inactive);
+                }
+
+                if (navMenuBtn == R.id.cafeteria_menu_btn_img) {
+                    cafeteriaMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_inactive);
+                    cafeteriaMenuBtn.setBackgroundResource(R.mipmap.cafeteria_inactive);
+                }
+
+                if (navMenuBtn == R.id.library_menu_btn_img) {
+                    libraryMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_inactive);
+                    libraryMenuBtn.setBackgroundResource(R.mipmap.library_inactive);
+                }
+
+                if (navMenuBtn == R.id.profile_menu_btn_img) {
+                    profileMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_inactive);
+                    profileMenuBtn.setBackgroundResource(R.mipmap.profile_inactive);
+                }
+
+                if (navMenuBtn == R.id.settings_menu_btn_img) {
+                    settingsMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_inactive);
+                    settingsMenuBtn.setBackgroundResource(R.mipmap.settings_inactive);
+                }
+            }
+        }
     }
 
     @Override
@@ -163,6 +264,7 @@ public class AUMainMenuActivity extends AppCompatActivity
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -178,14 +280,6 @@ public class AUMainMenuActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        auMainMenuDrawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     public void setAuMainMenuTabFragments(List<AUMainMenuTab> auMainMenuTabsList) {
         List<AUMainMenuTabFragment> auMainMenuTabFragmentList = new ArrayList<>();
@@ -204,6 +298,19 @@ public class AUMainMenuActivity extends AppCompatActivity
         }
 
         this.auMainMenuTabFragments = auMainMenuTabFragmentList;
+    }
+
+
+    public void fixMinDrawerMargin(DrawerLayout drawerLayout) {
+        try {
+            Field f = DrawerLayout.class.getDeclaredField("mMinDrawerMargin");
+            f.setAccessible(true);
+            f.set(drawerLayout, 0);
+
+            drawerLayout.requestLayout();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void refreshOnNoConnection(View view) {
@@ -230,4 +337,6 @@ public class AUMainMenuActivity extends AppCompatActivity
         noInternetConnexImageView.startAnimation(rotateAnimation);
 
     }
+
+
 }

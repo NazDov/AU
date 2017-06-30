@@ -5,6 +5,12 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
+    <string name="au_menu_news_item">News</string>
+    <string name="au_menu_schedule_item">Schedule</string>
+    <string name="au_menu_cafeteria_item">Cafeteria</string>
+    <string name="au_menu_library_item">Library</string>
+    <string name="au_menu_profile_item">Profile</string>
+    <string name="au_menu_settings_item">Settings</string>
 
     <string-array name="news_feed_categories">
         <item>All</item>

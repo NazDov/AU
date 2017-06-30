@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Spinner
+    <android.support.v7.widget.AppCompatSpinner
         android:id="@+id/android_material_design_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,6 +12,7 @@
         android:layout_marginRight="@dimen/spinner_margin_end"
         android:textSize="12sp"
         android:theme="@style/ThemeSpinner"
+        android:spinnerMode="dropdown"
      />
 
     <android.support.v4.widget.SwipeRefreshLayout

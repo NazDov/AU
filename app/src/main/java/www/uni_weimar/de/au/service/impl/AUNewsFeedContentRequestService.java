@@ -22,29 +22,9 @@ import www.uni_weimar.de.au.service.inter.AUContentChangeListener;
 
 public class AUNewsFeedContentRequestService extends AUAbstractContentRequestService<AUNewsFeed> {
 
-    private AUNewsFeedParser auNewsFeedParser;
 
     public AUNewsFeedContentRequestService(Realm realm, String url) {
-        super(new AUNewsFeedORM(realm));
-        auNewsFeedParser = new AUNewsFeedParser();
+        super(new AUNewsFeedORM(realm), new AUNewsFeedParser());
     }
 
-
-    @Override
-    public Observable<List<AUNewsFeed>> requestContent(AUContentChangeListener<AUNewsFeed> auContentChangeListener) {
-        notifyContentOnCacheUpdate(auContentChangeListener);
-        return Observable.create((ObservableOnSubscribe<List<AUNewsFeed>>) e -> {
-            try {
-                List<AUNewsFeed> auNewsFeeds = auNewsFeedParser.parseAllAU(null);
-                e.onNext(auNewsFeeds);
-                e.onComplete();
-            } catch (AUParseException a) {
-                e.onError(a);
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.computation())
-                .map(this::writeToCache)
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(this::readFromCache);
-    }
 }
