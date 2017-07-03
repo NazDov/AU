@@ -116,11 +116,11 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
                 switch (position) {
                     case 0:
                         auMainMenuCategoryIcon.setBackgroundResource(R.drawable.news_icon);
-                        auMainMenuImageHeader.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.news_bg_compressed));
+                        auMainMenuImageHeader.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.news_bg));
                         break;
                     case 1:
                         auMainMenuCategoryIcon.setBackgroundResource(R.drawable.lecture_shedule_icon);
-                        auMainMenuImageHeader.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.lecture_schedule_bg_compressed));
+                        auMainMenuImageHeader.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.lecture_shedule_bg));
                         break;
                 }
             }

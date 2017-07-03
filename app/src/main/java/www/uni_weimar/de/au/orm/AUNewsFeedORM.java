@@ -49,6 +49,11 @@ public class AUNewsFeedORM implements AUBaseORM<AUNewsFeed> {
     }
 
     @Override
+    public void delete(String key, String name) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public List<AUNewsFeed> findAll() {
         return realm.where(AUNewsFeed.class).findAll();
     }

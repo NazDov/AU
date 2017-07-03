@@ -17,6 +17,8 @@ public interface AUBaseORM<T extends RealmObject> {
 
     boolean deleteAll(Class<T> tClass);
 
+    void delete(String key, String name);
+
     List<T> findAll();
 
     T findBy(String key, String name);

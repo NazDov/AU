@@ -14,6 +14,7 @@
 
     <string-array name="news_feed_categories">
         <item>All</item>
+        <item>Favourite</item>
         <item>Pinnwand: Universität</item>
         <item>Pinnwand: Architektur und Urbanistik</item>
         <item>Pinnwand: Bauingenieurwesen</item>
@@ -27,5 +28,6 @@
         <item>Pinnwand: Wohnen</item>
         <item>Pinnwand: International</item>
     </string-array>
-
+    <string name="title_activity_aunews_feed_item_detailed">AUNewsFeedItemDetailedActivity</string>
+    <string name="au_news_feed_item_category_tag">Category:</string>
 </resources>

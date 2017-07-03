@@ -43,6 +43,11 @@ public class AUMainMenuTabORM implements AUBaseORM<AUMainMenuTab> {
     }
 
     @Override
+    public void delete(String key, String name) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public List<AUMainMenuTab> findAll() {
         return realm.where(AUMainMenuTab.class).findAll();
     }

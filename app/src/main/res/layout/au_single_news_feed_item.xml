@@ -66,6 +66,7 @@
                     android:id="@+id/news_feed_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxHeight="250dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
                     android:layout_below="@id/title_time_wrapper"/>

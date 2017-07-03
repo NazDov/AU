@@ -25,6 +25,13 @@
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 
+
+    <style name="AUNewsFeedItemDetailTheme" parent="AppTheme.NoActionBar">
+        <item name="colorControlNormal">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/news_feed_tab_color</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -52,5 +59,9 @@
     <style name="AUNewsFeedCategoryTabsStyle">
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

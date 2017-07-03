@@ -31,9 +31,24 @@ public class AUNewsFeedFavouriteORM implements AUBaseORM<AUNewsFeedFavourite> {
         throw new UnsupportedOperationException();
     }
 
+
+    public boolean hasItem(String key, String name) {
+        AUNewsFeedFavourite auNewsFeedFavourite = realmUI.where(AUNewsFeedFavourite.class).equalTo(key, name).findFirst();
+        return auNewsFeedFavourite != null;
+    }
+
     @Override
     public boolean deleteAll(Class<AUNewsFeedFavourite> auNewsFeedFavouriteClass) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void delete(String key, String name) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(r -> {
+            AUNewsFeedFavourite auNewsFeedFavourite = r.where(AUNewsFeedFavourite.class).equalTo(key, name).findFirst();
+            auNewsFeedFavourite.deleteFromRealm();
+        });
     }
 
     @Override

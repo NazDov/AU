@@ -7,14 +7,14 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-        android:name="www.uni_weimar.de.au.application.AUApplicationConfiguration"
+        android:name=".application.AUApplicationConfiguration"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name="www.uni_weimar.de.au.view.activity.AULoaderActivity"
+            android:name=".view.activity.AULoaderActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,9 +24,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="www.uni_weimar.de.au.view.activity.AUMainMenuActivity"
+            android:name=".view.activity.AUMainMenuActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.AUNewsFeedItemDetailedActivity"
+            android:label="@string/title_activity_aunews_feed_item_detailed"
+            android:parentActivityName=".view.activity.AUMainMenuActivity"
+            android:theme="@style/AUNewsFeedItemDetailTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="www.uni_weimar.de.au.view.activity.AUMainMenuActivity" />
+        </activity>
     </application>
 
 </manifest>

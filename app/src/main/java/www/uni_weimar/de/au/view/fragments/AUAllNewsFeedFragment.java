@@ -9,6 +9,7 @@ import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,6 +29,9 @@ import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.models.AUNewsFeedFavourite;
 import www.uni_weimar.de.au.orm.AUNewsFeedFavouriteORM;
 import www.uni_weimar.de.au.service.impl.AUNewsFeedContentRequestService;
+import www.uni_weimar.de.au.service.impl.AUNewsFeedFavouriteContentRequestService;
+import www.uni_weimar.de.au.service.inter.AUContentChangeListener;
+import www.uni_weimar.de.au.utils.AUNewsFeedStaticCategory;
 import www.uni_weimar.de.au.view.adapters.AUNewsFeedRecyclerViewAdapter;
 
 /**
@@ -43,6 +47,7 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
     TabLayout auCategoryMenuTabLayout;
     AUNewsFeedRecyclerViewAdapter auNewsFeedRecyclerViewAdapter;
     AUNewsFeedContentRequestService auNewsFeedContentRequestService;
+    AUNewsFeedFavouriteContentRequestService auNewsFeedFavouriteContentRequestService;
     Observable<List<AUNewsFeed>> auNewsFeedObservable;
     List<AUNewsFeed> auNewsFeedList;
     Disposable disposable;
@@ -57,6 +62,12 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Toast.makeText(getContext(), "auAllNewsFeedFragment onCreate()", Toast.LENGTH_LONG).show();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,6 +78,7 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         auNewsFeedFavouriteORM = new AUNewsFeedFavouriteORM(realm);
         auAllNewsFeedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         auNewsFeedContentRequestService = new AUNewsFeedContentRequestService(realm, null);
+        auNewsFeedFavouriteContentRequestService = new AUNewsFeedFavouriteContentRequestService(realm);
         auNewsFeedObservable = auNewsFeedContentRequestService.requestContent(content -> auNewsFeedList = content);
         auNewsFeedRecyclerViewAdapter = new AUNewsFeedRecyclerViewAdapter(getContext(), auNewsFeedList);
         auNewsFeedRecyclerViewAdapter.setAuNewsFeedLikedItemListener(auItem -> {
@@ -86,11 +98,10 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         for (String auCategoryMenu : auNewsFeedCategories) {
             TabLayout.Tab auMenuTab = auCategoryMenuTabLayout.newTab();
             auCategoryMenuTabLayout.addTab(auMenuTab.setText(auCategoryMenu));
-
         }
 
         for (int i = 0; i < auCategoryMenuTabLayout.getTabCount(); i++) {
-            View tabView = ((ViewGroup)auCategoryMenuTabLayout.getChildAt(0)).getChildAt(i);
+            View tabView = ((ViewGroup) auCategoryMenuTabLayout.getChildAt(0)).getChildAt(i);
             ViewGroup.MarginLayoutParams tabMargin = (ViewGroup.MarginLayoutParams) tabView.getLayoutParams();
             tabMargin.setMargins(20, 0, 0, 0);
             tabView.requestLayout();
@@ -100,9 +111,12 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 String categoryName = (String) tab.getText();
-
-                if ("All".equalsIgnoreCase(categoryName)) {
+                if (AUNewsFeedStaticCategory.ALL.toString().equalsIgnoreCase(categoryName)) {
                     auNewsFeedContentRequestService.requestContent(content -> auNewsFeedList = content);
+                } else if (AUNewsFeedStaticCategory.FAVOURITE.toString().equalsIgnoreCase(categoryName)) {
+                    auNewsFeedFavouriteContentRequestService.requestContent(content -> {
+                        auNewsFeedList = content;
+                    });
                 } else {
                     auNewsFeedList = auNewsFeedContentRequestService
                             .getAuBaseORM()
@@ -146,15 +160,18 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
 
     @Override
     public void onDestroyView() {
-        Toast.makeText(getContext(), "onDestroy()", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "auAllNewsFeedFragment onDestroy()", Toast.LENGTH_LONG).show();
         super.onDestroyView();
         ButterKnife.reset(this);
         if (realm != null) {
             realm.close();
+            realm = null;
         }
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
+            disposable = null;
         }
+        auNewsFeedList = null;
     }
 
     @Override
