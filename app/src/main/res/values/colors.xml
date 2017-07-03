@@ -6,4 +6,5 @@
     <color name="black_alpha_40">#66000000</color>
     <color name="news_feed_button_group_color">#64ebe9e9</color>
     <color name="news_feed_button_divider">#1e191919</color>
+    <color name="news_feed_tab_color">#3fa039</color>
 </resources>

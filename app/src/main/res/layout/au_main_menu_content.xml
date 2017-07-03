@@ -1,61 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="www.uni_weimar.de.au.view.activity.AUMainMenuActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:fitsSystemWindows="true">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/AppTheme.PopupOverlay"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/transparent"
-            android:fitsSystemWindows="true" />
+            android:layout_height="250dp"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+
+            <ImageView
+                android:id="@+id/au_main_menu_image_header"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:background="@drawable/news_bg_compressed"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                app:layout_collapseMode="parallax" />
+
+            <ImageView
+                android:id="@+id/au_main_menu_category_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="top|center"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/news_icon"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                app:layout_anchor="@+id/app_bar_layout"
+                app:layout_collapseMode="parallax" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/AppTheme.PopupOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginTop="20dp"
+                android:fitsSystemWindows="true"
+                android:minHeight="?attr/actionBarSize"
+                app:layout_collapseMode="pin" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+
 
     </android.support.design.widget.AppBarLayout>
 
-    <ImageView
-        android:id="@+id/au_main_menu_image_header"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/main_bg_image_height"
-        android:background="@drawable/news_bg_compressed"
-        android:scaleType="fitXY" />
-
-    <ImageView
-        android:id="@+id/au_main_menu_category_icon"
-        android:layout_width="@dimen/category_icon"
-        android:layout_height="@dimen/category_icon"
-        android:layout_below="@+id/app_bar_layout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/padding_2"
-        android:background="@drawable/news_icon"
-        android:scaleType="fitXY" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/auMainMenuViewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/au_main_menu_category_icon">
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="-80dp"
+        android:elevation="100dp"
+        app:layout_anchor="@id/app_bar_layout"
+        app:layout_anchorGravity="center"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v4.view.PagerTabStrip
             android:id="@+id/pager_title_strip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:textSize="@dimen/au_global_text_size"
             android:background="@drawable/background_toolbar_transparent"
             android:paddingBottom="2dp"
             android:paddingTop="@dimen/pager_tab_strip_margin_top"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/au_global_text_size" />
 
     </android.support.v4.view.ViewPager>
 
@@ -87,4 +111,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

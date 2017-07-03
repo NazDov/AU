@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/transparent</item>
         <item name="colorPrimary">@android:color/transparent</item>
         <item name="colorAccent">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -47,6 +47,10 @@
         <!-- Default color for the dropdown arrow and line -->
         <item name="colorControlNormal">#2bb449</item>
         <item name="color">#808080</item>
+    </style>
+
+    <style name="AUNewsFeedCategoryTabsStyle">
+        <item name="android:textSize">12sp</item>
     </style>
 
 </resources>

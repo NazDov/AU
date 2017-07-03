@@ -1,34 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.v7.widget.AppCompatSpinner
-        android:id="@+id/android_material_design_spinner"
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/au_category_menu_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spinner_margin_start"
-        android:layout_marginRight="@dimen/spinner_margin_end"
-        android:textSize="12sp"
-        android:theme="@style/ThemeSpinner"
-        android:spinnerMode="dropdown"
-     />
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_anchor="@id/au_category_menu_tab_layout"
+        app:tabBackground="@drawable/au_newsfeed_category_oval_item"
+        app:tabMinWidth="40dp"
+        app:tabTextAppearance="@style/AUNewsFeedCategoryTabsStyle"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="#fff"
+        app:tabTextColor="#64ffffff">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    </android.support.design.widget.TabLayout>
+
+
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/news_feed_swipe_refresh"
-        android:layout_below="@id/android_material_design_spinner"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        app:layout_anchor="@id/au_category_menu_tab_layout"
+        app:layout_anchorGravity="bottom">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/au_all_news_feed_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-</RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
