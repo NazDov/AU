@@ -65,4 +65,16 @@ public abstract class AUAbstractContentRequestService<T extends RealmObject> imp
     public AUBaseORM<T> getAuBaseORM() {
         return auBaseORM;
     }
+
+    public void setAuBaseORM(AUBaseORM<T> auBaseORM) {
+        this.auBaseORM = auBaseORM;
+    }
+
+    public AUParser<T> getAuParser() {
+        return auParser;
+    }
+
+    public void setAuParser(AUParser<T> auParser) {
+        this.auParser = auParser;
+    }
 }

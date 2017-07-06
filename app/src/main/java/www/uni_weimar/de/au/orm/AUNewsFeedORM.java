@@ -37,7 +37,6 @@ public class AUNewsFeedORM implements AUBaseORM<AUNewsFeed> {
         realm.beginTransaction();
         realm.delete(AUNewsFeed.class);
         items = realm.copyToRealm(items);
-        Log.v("ORM NEWSFEED SAVED: ", items.size() + "");
         realm.commitTransaction();
         return items;
     }
@@ -50,7 +49,10 @@ public class AUNewsFeedORM implements AUBaseORM<AUNewsFeed> {
 
     @Override
     public void delete(String key, String name) {
-        throw new UnsupportedOperationException();
+        realm.executeTransaction(realm1 -> {
+            AUNewsFeed auNewsFeed = realm1.where(AUNewsFeed.class).equalTo(key, name).findFirst();
+            auNewsFeed.deleteFromRealm();
+        });
     }
 
     @Override

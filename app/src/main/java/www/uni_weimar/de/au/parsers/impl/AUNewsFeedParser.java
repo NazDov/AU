@@ -28,12 +28,12 @@ import www.uni_weimar.de.au.parsers.inter.AUParser;
 public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
 
     private static String TAG = AUNewsFeedParser.class.getSimpleName();
-    private Context context;
     private String newsFeedUrl;
 
     public AUNewsFeedParser() {
-        context = AUApplicationConfiguration.getContext().getApplicationContext();
-        newsFeedUrl = context.getString(R.string.ALL_NEWS);
+        Context context = AUApplicationConfiguration.getContext();
+        if (context != null)
+            newsFeedUrl = context.getApplicationContext().getString(R.string.ALL_NEWS);
     }
 
 
@@ -50,8 +50,7 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
             Elements newsFeedItems = document.getElementsByTag(AUItem.ITEM);
             for (Element newsFeedItem : newsFeedItems) {
                 AUNewsFeed auNewsFeed = new AUNewsFeed();
-                Elements newsFeedItemsTitles = newsFeedItem.getElementsByTag(AUItem.TITLE);
-                String itemTitle = newsFeedItemsTitles.text();
+                String itemTitle = newsFeedItem.getElementsByTag(AUItem.TITLE).text();
                 auNewsFeed.setTitle(itemTitle);
                 String itemLink = newsFeedItem.getElementsByTag(AUItem.LINK).text();
                 auNewsFeed.setLink(itemLink);
@@ -75,6 +74,15 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
             throw new AUParseException(e.getMessage());
         }
         return auNewsFeeds;
+    }
+
+
+    public void setNewsFeedUrl(String newsFeedUrl) {
+        this.newsFeedUrl = newsFeedUrl;
+    }
+
+    public String getNewsFeedUrl() {
+        return newsFeedUrl;
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.TimeZone;
 
 import io.realm.Realm;
@@ -42,14 +43,20 @@ public class AUApplicationConfiguration extends Application {
     }
 
 
-    public static boolean hasInternetConnex(Context context) {
+    public static boolean hasInternetConnection(Context context) {
+        if (context == null) {
+            throw new IllegalArgumentException("context is not defined!");
+        }
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        boolean isConnected = networkInfo != null && networkInfo.isConnectedOrConnecting();
-        return isConnected;
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
     public static void initSystemMainMenuComponents(Context context) {
+        if (!hasInternetConnection(context)) {
+            startActivity(context);
+            return;
+        }
         Realm realm = Realm.getDefaultInstance();
         new AsyncTask<Object, Void, Object>() {
 
@@ -70,20 +77,22 @@ public class AUApplicationConfiguration extends Application {
 
             @Override
             protected void onPostExecute(Object o) {
-                Intent intent = new Intent(context, AUMainMenuActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-                ((Activity) context).finish();
+                startActivity(context);
             }
         }.execute();
+    }
+
+    private static void startActivity(Context context) {
+        Intent intent = new Intent(context, AUMainMenuActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+        ((Activity) context).finish();
     }
 
     private void configRealmDatabase() {
         Realm.init(this);
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(realmConfiguration);
-
-
     }
 
     public static void setContext(Activity context) {

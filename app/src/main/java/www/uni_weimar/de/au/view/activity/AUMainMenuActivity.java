@@ -1,10 +1,7 @@
 package www.uni_weimar.de.au.view.activity;
 
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.internal.NavigationMenuView;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,8 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -93,7 +88,7 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
                 this, auMainMenuDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         auMainMenuDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-        if (!hasInternetConnex(this)) {
+        if (!hasInternetConnection(this)) {
             noInternetConnexTextView.setVisibility(View.VISIBLE);
             noInternetConnexImageView.setVisibility(View.VISIBLE);
         }
@@ -323,10 +318,8 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if (hasInternetConnex(getApplicationContext())) {
-                    initSystemMainMenuComponents(getContext());
-                    recreate();
-                }
+                initSystemMainMenuComponents(getContext());
+                recreate();
             }
 
             @Override

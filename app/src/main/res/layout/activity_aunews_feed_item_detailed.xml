@@ -25,7 +25,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-        <include layout="@layout/content_aunews_feed_item_detailed" />
+    <include layout="@layout/content_aunews_feed_item_detailed" />
 
 
 </android.support.design.widget.CoordinatorLayout>
