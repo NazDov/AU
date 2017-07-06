@@ -25,6 +25,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
+import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.models.AUNewsFeedFavourite;
 import www.uni_weimar.de.au.orm.AUNewsFeedFavouriteORM;
@@ -65,7 +66,6 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(getContext(), "auAllNewsFeedFragment onCreate()", Toast.LENGTH_LONG).show();
     }
 
     @Nullable
@@ -120,7 +120,7 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
                 } else {
                     auNewsFeedList = auNewsFeedContentRequestService
                             .getAuBaseORM()
-                            .findAllBy("category", categoryName);
+                            .findAllBy(AUItem.CATEGORY, categoryName);
                     if (auNewsFeedList.isEmpty()) {
                         Toast.makeText(getContext(), "no items found for: " + categoryName, Toast.LENGTH_SHORT).show();
                     }
@@ -160,7 +160,6 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
 
     @Override
     public void onDestroyView() {
-        Toast.makeText(getContext(), "auAllNewsFeedFragment onDestroy()", Toast.LENGTH_LONG).show();
         super.onDestroyView();
         ButterKnife.reset(this);
         if (realm != null) {

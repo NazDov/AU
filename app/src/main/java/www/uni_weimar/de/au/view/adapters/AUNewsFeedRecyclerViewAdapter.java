@@ -35,14 +35,14 @@ import www.uni_weimar.de.au.view.listeners.AUItemStateListener;
 
 public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFeedRecyclerViewAdapter.NewsFeedVH> {
 
-    private AUItemStateListener<AUNewsFeed> auNewsFeedLikedItemListener;
     private List<AUNewsFeed> auNewsFeedList;
     private Context context;
+    private AUItemStateListener<AUNewsFeed> auNewsFeedLikedItemListener;
 
 
     public AUNewsFeedRecyclerViewAdapter(Context context, List<AUNewsFeed> auNewsFeedList) {
-        this.auNewsFeedList = auNewsFeedList;
         this.context = context;
+        this.auNewsFeedList = auNewsFeedList;
     }
 
     @Override
