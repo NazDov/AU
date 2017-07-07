@@ -35,4 +35,24 @@ public class AUMainMenuTab extends RealmObject implements AUItem {
     public void setAUMainMenuItemList(RealmList<AUMainMenuItem> AUMainMenuItemList) {
         this.AUMainMenuItemList = AUMainMenuItemList;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AUMainMenuTab)) return false;
+
+        AUMainMenuTab that = (AUMainMenuTab) o;
+
+        if (!getTitle().equals(that.getTitle())) return false;
+        return getAUMainMenuItemList().equals(that.getAUMainMenuItemList());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getTitle().hashCode();
+        result = 31 * result + getAUMainMenuItemList().hashCode();
+        return result;
+    }
 }
