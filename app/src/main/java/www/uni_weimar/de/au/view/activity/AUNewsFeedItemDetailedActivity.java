@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
+import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.models.AUNewsFeedFavourite;
 import www.uni_weimar.de.au.orm.AUNewsFeedFavouriteORM;
@@ -71,22 +72,22 @@ public class AUNewsFeedItemDetailedActivity extends AppCompatActivity {
         auNewsFeedItemPubDate.setText(auNewsFeedItem.getPubDate() != null ? auNewsFeedItem.getPubDate().replace("CEST", "") : "--//--//--");
         auNewsFeedItemDetailedTextView.setText(auNewsFeedItem.getDesciption());
         auNewsFeedItemDetailedTextView.setMovementMethod(new ScrollingMovementMethod());
-        if (!auNewsFeedFavouriteORM.hasItem("link", auNewsFeedItemLink)) {
+        if (!auNewsFeedFavouriteORM.hasItem(AUItem.LINK, auNewsFeedItemLink)) {
             auNewsFeedLActionBar.setImageResource(R.drawable.unselected_star);
         } else {
             auNewsFeedLActionBar.setImageResource(R.drawable.selected_star);
         }
         auNewsFeedLActionBar.setOnClickListener(v ->
         {
-            if (!auNewsFeedFavouriteORM.hasItem("link", auNewsFeedItemLink)) {
-                Toast.makeText(getBaseContext(), "adding item to favourites!", Toast.LENGTH_SHORT).show();
+            if (!auNewsFeedFavouriteORM.hasItem(AUItem.LINK, auNewsFeedItemLink)) {
+                Toast.makeText(getBaseContext(), "adding items to favourites!", Toast.LENGTH_SHORT).show();
                 AUNewsFeedFavourite auNewsFeedFavourite = new AUNewsFeedFavourite();
                 auNewsFeedFavourite.setLink(auNewsFeedItemLink);
                 auNewsFeedFavouriteORM.add(auNewsFeedFavourite);
                 auNewsFeedLActionBar.setImageResource(R.drawable.selected_star);
             } else {
-                Toast.makeText(getBaseContext(), "removing item to favourites!", Toast.LENGTH_SHORT).show();
-                auNewsFeedFavouriteORM.delete("link", auNewsFeedItemLink);
+                Toast.makeText(getBaseContext(), "removing items from favourites!", Toast.LENGTH_SHORT).show();
+                auNewsFeedFavouriteORM.delete(AUItem.LINK, auNewsFeedItemLink);
                 auNewsFeedLActionBar.setImageResource(R.drawable.unselected_star);
             }
 

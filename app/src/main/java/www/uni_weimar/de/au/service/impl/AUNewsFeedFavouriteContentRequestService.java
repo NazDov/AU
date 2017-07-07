@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import io.reactivex.Observable;
 import io.realm.Realm;
+import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.models.AUNewsFeedFavourite;
 import www.uni_weimar.de.au.orm.AUNewsFeedFavouriteORM;
@@ -44,7 +45,7 @@ public class AUNewsFeedFavouriteContentRequestService extends AUAbstractContentR
             for (int i = 0; i < auNewsFeedFavourites.size(); i++) {
                 auNewsItemSearchTokens[i] = auNewsFeedFavourites.get(i).getLink();
             }
-            auNewsFeeds = auNewsFeedORM.findAllIn("link", auNewsItemSearchTokens);
+            auNewsFeeds = auNewsFeedORM.findAllIn(AUItem.LINK, auNewsItemSearchTokens);
         }
         auContentChangeListener.notifyContentChange(auNewsFeeds);
     }
