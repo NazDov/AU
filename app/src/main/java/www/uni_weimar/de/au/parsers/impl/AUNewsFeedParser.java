@@ -38,7 +38,7 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
 
 
     @Override
-    public List<AUNewsFeed> parseAllAU(String url) throws AUParseException {
+    public List<AUNewsFeed> parseAU(String url) throws AUParseException {
         List<AUNewsFeed> auNewsFeeds = new ArrayList<>();
         if (url == null) {
             url = newsFeedUrl;
@@ -86,7 +86,7 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
     }
 
     @Override
-    public List<AUNewsFeed> parseAllAU() {
+    public List<AUNewsFeed> parseAU() {
         return null;
     }
 }

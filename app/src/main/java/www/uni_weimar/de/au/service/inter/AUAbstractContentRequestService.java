@@ -1,7 +1,5 @@
 package www.uni_weimar.de.au.service.inter;
 
-import android.util.Log;
-
 import java.util.List;
 
 
@@ -10,7 +8,6 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.RealmObject;
-import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.orm.AUBaseORM;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.inter.AUParser;
@@ -33,7 +30,7 @@ public abstract class AUAbstractContentRequestService<T extends RealmObject> imp
         notifyContentOnCacheUpdate(auContentChangeListener);
         return Observable.create((ObservableOnSubscribe<List<T>>) e -> {
             try {
-                e.onNext(auParser.parseAllAU(null));
+                e.onNext(auParser.parseAU(null));
                 e.onComplete();
             } catch (AUParseException a) {
                 e.onError(a);

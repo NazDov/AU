@@ -41,4 +41,26 @@ public class AUMainMenuItem extends RealmObject implements AUItem {
     public void setUrl(String url) {
         this.url = url;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AUMainMenuItem)) return false;
+
+        AUMainMenuItem that = (AUMainMenuItem) o;
+
+        if (!getId().equals(that.getId())) return false;
+        if (!getTitle().equals(that.getTitle())) return false;
+        return getUrl().equals(that.getUrl());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getTitle().hashCode();
+        result = 31 * result + getUrl().hashCode();
+        return result;
+    }
 }

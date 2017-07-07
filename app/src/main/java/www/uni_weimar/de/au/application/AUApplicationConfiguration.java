@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.TimeZone;
 
 import io.realm.Realm;
@@ -66,7 +65,7 @@ public class AUApplicationConfiguration extends Application {
                 AUMainMenuTabORM auMainMenuTabORM = new AUMainMenuTabORM(realm);
                 AUMainMenuTabParser auMainMenuTabParser = new AUMainMenuTabParser();
                 try {
-                    auMainMenuTabList = auMainMenuTabParser.parseAllAU(context.getString(R.string.MAIN_MENU));
+                    auMainMenuTabList = auMainMenuTabParser.parseAU(context.getString(R.string.MAIN_MENU));
                     auMainMenuTabORM.addAll(auMainMenuTabList);
                 } catch (AUParseException e) {
                     e.printStackTrace();

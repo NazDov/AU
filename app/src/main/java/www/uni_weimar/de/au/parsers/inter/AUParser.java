@@ -11,8 +11,9 @@ import www.uni_weimar.de.au.parsers.exception.AUParseException;
 
 public interface AUParser<T extends RealmObject> {
 
-    List<T> parseAllAU(String url) throws AUParseException;
+    List<T> parseAU(String url) throws AUParseException;
 
-    List<T> parseAllAU();
+    List<T> parseAU();
+
 
 }

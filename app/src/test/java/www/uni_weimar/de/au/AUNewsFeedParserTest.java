@@ -1,8 +1,5 @@
 package www.uni_weimar.de.au;
 
-import android.app.Activity;
-import android.content.Context;
-
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,8 +9,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -63,7 +58,7 @@ public class AUNewsFeedParserTest {
     public void testParseAllAU() throws IOException, AUParseException {
         String url = "http://www.valid.com";
         when(Jsoup.connect(url)).thenThrow(AUParseException.class);
-        auMainMenuTabParser.parseAllAU(url);
+        auMainMenuTabParser.parseAU(url);
         verifyStatic();
     }
 
@@ -76,7 +71,7 @@ public class AUNewsFeedParserTest {
         mockElements = new Elements(1);
         when(mockDocument.getElementsByTag(AUItem.ITEM)).thenReturn(mockElements);
         try {
-            auMainMenuTabParser.parseAllAU(null);
+            auMainMenuTabParser.parseAU(null);
         } catch (AUParseException e) {
             e.printStackTrace();
         }
@@ -135,7 +130,7 @@ public class AUNewsFeedParserTest {
         expAuNewsFeedList.add(auNewsFeed);
         List<AUNewsFeed> actualAuNewsFeedList = null;
         try {
-            actualAuNewsFeedList = auMainMenuTabParser.parseAllAU(newsFeedUrl);
+            actualAuNewsFeedList = auMainMenuTabParser.parseAU(newsFeedUrl);
         } catch (AUParseException e) {
             e.printStackTrace();
         }

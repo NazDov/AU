@@ -17,4 +17,5 @@ public interface AUItem {
     String PUB_DATE = "pubDate";
     String ENCLOSURE = "enclosure";
     String IMG_URL = "url";
+    java.lang.String HREF = "href";
 }

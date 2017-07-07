@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.RealmList;
-import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.application.AUApplicationConfiguration;
 import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.models.AUMainMenuItem;
@@ -34,12 +33,12 @@ public class AUMainMenuTabParser implements AUParser<AUMainMenuTab> {
     }
 
     @Override
-    public List<AUMainMenuTab> parseAllAU(String url) throws AUParseException {
+    public List<AUMainMenuTab> parseAU(String url) throws AUParseException {
         List<AUMainMenuTab> auMainMenuTabList = new ArrayList<>();
         String allNewsUrl = "";
 
         if (url == null) {
-            auMainMenuTabList = parseAllAU();
+            auMainMenuTabList = parseAU();
         }
 
         Document document;
@@ -76,7 +75,7 @@ public class AUMainMenuTabParser implements AUParser<AUMainMenuTab> {
     }
 
     @Override
-    public List<AUMainMenuTab> parseAllAU() {
+    public List<AUMainMenuTab> parseAU() {
         List<AUMainMenuTab> list = new ArrayList<>();
         AUMainMenuTab newsTab = new AUMainMenuTab();
         newsTab.setTitle("News");

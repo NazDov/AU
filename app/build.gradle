@@ -34,9 +34,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    testCompile "org.robolectric:robolectric:3.3.2"
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.3.2'
     testCompile 'org.robolectric:shadows-support-v4:3.0'
     testCompile 'org.powermock:powermock-classloading-xstream:1.6.2'
     testCompile 'org.powermock:powermock-module-junit4-rule-agent:1.6.2'
