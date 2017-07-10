@@ -21,6 +21,8 @@ import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.inter.AUParser;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by ndovhuy on 15.06.2017.
  */
@@ -30,10 +32,13 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
     private static String TAG = AUNewsFeedParser.class.getSimpleName();
     private String newsFeedUrl;
 
-    public AUNewsFeedParser() {
-        Context context = AUApplicationConfiguration.getContext();
-        if (context != null)
-            newsFeedUrl = context.getApplicationContext().getString(R.string.ALL_NEWS);
+    private AUNewsFeedParser(String url) {
+        this.newsFeedUrl = url;
+    }
+
+    public static AUNewsFeedParser of(String url) {
+        checkNotNull(url);
+        return new AUNewsFeedParser(url);
     }
 
 
@@ -41,6 +46,7 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
     public List<AUNewsFeed> parseAU(String url) throws AUParseException {
         List<AUNewsFeed> auNewsFeeds = new ArrayList<>();
         if (url == null) {
+            checkNotNull(newsFeedUrl);
             url = newsFeedUrl;
         }
         Document document;
@@ -77,16 +83,12 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
     }
 
 
-    public void setNewsFeedUrl(String newsFeedUrl) {
-        this.newsFeedUrl = newsFeedUrl;
-    }
-
     public String getNewsFeedUrl() {
         return newsFeedUrl;
     }
 
     @Override
-    public List<AUNewsFeed> parseAU() {
-        return null;
+    public List<AUNewsFeed> parseAU() throws AUParseException {
+        return parseAU(newsFeedUrl);
     }
 }

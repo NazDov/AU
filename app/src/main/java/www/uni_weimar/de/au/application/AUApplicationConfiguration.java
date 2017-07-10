@@ -22,6 +22,8 @@ import www.uni_weimar.de.au.parsers.impl.AUMainMenuTabParser;
 import www.uni_weimar.de.au.utils.SSLUtilities;
 import www.uni_weimar.de.au.view.activity.AUMainMenuActivity;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by nazar on 12.06.17.
  */
@@ -43,9 +45,7 @@ public class AUApplicationConfiguration extends Application {
 
 
     public static boolean hasInternetConnection(Context context) {
-        if (context == null) {
-            throw new IllegalArgumentException("context is not defined!");
-        }
+        checkNotNull(context);
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
@@ -63,9 +63,9 @@ public class AUApplicationConfiguration extends Application {
             protected Object doInBackground(Object... params) {
                 List<AUMainMenuTab> auMainMenuTabList;
                 AUMainMenuTabORM auMainMenuTabORM = new AUMainMenuTabORM(realm);
-                AUMainMenuTabParser auMainMenuTabParser = new AUMainMenuTabParser();
+                AUMainMenuTabParser auMainMenuTabParser = AUMainMenuTabParser.of(context.getString(R.string.MAIN_MENU));
                 try {
-                    auMainMenuTabList = auMainMenuTabParser.parseAU(context.getString(R.string.MAIN_MENU));
+                    auMainMenuTabList = auMainMenuTabParser.parseAU();
                     auMainMenuTabORM.addAll(auMainMenuTabList);
                 } catch (AUParseException e) {
                     e.printStackTrace();

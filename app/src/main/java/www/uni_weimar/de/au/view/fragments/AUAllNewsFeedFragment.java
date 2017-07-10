@@ -77,7 +77,7 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         realm = Realm.getDefaultInstance();
         auNewsFeedFavouriteORM = new AUNewsFeedFavouriteORM(realm);
         auAllNewsFeedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        auNewsFeedContentRequestService = new AUNewsFeedContentRequestService(realm, null);
+        auNewsFeedContentRequestService = new AUNewsFeedContentRequestService(realm, getContext().getResources().getString(R.string.ALL_NEWS));
         auNewsFeedFavouriteContentRequestService = new AUNewsFeedFavouriteContentRequestService(realm);
         auNewsFeedObservable = auNewsFeedContentRequestService.requestContent(content -> auNewsFeedList = content);
         auNewsFeedRecyclerViewAdapter = new AUNewsFeedRecyclerViewAdapter(getContext(), auNewsFeedList);

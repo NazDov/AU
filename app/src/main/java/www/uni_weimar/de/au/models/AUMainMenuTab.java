@@ -6,6 +6,8 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by nazar on 12.06.17.
  */
@@ -17,8 +19,22 @@ public class AUMainMenuTab extends RealmObject implements AUItem {
 
     @PrimaryKey
     private String title;
-    private RealmList<AUMainMenuItem> AUMainMenuItemList;
+    private RealmList<AUMainMenuItem> auMainMenuItemList;
 
+    public AUMainMenuTab(){
+
+    }
+
+    private AUMainMenuTab(String title, RealmList<AUMainMenuItem> auMainMenuItemList) {
+        this.title = title;
+        this.auMainMenuItemList = auMainMenuItemList;
+    }
+
+    public static AUMainMenuTab of(String title, RealmList<AUMainMenuItem> auMainMenuItemList) {
+        checkNotNull(title);
+        checkNotNull(auMainMenuItemList);
+        return new AUMainMenuTab(title, auMainMenuItemList);
+    }
 
     public String getTitle() {
         return title;
@@ -28,12 +44,12 @@ public class AUMainMenuTab extends RealmObject implements AUItem {
         this.title = title;
     }
 
-    public List<AUMainMenuItem> getAUMainMenuItemList() {
-        return AUMainMenuItemList;
+    public List<AUMainMenuItem> getAuMainMenuItemList() {
+        return Collections.unmodifiableList(auMainMenuItemList);
     }
 
-    public void setAUMainMenuItemList(RealmList<AUMainMenuItem> AUMainMenuItemList) {
-        this.AUMainMenuItemList = AUMainMenuItemList;
+    public void setAuMainMenuItemList(RealmList<AUMainMenuItem> auMainMenuItems) {
+        this.auMainMenuItemList = auMainMenuItems;
     }
 
 
@@ -45,14 +61,14 @@ public class AUMainMenuTab extends RealmObject implements AUItem {
         AUMainMenuTab that = (AUMainMenuTab) o;
 
         if (!getTitle().equals(that.getTitle())) return false;
-        return getAUMainMenuItemList().equals(that.getAUMainMenuItemList());
+        return getAuMainMenuItemList().equals(that.getAuMainMenuItemList());
 
     }
 
     @Override
     public int hashCode() {
         int result = getTitle().hashCode();
-        result = 31 * result + getAUMainMenuItemList().hashCode();
+        result = 31 * result + getAuMainMenuItemList().hashCode();
         return result;
     }
 }

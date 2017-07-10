@@ -18,6 +18,8 @@ import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.inter.AUParser;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by ndovhuy on 07.07.2017.
  */
@@ -37,22 +39,27 @@ public class AUFacultyParser implements AUParser<AUFaculty> {
 
     @Override
     public List<AUFaculty> parseAU(String url) throws AUParseException {
-        checkNotNullUrl(url);
-        Document document;
-        Elements elements;
+        checkNotNull(url);
+        Document htmlDoc;
+        Elements htmlTags;
         List<AUFaculty> auFaculties = new ArrayList<>();
         try {
-            document = Jsoup.connect(url).get();
-            elements = document.getElementsByClass("ueb");
-            for (Element element : elements) {
-                AUFaculty auFaculty = new AUFaculty();
-                String auFacultyTitle = element.attr(AUItem.TITLE);
+            htmlDoc = Jsoup.connect(url).get();
+            htmlTags = htmlDoc.getElementsByClass("ueb");
+            for (Element htmlTag : htmlTags) {
+                String auFacultyTitle = htmlTag.attr(AUItem.TITLE);
+                if (auFacultyTitle.contains("Veranstaltungs")) {
+                    continue;
+                }
                 Log.v(TAG, auFacultyTitle);
+                AUFaculty auFaculty = new AUFaculty();
                 auFaculty.setTitle(auFacultyTitle);
-                String auFacultyURL = element.attr(AUItem.HREF);
+                String auFacultyURL = htmlTag.attr(AUItem.HREF);
                 Log.v(TAG, auFacultyURL);
                 auFaculty.setUrl(auFacultyURL);
-                RealmList<AUFacultyHeader> auFacultyHeaders = parseAUFacultyHeaders(auFacultyURL);
+                int escapeTags = 2;
+                RealmList<AUFacultyHeader> auFacultyHeaders = parseAUFacultyHeaders(auFacultyURL, escapeTags);
+                auFaculty.setAuFacultyHeaders(auFacultyHeaders);
                 auFaculties.add(auFaculty);
             }
         } catch (IOException e) {
@@ -62,18 +69,37 @@ public class AUFacultyParser implements AUParser<AUFaculty> {
         return auFaculties;
     }
 
-    protected RealmList<AUFacultyHeader> parseAUFacultyHeaders(String auFacultyURL) {
-
-
-
-        return null;
-    }
-
-    private void checkNotNullUrl(String url) {
-        if (url == null) {
-            throw new IllegalArgumentException("URL is not defined");
+    public RealmList<AUFacultyHeader> parseAUFacultyHeaders(String auFacultyURL, int escapeTags) throws AUParseException {
+        checkNotNull(auFacultyURL);
+        RealmList<AUFacultyHeader> auFacultyHeaders = new RealmList<>();
+        Document htmlDoc;
+        Elements htmlTags;
+        int countTags = 0;
+        try {
+            htmlDoc = Jsoup.connect(auFacultyURL).get();
+            htmlTags = htmlDoc.getElementsByClass("ueb");
+            for (Element htmlTag : htmlTags) {
+                countTags++;
+                if (countTags <= escapeTags) {
+                    continue;
+                }
+                String title = htmlTag.attr(AUItem.TITLE);
+                String href = htmlTag.attr(AUItem.HREF);
+                AUFacultyHeader auFacultyHeader = new AUFacultyHeader();
+                auFacultyHeader.setTitle(title);
+                auFacultyHeader.setUrl(href);
+                RealmList innerAUFacultyHead = parseAUFacultyHeaders(href, ++escapeTags);
+                auFacultyHeader.setAuFacultyHeaderLis(innerAUFacultyHead);
+                auFacultyHeaders.add(auFacultyHeader);
+            }
+        } catch (IOException e) {
+            throw new AUParseException(e.getMessage());
         }
+
+
+        return auFacultyHeaders;
     }
+
 
     @Override
     public List<AUFaculty> parseAU() {

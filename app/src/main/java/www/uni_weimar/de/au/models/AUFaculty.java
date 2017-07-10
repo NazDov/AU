@@ -19,8 +19,6 @@ public class AUFaculty extends RealmObject implements AUItem {
     private RealmList<AUFacultyHeader> auFacultyHeaders;
     private RealmList<AUFacultyEvent> auFacultyEvents;
 
-
-
     public String getTitle() {
         return title;
     }
@@ -35,5 +33,32 @@ public class AUFaculty extends RealmObject implements AUItem {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public RealmList<AUFacultyHeader> getAuFacultyHeaders() {
+        return auFacultyHeaders;
+    }
+
+    public void setAuFacultyHeaders(RealmList<AUFacultyHeader> auFacultyHeaders) {
+        this.auFacultyHeaders = auFacultyHeaders;
+    }
+
+    public RealmList<AUFacultyEvent> getAuFacultyEvents() {
+        return auFacultyEvents;
+    }
+
+    public void setAuFacultyEvents(RealmList<AUFacultyEvent> auFacultyEvents) {
+        this.auFacultyEvents = auFacultyEvents;
+    }
+
+    @Override
+    public String toString() {
+        return "AUFaculty{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                ", auFacultyHeaders=" + auFacultyHeaders +
+                ", auFacultyEvents=" + auFacultyEvents +
+                '}';
     }
 }

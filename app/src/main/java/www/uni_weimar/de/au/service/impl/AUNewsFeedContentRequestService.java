@@ -24,7 +24,7 @@ public class AUNewsFeedContentRequestService extends AUAbstractContentRequestSer
 
 
     public AUNewsFeedContentRequestService(Realm realm, String url) {
-        super(new AUNewsFeedORM(realm), new AUNewsFeedParser());
+        super(new AUNewsFeedORM(realm), AUNewsFeedParser.of(url));
     }
 
 }

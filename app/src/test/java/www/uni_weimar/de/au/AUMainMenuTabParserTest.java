@@ -9,8 +9,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
@@ -27,10 +25,8 @@ import io.realm.RealmList;
 import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.models.AUMainMenuItem;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
-import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.impl.AUMainMenuTabParser;
-import www.uni_weimar.de.au.parsers.impl.AUNewsFeedParser;
 
 import static junit.framework.Assert.*;
 import static org.powermock.api.mockito.PowerMockito.*;
@@ -57,12 +53,13 @@ public class AUMainMenuTabParserTest {
     @Before
     public void setup() {
         mockStatic(Jsoup.class);
-        connection= mock(Connection.class);
+        connection = mock(Connection.class);
         document = mock(Document.class);
         elements = mock(Elements.class);
         element = mock(Element.class);
         iterator = mock(ListIterator.class);
-        auMainMenuTabParser = new AUMainMenuTabParser();
+        String url = "http://someurl.com";
+        auMainMenuTabParser = AUMainMenuTabParser.of(url);
     }
 
     @SuppressWarnings("unchecked")
@@ -73,6 +70,15 @@ public class AUMainMenuTabParserTest {
         when(Jsoup.connect(url)).thenThrow(AUParseException.class);
         auMainMenuTabParser.parseAU(url);
         verifyStatic();
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void testNullUrlParseAU() throws AUParseException {
+        String url = null;
+        AUMainMenuTabParser auMainMenuTabParser = AUMainMenuTabParser.of(url);
+        auMainMenuTabParser.parseAU();
+
     }
 
     @Test
@@ -105,7 +111,7 @@ public class AUMainMenuTabParserTest {
         auMainMenuItem.setUrl(childTabUrl);
         RealmList<AUMainMenuItem> auMainMenuItems = new RealmList<>();
         auMainMenuItems.add(auMainMenuItem);
-        auMainMenuTab.setAUMainMenuItemList(auMainMenuItems);
+        auMainMenuTab.setAuMainMenuItemList(auMainMenuItems);
         List<AUMainMenuTab> expAUMAinMenuTab = new ArrayList<>();
         expAUMAinMenuTab.add(auMainMenuTab);
         //when

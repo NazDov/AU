@@ -5,12 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -55,7 +53,7 @@ public class AUNewsFeedTabFragment extends AUMainMenuTabFragment implements TabL
     }
 
     private void initAuNewsFeedTabs() {
-        List<AUMainMenuItem> auMainMenuItemList = auMainMenuTab.getAUMainMenuItemList();
+        List<AUMainMenuItem> auMainMenuItemList = auMainMenuTab.getAuMainMenuItemList();
         for (AUMainMenuItem auMainMenuItem : auMainMenuItemList) {
             auNewsFeedTabLayout.addTab(auNewsFeedTabLayout.newTab().setText(auMainMenuItem.getTitle().replace("All","").trim()));
         }

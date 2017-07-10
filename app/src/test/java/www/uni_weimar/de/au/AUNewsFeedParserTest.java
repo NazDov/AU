@@ -15,14 +15,17 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.impl.AUNewsFeedParser;
+
 import static junit.framework.Assert.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
@@ -38,7 +41,6 @@ public class AUNewsFeedParserTest {
 
     @Rule
     public PowerMockRule powerMockRule = new PowerMockRule();
-    private AUNewsFeedParser auMainMenuTabParser;
     private Connection connectionMock;
     private Document mockDocument;
     private Elements mockElements;
@@ -47,7 +49,6 @@ public class AUNewsFeedParserTest {
     @Before
     public void setup() {
         mockStatic(Jsoup.class);
-        auMainMenuTabParser = new AUNewsFeedParser();
         connectionMock = mock(Connection.class);
         mockDocument = mock(Document.class);
         mockElements = PowerMockito.mock(Elements.class);
@@ -58,30 +59,20 @@ public class AUNewsFeedParserTest {
     public void testParseAllAU() throws IOException, AUParseException {
         String url = "http://www.valid.com";
         when(Jsoup.connect(url)).thenThrow(AUParseException.class);
-        auMainMenuTabParser.parseAU(url);
+        AUNewsFeedParser.of(url).parseAU();
         verifyStatic();
     }
 
-    @Test
-    public void testParseAllAuWithNullUrl() throws IOException {
-        String newsFeedUrl = "http://therighturl.net";
-        auMainMenuTabParser.setNewsFeedUrl(newsFeedUrl);
-        when(Jsoup.connect(newsFeedUrl)).thenReturn(connectionMock);
-        when(connectionMock.get()).thenReturn(mockDocument);
-        mockElements = new Elements(1);
-        when(mockDocument.getElementsByTag(AUItem.ITEM)).thenReturn(mockElements);
-        try {
-            auMainMenuTabParser.parseAU(null);
-        } catch (AUParseException e) {
-            e.printStackTrace();
-        }
-        assertEquals(newsFeedUrl, auMainMenuTabParser.getNewsFeedUrl());
+    @Test(expected = NullPointerException.class)
+    public void testParseAllAuWithNullUrl() throws IOException, AUParseException {
+        String newsFeedUrl = null;
+        AUNewsFeedParser.of(newsFeedUrl).parseAU();
+
     }
 
     @Test
     public void testCorrectAUNewsFeedParsing() throws IOException {
         String newsFeedUrl = "http://therighturl.net";
-        auMainMenuTabParser.setNewsFeedUrl(newsFeedUrl);
         when(Jsoup.connect(newsFeedUrl)).thenReturn(connectionMock);
         when(connectionMock.get()).thenReturn(mockDocument);
         when(mockDocument.getElementsByTag(AUItem.ITEM)).thenReturn(mockElements);
@@ -130,7 +121,7 @@ public class AUNewsFeedParserTest {
         expAuNewsFeedList.add(auNewsFeed);
         List<AUNewsFeed> actualAuNewsFeedList = null;
         try {
-            actualAuNewsFeedList = auMainMenuTabParser.parseAU(newsFeedUrl);
+            actualAuNewsFeedList = AUNewsFeedParser.of(newsFeedUrl).parseAU();
         } catch (AUParseException e) {
             e.printStackTrace();
         }
