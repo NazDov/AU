@@ -93,8 +93,9 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
             noInternetConnexImageView.setVisibility(View.VISIBLE);
         }
         realmUI = Realm.getDefaultInstance();
-        new AUMainMenuContentRequestService(realmUI)
-                .requestContent(cacheContent -> {
+        AUMainMenuContentRequestService
+                .of(realmUI)
+                .notifyContentOnCacheUpdate(cacheContent -> {
                     this.mainMenuTabList = cacheContent;
                     setAuMainMenuTabFragments(cacheContent);
                     if (!cacheContent.isEmpty()) {
@@ -289,9 +290,7 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
                 auMainMenuTabFragment = AUEventsTabFragment.newInstance(mainMenuTabTitle);
                 auMainMenuTabFragmentList.add(auMainMenuTabFragment);
             }
-
         }
-
         this.auMainMenuTabFragments = auMainMenuTabFragmentList;
     }
 
@@ -318,7 +317,7 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                initSystemMainMenuComponents(getContext());
+                new AUInitActivity().initSystemMainMenuComponents(AUMainMenuActivity.this);
                 recreate();
             }
 

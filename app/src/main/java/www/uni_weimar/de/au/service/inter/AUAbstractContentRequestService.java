@@ -26,11 +26,10 @@ public abstract class AUAbstractContentRequestService<T extends RealmObject> imp
         this.auParser = auParser;
     }
 
-    public Observable<List<T>> requestContent(AUContentChangeListener<T> auContentChangeListener) {
-        notifyContentOnCacheUpdate(auContentChangeListener);
+    public Observable<List<T>> requestContent() {
         return Observable.create((ObservableOnSubscribe<List<T>>) e -> {
             try {
-                e.onNext(auParser.parseAU(null));
+                e.onNext(auParser.parseAU());
                 e.onComplete();
             } catch (AUParseException a) {
                 e.onError(a);

@@ -28,12 +28,6 @@ public class AUNewsFeedFavouriteContentRequestService extends AUAbstractContentR
     }
 
 
-    @Override
-    public Observable<List<AUNewsFeed>> requestContent(AUContentChangeListener<AUNewsFeed> auContentChangeListener) {
-        notifyContentOnCacheUpdate(auContentChangeListener);
-        return null;
-    }
-
 
     @Override
     public void notifyContentOnCacheUpdate(AUContentChangeListener<AUNewsFeed> auContentChangeListener) {

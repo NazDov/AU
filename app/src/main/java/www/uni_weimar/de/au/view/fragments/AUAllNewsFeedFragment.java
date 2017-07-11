@@ -79,7 +79,8 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         auAllNewsFeedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         auNewsFeedContentRequestService = new AUNewsFeedContentRequestService(realm, getContext().getResources().getString(R.string.ALL_NEWS));
         auNewsFeedFavouriteContentRequestService = new AUNewsFeedFavouriteContentRequestService(realm);
-        auNewsFeedObservable = auNewsFeedContentRequestService.requestContent(content -> auNewsFeedList = content);
+        auNewsFeedContentRequestService.notifyContentOnCacheUpdate(content -> auNewsFeedList = content);
+        auNewsFeedObservable = auNewsFeedContentRequestService.requestContent();
         auNewsFeedRecyclerViewAdapter = new AUNewsFeedRecyclerViewAdapter(getContext(), auNewsFeedList);
         auNewsFeedRecyclerViewAdapter.setAuNewsFeedLikedItemListener(auItem -> {
             Toast.makeText(getContext(), "news item " + auItem.getTitle() + " was added to favourites", Toast.LENGTH_SHORT).show();
@@ -112,9 +113,9 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
             public void onTabSelected(TabLayout.Tab tab) {
                 String categoryName = (String) tab.getText();
                 if (AUNewsFeedStaticCategory.ALL.toString().equalsIgnoreCase(categoryName)) {
-                    auNewsFeedContentRequestService.requestContent(content -> auNewsFeedList = content);
+                    auNewsFeedContentRequestService.notifyContentOnCacheUpdate(content -> auNewsFeedList = content);
                 } else if (AUNewsFeedStaticCategory.FAVOURITE.toString().equalsIgnoreCase(categoryName)) {
-                    auNewsFeedFavouriteContentRequestService.requestContent(content -> {
+                    auNewsFeedFavouriteContentRequestService.notifyContentOnCacheUpdate(content -> {
                         auNewsFeedList = content;
                     });
                 } else {

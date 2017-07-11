@@ -88,7 +88,7 @@ public class AUApplicationConfiguration extends Application {
         ((Activity) context).finish();
     }
 
-    private void configRealmDatabase() {
+    public void configRealmDatabase() {
         Realm.init(this);
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(realmConfiguration);
