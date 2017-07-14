@@ -1,5 +1,6 @@
 package www.uni_weimar.de.au.view.activity;
 
+import android.app.Fragment;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -31,7 +32,8 @@ import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
 import www.uni_weimar.de.au.view.adapters.AUMainMenuViewPagerAdapter;
-import www.uni_weimar.de.au.view.fragments.tabs.AUEventsTabFragment;
+import www.uni_weimar.de.au.view.fragments.AUAllScheduleFragment;
+import www.uni_weimar.de.au.view.fragments.tabs.AUScheduleTabFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AUMainMenuTabFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AUNewsFeedTabFragment;
 
@@ -89,8 +91,7 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
         auMainMenuDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         if (!hasInternetConnection(this)) {
-            noInternetConnexTextView.setVisibility(View.VISIBLE);
-            noInternetConnexImageView.setVisibility(View.VISIBLE);
+            showNoConnectionViewAs(View.VISIBLE);
         }
         realmUI = Realm.getDefaultInstance();
         AUMainMenuContentRequestService
@@ -99,8 +100,7 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
                     this.mainMenuTabList = cacheContent;
                     setAuMainMenuTabFragments(cacheContent);
                     if (!cacheContent.isEmpty()) {
-                        noInternetConnexTextView.setVisibility(View.GONE);
-                        noInternetConnexImageView.setVisibility(View.GONE);
+                        showNoConnectionViewAs(View.GONE);
                     }
                 });
         auMainMenuViewPagerAdapter = new AUMainMenuViewPagerAdapter(getSupportFragmentManager(),
@@ -158,6 +158,11 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
         navMenuButtonIds.add(R.id.library_menu_btn_img);
         navMenuButtonIds.add(R.id.profile_menu_btn_img);
         navMenuButtonIds.add(R.id.settings_menu_btn_img);
+    }
+
+    private void showNoConnectionViewAs(int visibility) {
+        noInternetConnexTextView.setVisibility(visibility);
+        noInternetConnexImageView.setVisibility(visibility);
     }
 
     @Override
@@ -246,6 +251,7 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
+
         if (auMainMenuDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             auMainMenuDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
@@ -280,14 +286,14 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
     public void setAuMainMenuTabFragments(List<AUMainMenuTab> auMainMenuTabsList) {
         List<AUMainMenuTabFragment> auMainMenuTabFragmentList = new ArrayList<>();
         for (AUMainMenuTab auMainMenuTab : auMainMenuTabsList) {
-            AUMainMenuTabFragment auMainMenuTabFragment = null;
+            AUMainMenuTabFragment auMainMenuTabFragment;
             String mainMenuTabTitle = auMainMenuTab.getTitle();
             if ("News".equalsIgnoreCase(mainMenuTabTitle)) {
                 auMainMenuTabFragment = AUNewsFeedTabFragment.newInstance(auMainMenuTab);
                 auMainMenuTabFragmentList.add(auMainMenuTabFragment);
             }
             if ("Veranstaltungen".equalsIgnoreCase(mainMenuTabTitle)) {
-                auMainMenuTabFragment = AUEventsTabFragment.newInstance(mainMenuTabTitle);
+                auMainMenuTabFragment = AUScheduleTabFragment.newInstance(auMainMenuTab);
                 auMainMenuTabFragmentList.add(auMainMenuTabFragment);
             }
         }

@@ -19,7 +19,6 @@ import www.uni_weimar.de.au.AUTestApplicationConfig;
 import www.uni_weimar.de.au.BuildConfig;
 import www.uni_weimar.de.au.models.AUFacultyHeader;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
-import www.uni_weimar.de.au.parsers.impl.AUFacultyHeaderParser;
 
 import static junit.framework.Assert.*;
 import static org.mockito.Mockito.*;
@@ -34,7 +33,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @PrepareForTest(Jsoup.class)
 public class AUFacultyHeaderParserTest {
 
-    private AUFacultyHeaderParser auFacultyHeaderParser;
+    private AUFacultyParser auFacultyParser;
     private Connection connection;
     private Document document;
     private Elements elements;
@@ -46,9 +45,9 @@ public class AUFacultyHeaderParserTest {
         connection = mock(Connection.class);
         document = mock(Document.class);
         elements = mock(Elements.class);
-        auFacultyHeaderParser = new AUFacultyHeaderParser(null) {
+        auFacultyParser = new AUFacultyParser(null) {
             @Override
-            protected RealmList<AUFacultyHeader> parseAUFacultyHeaders(String auFacultyURL, int escapeHeaderTag) throws AUParseException {
+            protected RealmList<AUFacultyHeader> parseAUFacultyHeaders(String auFacultyURL, int escapeHeaderTag, AUFacultyHeader auFacultyHeader) throws AUParseException {
                 RealmList<AUFacultyHeader> list = new RealmList<>();
                 AUFacultyHeader auFacultyHeader = new AUFacultyHeader();
                 auFacultyHeader.setTitle("Institute of Architecture");
@@ -62,14 +61,14 @@ public class AUFacultyHeaderParserTest {
     @Test(expected = NullPointerException.class)
     public void testAUFacultyParserNullUrlConstructor() {
         String url = null;
-        auFacultyHeaderParser = AUFacultyHeaderParser.of(url);
+        auFacultyParser = AUFacultyParser.of(url);
     }
 
     @Test
     public void testAUFacultyParser() throws AUParseException {
         String url = "http://url.net";
         //when
-        List<AUFacultyHeader> actualAUFacultyHeaderList = auFacultyHeaderParser.parseAU(url);
+        List<AUFacultyHeader> actualAUFacultyHeaderList = auFacultyParser.parseAU(url);
         //then
         assertEquals("Institute of Architecture", actualAUFacultyHeaderList.get(0).getTitle());
     }
@@ -77,8 +76,8 @@ public class AUFacultyHeaderParserTest {
     @Test
     public void testAUFacultyHeaderParse() throws AUParseException {
         String url = "https://www.uni-weimar.de/qisserver/rds?state=wtree&search=1&trex=step&root120171=20648&P.vx=kurz";
-        AUFacultyHeaderParser auFacultyHeaderParser = AUFacultyHeaderParser.of(url);
-        auFacultyHeaderParser.parseAU();
+        AUFacultyParser auFacultyParser = AUFacultyParser.of(url);
+        auFacultyParser.parseAU();
     }
 
 

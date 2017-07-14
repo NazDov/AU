@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -128,7 +127,7 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
             newsFeedLikeBtn = (Button) itemView.findViewById(R.id.news_feed_like_btn);
             newsFeedLikeBtn.setOnClickListener(v -> {
                 if (auNewsFeedLikedItemListener != null) {
-                    auNewsFeedLikedItemListener.onLiked(auNewsFeedList.get(getAdapterPosition()));
+                    auNewsFeedLikedItemListener.onChanged(auNewsFeedList.get(getAdapterPosition()));
                 }
             });
             newsFeedImage.setOnClickListener(v -> {

@@ -16,20 +16,20 @@ import www.uni_weimar.de.au.service.inter.AUContentChangeListener;
 
 public class AUMainMenuContentRequestService extends AUAbstractContentRequestService<AUMainMenuTab> {
 
-    public static AUMainMenuContentRequestService of(Realm realm, String url) {
-        return new AUMainMenuContentRequestService(realm, url);
-    }
-
-    public static AUMainMenuContentRequestService of(Realm realm) {
-        return new AUMainMenuContentRequestService(realm);
-    }
-
     AUMainMenuContentRequestService(Realm realm, String url) {
         super(new AUMainMenuTabORM(realm), AUMainMenuTabParser.of(url));
     }
 
     AUMainMenuContentRequestService(Realm realm) {
         super(new AUMainMenuTabORM(realm), null);
+    }
+
+    public static AUMainMenuContentRequestService of(Realm realm, String url) {
+        return new AUMainMenuContentRequestService(realm, url);
+    }
+
+    public static AUMainMenuContentRequestService of(Realm realm) {
+        return new AUMainMenuContentRequestService(realm);
     }
 
 }

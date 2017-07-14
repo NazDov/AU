@@ -51,43 +51,6 @@ public class AUApplicationConfiguration extends Application {
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
-    public static void initSystemMainMenuComponents(Context context) {
-        if (!hasInternetConnection(context)) {
-            startActivity(context);
-            return;
-        }
-        Realm realm = Realm.getDefaultInstance();
-        new AsyncTask<Object, Void, Object>() {
-
-            @Override
-            protected Object doInBackground(Object... params) {
-                List<AUMainMenuTab> auMainMenuTabList;
-                AUMainMenuTabORM auMainMenuTabORM = new AUMainMenuTabORM(realm);
-                AUMainMenuTabParser auMainMenuTabParser = AUMainMenuTabParser.of(context.getString(R.string.MAIN_MENU));
-                try {
-                    auMainMenuTabList = auMainMenuTabParser.parseAU();
-                    auMainMenuTabORM.addAll(auMainMenuTabList);
-                } catch (AUParseException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-
-            @Override
-            protected void onPostExecute(Object o) {
-                startActivity(context);
-            }
-        }.execute();
-    }
-
-    private static void startActivity(Context context) {
-        Intent intent = new Intent(context, AUMainMenuActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-        ((Activity) context).finish();
-    }
-
     public void configRealmDatabase() {
         Realm.init(this);
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();

@@ -37,6 +37,6 @@ public class AUNewsFeedTabFragmentViewPagerAdapter extends FragmentStatePagerAda
 
     @Override
     public int getCount() {
-        return 2;
+        return tabCount;
     }
 }

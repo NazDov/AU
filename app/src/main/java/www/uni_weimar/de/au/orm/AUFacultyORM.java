@@ -3,27 +3,37 @@ package www.uni_weimar.de.au.orm;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import www.uni_weimar.de.au.models.AUFacultyHeader;
 
 /**
  * Created by ndovhuy on 10.07.2017.
  */
-public class AUFacultyHeaderORM implements AUBaseORM<AUFacultyHeader>{
+public class AUFacultyORM implements AUBaseORM<AUFacultyHeader> {
 
     private Realm realm;
 
-    public AUFacultyHeaderORM(Realm realm) {
+    public AUFacultyORM(Realm realm) {
         this.realm = realm;
     }
 
     @Override
     public AUFacultyHeader add(AUFacultyHeader item) {
-        return null;
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        item = realm.copyToRealm(item);
+        realm.commitTransaction();
+        return item;
     }
 
     @Override
     public List<AUFacultyHeader> addAll(List<AUFacultyHeader> items) {
-        return null;
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.delete(AUFacultyHeader.class);
+        items = realm.copyToRealmOrUpdate(items);
+        realm.commitTransaction();
+        return items;
     }
 
     @Override
@@ -33,12 +43,13 @@ public class AUFacultyHeaderORM implements AUBaseORM<AUFacultyHeader>{
 
     @Override
     public void delete(String key, String name) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<AUFacultyHeader> findAll() {
-        return null;
+        RealmResults<AUFacultyHeader> auFaculties = realm.where(AUFacultyHeader.class).findAll();
+        return auFaculties;
     }
 
     @Override
@@ -48,6 +59,6 @@ public class AUFacultyHeaderORM implements AUBaseORM<AUFacultyHeader>{
 
     @Override
     public List<AUFacultyHeader> findAllBy(String key, String name) {
-        return null;
+        return realm.where(AUFacultyHeader.class).equalTo(key, name).findAll();
     }
 }

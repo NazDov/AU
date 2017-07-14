@@ -18,4 +18,5 @@ public interface AUItem {
     String ENCLOSURE = "enclosure";
     String IMG_URL = "url";
     java.lang.String HREF = "href";
+    String FACULTY = "faculty";
 }

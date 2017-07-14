@@ -12,6 +12,8 @@ import www.uni_weimar.de.au.orm.AUBaseORM;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.inter.AUParser;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by nazar on 13.06.17.
  */
@@ -55,7 +57,7 @@ public abstract class AUAbstractContentRequestService<T extends RealmObject> imp
 
     @Override
     public List<T> readFromCache(List<T> objects) {
-        return  auBaseORM.findAll();
+        return auBaseORM.findAll();
     }
 
     public AUBaseORM<T> getAuBaseORM() {

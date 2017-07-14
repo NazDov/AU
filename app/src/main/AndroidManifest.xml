@@ -16,7 +16,8 @@
         <activity
             android:name=".view.activity.AUInitActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,12 +27,14 @@
         <activity
             android:name=".view.activity.AUMainMenuActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.AUNewsFeedItemDetailedActivity"
             android:label="@string/title_activity_aunews_feed_item_detailed"
             android:parentActivityName=".view.activity.AUMainMenuActivity"
-            android:theme="@style/AUNewsFeedItemDetailTheme">
+            android:theme="@style/AUNewsFeedItemDetailTheme"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="www.uni_weimar.de.au.view.activity.AUMainMenuActivity" />

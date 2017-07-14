@@ -4,8 +4,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.util.List;
+
 import io.realm.RealmList;
 import www.uni_weimar.de.au.models.AUFacultyHeader;
 import www.uni_weimar.de.au.models.AUItem;
@@ -18,17 +20,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by ndovhuy on 07.07.2017.
  */
 
-public class AUFacultyHeaderParser implements AUParser<AUFacultyHeader> {
+public class AUFacultyParser implements AUParser<AUFacultyHeader> {
 
+    private final static int AUFacultyNameLevel = 1;
     private String auFacultyHeaderUrl;
 
-    AUFacultyHeaderParser(String url) {
+    AUFacultyParser(String url) {
         this.auFacultyHeaderUrl = url;
     }
 
-    public static AUFacultyHeaderParser of(String url) {
+    public static AUFacultyParser of(String url) {
         checkNotNull(url);
-        return new AUFacultyHeaderParser(url);
+        return new AUFacultyParser(url);
     }
 
     @Override
@@ -42,15 +45,16 @@ public class AUFacultyHeaderParser implements AUParser<AUFacultyHeader> {
          * value should be incremented on every recursion
          */
         int escapeHeaderTag = 1;
-        return parseAUFacultyHeaders(url, escapeHeaderTag);
+        return parseAUFacultyHeaders(url, escapeHeaderTag, null);
     }
 
-    protected RealmList<AUFacultyHeader> parseAUFacultyHeaders(String auFacultyURL, int escapeHeaderTag) throws AUParseException {
+    protected RealmList<AUFacultyHeader> parseAUFacultyHeaders(String auFacultyURL, int escapeHeaderTag, AUFacultyHeader topLevelHeader) throws AUParseException {
         checkNotNull(auFacultyURL);
-        RealmList<AUFacultyHeader> auFacultyHeaders = new RealmList<>();
+        RealmList<AUFacultyHeader> auFaculties = new RealmList<>();
         Document htmlDoc;
         Elements htmlTags;
         int countTags = 0;
+        int autype = escapeHeaderTag;
         try {
             htmlDoc = Jsoup.connect(auFacultyURL).get();
             htmlTags = htmlDoc.getElementsByClass("ueb");
@@ -64,14 +68,22 @@ public class AUFacultyHeaderParser implements AUParser<AUFacultyHeader> {
                 AUFacultyHeader auFacultyHeader = new AUFacultyHeader();
                 auFacultyHeader.setTitle(title);
                 auFacultyHeader.setUrl(href);
-                RealmList innerAUFacultyHead = parseAUFacultyHeaders(href, ++escapeHeaderTag);
+                RealmList innerAUFacultyHead = parseAUFacultyHeaders(href, ++escapeHeaderTag, auFacultyHeader);
                 auFacultyHeader.setAuFacultyHeaderLis(innerAUFacultyHead);
-                auFacultyHeaders.add(auFacultyHeader);
+                auFacultyHeader.setTopLevelHeader(topLevelHeader);
+
+                if (autype == AUFacultyNameLevel) {
+                    auFacultyHeader.setAUFacultyType(AUItem.FACULTY);
+                } else {
+                    auFacultyHeader.setAUFacultyType(AUItem.AUTYPE);
+                }
+
+                auFaculties.add(auFacultyHeader);
             }
         } catch (IOException e) {
             throw new AUParseException(e.getMessage());
         }
-        return auFacultyHeaders;
+        return auFaculties;
     }
 
 
