@@ -45,16 +45,16 @@ public class AUFacultyHeaderParserTest {
         connection = mock(Connection.class);
         document = mock(Document.class);
         elements = mock(Elements.class);
-        auFacultyParser = new AUFacultyParser(null) {
-            @Override
-            protected RealmList<AUFacultyHeader> parseAUFacultyHeaders(String auFacultyURL, int escapeHeaderTag, AUFacultyHeader auFacultyHeader) throws AUParseException {
-                RealmList<AUFacultyHeader> list = new RealmList<>();
-                AUFacultyHeader auFacultyHeader = new AUFacultyHeader();
-                auFacultyHeader.setTitle("Institute of Architecture");
-                list.add(auFacultyHeader);
-                return list;
-            }
-        };
+//        auFacultyParser = new AUFacultyParser(null) {
+//            @Override
+//            protected RealmList<AUFacultyHeader> parseAUFacultyHeaders(String auFacultyURL, int escapeHeaderTag, AUFacultyHeader auFacultyHeader) throws AUParseException {
+//                RealmList<AUFacultyHeader> list = new RealmList<>();
+//                AUFacultyHeader au = new AUFacultyHeader();
+//                au.setTitle("Institute of Architecture");
+//                list.add(au);
+//                return list;
+//            }
+//        };
     }
 
 

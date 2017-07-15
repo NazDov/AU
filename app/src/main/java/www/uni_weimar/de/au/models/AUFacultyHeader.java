@@ -17,6 +17,7 @@ public class AUFacultyHeader extends RealmObject implements AUItem {
     private String title;
     private String url;
     private String autype;
+    private int innerLayer;
     private RealmList<AUFacultyHeader> auFacultyHeaderLis;
     private AUFacultyHeader topLevelHeader;
 
@@ -70,6 +71,15 @@ public class AUFacultyHeader extends RealmObject implements AUItem {
                 Objects.equal(getTitle(), that.getTitle()) &&
                 Objects.equal(getUrl(), that.getUrl()) &&
                 Objects.equal(autype, that.autype);
+    }
+
+
+    public int getInnerLayer() {
+        return innerLayer;
+    }
+
+    public void setInnerLayer(int innerLayer) {
+        this.innerLayer = innerLayer;
     }
 
     @Override

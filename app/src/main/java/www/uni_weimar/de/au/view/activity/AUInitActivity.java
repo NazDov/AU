@@ -4,15 +4,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
+import www.uni_weimar.de.au.models.AUFacultyHeader;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
+import www.uni_weimar.de.au.models.AUNewsFeed;
+import www.uni_weimar.de.au.service.impl.AUFacultyContentRequestService;
 import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
 
 import static www.uni_weimar.de.au.application.AUApplicationConfiguration.hasInternetConnection;
@@ -23,34 +29,53 @@ import static www.uni_weimar.de.au.application.AUApplicationConfiguration.hasInt
 
 public class AUInitActivity extends AppCompatActivity {
 
-    private AUMainMenuContentRequestService auMainMenuContentRequestService;
-    private Observable<List<AUMainMenuTab>> observable;
-    private Disposable disposable;
+    @InjectView(R.id.au_init_text)
+    TextView auInitTextView;
+    private Disposable auFacultyDisposable;
+    private Disposable auMainMenuDisposable;
     private Realm realm;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.au_screen_loader);
+        ButterKnife.inject(this);
         initSystemMainMenuComponents(this);
     }
 
     public void initSystemMainMenuComponents(Activity activity) {
-        if (!hasInternetConnection(activity)) {
+        auInitTextView.setText("Please wait...");
+        realm = Realm.getDefaultInstance();
+        if (!hasInternetConnection(activity) || hasCacheableData()) {
             callAUMainMenuActivity();
             return;
         }
-        realm = Realm.getDefaultInstance();
-        auMainMenuContentRequestService = AUMainMenuContentRequestService.of(realm, getResources().getString(R.string.MAIN_MENU));
-        observable = auMainMenuContentRequestService.requestContent();
-        disposable = observable.subscribe(this::onSuccess, this::onError);
+        auMainMenuDisposable = AUMainMenuContentRequestService
+                .of(realm, getResources().getString(R.string.MAIN_MENU))
+                .requestContent()
+                .subscribe(this::onMainMenuLoaded, this::onError);
+    }
+
+    private boolean hasCacheableData() {
+        long auMainMenuTabCount = realm.where(AUMainMenuTab.class).count();
+        long auFacultyHeaderCount = realm.where(AUFacultyHeader.class).count();
+        long auNewsFeedCount = realm.where(AUNewsFeed.class).count();
+        return auMainMenuTabCount > 0 && auFacultyHeaderCount > 0 && auNewsFeedCount > 0;
     }
 
     private void onError(Throwable throwable) {
         Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
-    private void onSuccess(List<AUMainMenuTab> auMainMenuTabs) {
+    private void onMainMenuLoaded(List<AUMainMenuTab> auMainMenuTabs) {
+        auInitTextView.setText("Loading components...");
+        auFacultyDisposable = AUFacultyContentRequestService
+                .of(realm, getResources().getString(R.string.COURSES_URL))
+                .requestContent()
+                .subscribe(this::onScheduleLoaded, this::onError);
+    }
+
+    private void onScheduleLoaded(List<AUFacultyHeader> auFacultyHeaders) {
         callAUMainMenuActivity();
     }
 
@@ -64,13 +89,19 @@ public class AUInitActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ButterKnife.reset(this);
         if (realm != null) {
             realm.close();
             realm = null;
         }
-        if (disposable != null) {
-            disposable.dispose();
-            disposable = null;
+        if (auMainMenuDisposable != null) {
+            auMainMenuDisposable.dispose();
+            auMainMenuDisposable = null;
+        }
+
+        if (auFacultyDisposable != null) {
+            auFacultyDisposable.dispose();
+            auFacultyDisposable = null;
         }
     }
 }

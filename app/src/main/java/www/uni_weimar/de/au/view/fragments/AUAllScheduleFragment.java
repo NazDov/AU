@@ -67,9 +67,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
             goBackToPreviousFacultyHeader.setText(auItem.getTitle());
         });
         auFacultyContentRequestService = AUFacultyContentRequestService.of(realm, getString(R.string.COURSES_URL));
-        auScheduleObservable = auFacultyContentRequestService.requestContent();
-        auScheduleDisposable = auScheduleObservable.subscribe(this::onSuccess, this::onError);
-        auFacultyHeaderNotifyOnUpdate();
+        auFacultyNotifyContentOnCacheUpdate();
         auScheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         auScheduleRecyclerView.setAdapter(auFacultyRecyclerViewAdapter);
         goBackToPreviousFacultyHeader.setOnClickListener(v -> {
@@ -78,7 +76,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
                 topLevelHeader = auFacultyHeaderList.get(0).getTopLevelHeader();
             } else {
                 goBackToPreviousFacultyHeader.setText("");
-                auFacultyHeaderNotifyOnUpdate();
+                auFacultyNotifyContentOnCacheUpdate();
             }
             if (topLevelHeader != null) {
                 topLevelHeader = topLevelHeader.getTopLevelHeader();
@@ -88,7 +86,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
                     goBackToPreviousFacultyHeader.setText(topLevelHeader.getTitle());
                 } else {
                     goBackToPreviousFacultyHeader.setText("");
-                    auFacultyHeaderNotifyOnUpdate();
+                    auFacultyNotifyContentOnCacheUpdate();
                 }
             }
 
@@ -96,10 +94,11 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         return root;
     }
 
-    private void auFacultyHeaderNotifyOnUpdate() {
+    private void auFacultyNotifyContentOnCacheUpdate() {
         auFacultyContentRequestService.notifyContentOnCacheUpdate(content -> {
             auFacultyHeaderList = content;
             updateAUFacultyRecyclerViewAdapter();
+            stopRefreshing();
         });
     }
 
@@ -108,17 +107,6 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         auFacultyRecyclerViewAdapter.notifyDataSetChanged();
     }
 
-    private void onError(Throwable throwable) {
-        Toast.makeText(getContext(), throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-        stopRefreshing();
-    }
-
-    private void onSuccess(List<AUFacultyHeader> auFaculties) {
-        Toast.makeText(getContext(), "onSucces()", Toast.LENGTH_SHORT).show();
-        auFacultyHeaderList = auFaculties;
-        updateAUFacultyRecyclerViewAdapter();
-        stopRefreshing();
-    }
 
     private void stopRefreshing() {
         if (auScheduleSwipeRefreshLayout.isRefreshing()) {
@@ -144,6 +132,6 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        auScheduleObservable.subscribe(this::onSuccess, this::onError);
+        auFacultyNotifyContentOnCacheUpdate();
     }
 }

@@ -24,15 +24,21 @@ public class AUFacultyParser implements AUParser<AUFacultyHeader> {
 
     private final static int AUFacultyNameLevel = 1;
     private String auFacultyHeaderUrl;
+    private AUFacultyHeader topLevelHeader;
 
     AUFacultyParser(String url) {
         this.auFacultyHeaderUrl = url;
+    }
+
+    AUFacultyParser(AUFacultyHeader auFacultyHeader) {
+        this.topLevelHeader = auFacultyHeader;
     }
 
     public static AUFacultyParser of(String url) {
         checkNotNull(url);
         return new AUFacultyParser(url);
     }
+
 
     @Override
     public List<AUFacultyHeader> parseAU(String url) throws AUParseException {
@@ -91,4 +97,6 @@ public class AUFacultyParser implements AUParser<AUFacultyHeader> {
     public List<AUFacultyHeader> parseAU() throws AUParseException {
         return parseAU(auFacultyHeaderUrl);
     }
+
+
 }
