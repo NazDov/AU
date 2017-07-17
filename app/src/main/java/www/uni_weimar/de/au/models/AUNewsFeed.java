@@ -1,5 +1,7 @@
 package www.uni_weimar.de.au.models;
 
+import com.google.common.base.Objects;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -88,37 +90,21 @@ public class AUNewsFeed extends RealmObject implements AUItem {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AUNewsFeed)) return false;
-
         AUNewsFeed that = (AUNewsFeed) o;
-
-        if (getGuid() != null ? !getGuid().equals(that.getGuid()) : that.getGuid() != null)
-            return false;
-        if (getTitle() != null ? !getTitle().equals(that.getTitle()) : that.getTitle() != null)
-            return false;
-        if (getLink() != null ? !getLink().equals(that.getLink()) : that.getLink() != null)
-            return false;
-        if (getAuthor() != null ? !getAuthor().equals(that.getAuthor()) : that.getAuthor() != null)
-            return false;
-        if (getCategory() != null ? !getCategory().equals(that.getCategory()) : that.getCategory() != null)
-            return false;
-        if (getPubDate() != null ? !getPubDate().equals(that.getPubDate()) : that.getPubDate() != null)
-            return false;
-        return getImgUrl() != null ? getImgUrl().equals(that.getImgUrl()) : that.getImgUrl() == null;
-
+        return Objects.equal(getLink(), that.getLink()) &&
+                Objects.equal(getTitle(), that.getTitle()) &&
+                Objects.equal(getGuid(), that.getGuid()) &&
+                Objects.equal(getAuthor(), that.getAuthor()) &&
+                Objects.equal(getCategory(), that.getCategory()) &&
+                Objects.equal(getDesciption(), that.getDesciption()) &&
+                Objects.equal(getPubDate(), that.getPubDate()) &&
+                Objects.equal(getImgUrl(), that.getImgUrl());
     }
 
     @Override
     public int hashCode() {
-        int result = getGuid() != null ? getGuid().hashCode() : 0;
-        result = 31 * result + (getTitle() != null ? getTitle().hashCode() : 0);
-        result = 31 * result + (getLink() != null ? getLink().hashCode() : 0);
-        result = 31 * result + (getAuthor() != null ? getAuthor().hashCode() : 0);
-        result = 31 * result + (getCategory() != null ? getCategory().hashCode() : 0);
-        result = 31 * result + (getPubDate() != null ? getPubDate().hashCode() : 0);
-        result = 31 * result + (getImgUrl() != null ? getImgUrl().hashCode() : 0);
-        return result;
+        return Objects.hashCode(getLink(), getTitle(), getGuid(), getAuthor(), getCategory(), getDesciption(), getPubDate(), getImgUrl());
     }
-
 
     @Override
     public String toString() {

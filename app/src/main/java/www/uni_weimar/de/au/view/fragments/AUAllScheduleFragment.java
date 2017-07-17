@@ -16,7 +16,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
@@ -40,7 +39,6 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
     AUFacultyRecyclerViewAdapter auFacultyRecyclerViewAdapter;
     private Realm realm;
     private List<AUFacultyHeader> auFacultyHeaderList;
-    private Observable<List<AUFacultyHeader>> auScheduleObservable;
     private Disposable auScheduleDisposable;
 
 
@@ -62,12 +60,26 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         auFacultyRecyclerViewAdapter = new AUFacultyRecyclerViewAdapter(getContext(), auFacultyHeaderList);
         auFacultyRecyclerViewAdapter.setOnItemClickListener(auItem -> {
             Toast.makeText(getContext(), "select " + auItem.getTitle(), Toast.LENGTH_SHORT).show();
-            auFacultyHeaderList = auItem.getAuFacultyHeaderList();
-            updateAUFacultyRecyclerViewAdapter();
+            auFacultyContentRequestService
+                    .requestContent(auItem.getUrl(), auItem.getHeaderLevel() + 1, new AUFacultyHeader(auItem))
+                    .subscribe((items) -> {
+                        auFacultyHeaderList = items;
+                        updateAUFacultyRecyclerViewAdapter();
+                        auFacultyContentRequestService.update(auItem);
+                    }, this::onError);
             goBackToPreviousFacultyHeader.setText(auItem.getTitle());
+            readFromCacheBy(auItem.getTitle());
         });
         auFacultyContentRequestService = AUFacultyContentRequestService.of(realm, getString(R.string.COURSES_URL));
-        auFacultyNotifyContentOnCacheUpdate();
+        auFacultyContentRequestService
+                .requestContent(getString(R.string.COURSES_URL), 1, null)
+                .subscribe(this::onSuccess, this::onError);
+
+        auFacultyContentRequestService.notifyContentOnCacheUpdate(content -> {
+            auFacultyHeaderList = content;
+            updateAUFacultyRecyclerViewAdapter();
+            stopRefreshing();
+        });
         auScheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         auScheduleRecyclerView.setAdapter(auFacultyRecyclerViewAdapter);
         goBackToPreviousFacultyHeader.setOnClickListener(v -> {
@@ -92,6 +104,22 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
 
         });
         return root;
+    }
+
+    private void readFromCacheBy(String topLevelHeaderName) {
+        auFacultyHeaderList = auFacultyContentRequestService.readFromCache("topLevelHeaderName", topLevelHeaderName);
+        updateAUFacultyRecyclerViewAdapter();
+        stopRefreshing();
+    }
+
+    private void onError(Throwable throwable) {
+        Toast.makeText(getContext(), throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void onSuccess(List<AUFacultyHeader> auFacultyHeaders) {
+        auFacultyHeaderList = auFacultyHeaders;
+        updateAUFacultyRecyclerViewAdapter();
+        stopRefreshing();
     }
 
     private void auFacultyNotifyContentOnCacheUpdate() {

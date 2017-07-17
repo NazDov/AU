@@ -3,6 +3,7 @@ package www.uni_weimar.de.au.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,9 @@ public class AUInitActivity extends AppCompatActivity {
         auInitTextView.setText("Please wait...");
         realm = Realm.getDefaultInstance();
         if (!hasInternetConnection(activity) || hasCacheableData()) {
-            callAUMainMenuActivity();
+            new Handler().postDelayed(() -> {
+                callAUMainMenuActivity();
+            }, 3000);
             return;
         }
         auMainMenuDisposable = AUMainMenuContentRequestService
@@ -69,10 +72,7 @@ public class AUInitActivity extends AppCompatActivity {
 
     private void onMainMenuLoaded(List<AUMainMenuTab> auMainMenuTabs) {
         auInitTextView.setText("Loading components...");
-        auFacultyDisposable = AUFacultyContentRequestService
-                .of(realm, getResources().getString(R.string.COURSES_URL))
-                .requestContent()
-                .subscribe(this::onScheduleLoaded, this::onError);
+        callAUMainMenuActivity();
     }
 
     private void onScheduleLoaded(List<AUFacultyHeader> auFacultyHeaders) {

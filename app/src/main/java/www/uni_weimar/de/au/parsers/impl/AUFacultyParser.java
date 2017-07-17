@@ -1,5 +1,7 @@
 package www.uni_weimar.de.au.parsers.impl;
 
+import android.support.annotation.NonNull;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 import org.jsoup.nodes.Element;
@@ -22,17 +24,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class AUFacultyParser implements AUParser<AUFacultyHeader> {
 
-    private final static int AUFacultyNameLevel = 1;
+    private final static int AU_FACULTY_NAME_TAG = 1;
     private String auFacultyHeaderUrl;
-    private AUFacultyHeader topLevelHeader;
 
     AUFacultyParser(String url) {
         this.auFacultyHeaderUrl = url;
     }
 
-    AUFacultyParser(AUFacultyHeader auFacultyHeader) {
-        this.topLevelHeader = auFacultyHeader;
-    }
 
     public static AUFacultyParser of(String url) {
         checkNotNull(url);
@@ -42,10 +40,7 @@ public class AUFacultyParser implements AUParser<AUFacultyHeader> {
 
     @Override
     public List<AUFacultyHeader> parseAU(String url) throws AUParseException {
-        if (url == null) {
-            url = auFacultyHeaderUrl;
-            checkNotNull(url);
-        }
+        url = checkNotNullUrl(url);
         /**
          * escape the header tag(s)
          * value should be incremented on every recursion
@@ -54,42 +49,113 @@ public class AUFacultyParser implements AUParser<AUFacultyHeader> {
         return parseAUFacultyHeaders(url, escapeHeaderTag, null);
     }
 
-    protected RealmList<AUFacultyHeader> parseAUFacultyHeaders(String auFacultyURL, int escapeHeaderTag, AUFacultyHeader topLevelHeader) throws AUParseException {
-        checkNotNull(auFacultyURL);
+
+    public List<AUFacultyHeader> parseAU(String url, boolean isRecursive) throws AUParseException {
+        return isRecursive ? parseAU(url) : null;
+    }
+
+    public List<AUFacultyHeader> parseAU(String url,
+                                         int escapeHeaderTag,
+                                         AUFacultyHeader topLevelHeader) throws AUParseException {
+        url = checkNotNullUrl(url);
         RealmList<AUFacultyHeader> auFaculties = new RealmList<>();
         Document htmlDoc;
-        Elements htmlTags;
-        int countTags = 0;
-        int autype = escapeHeaderTag;
+        Elements uebHtmlTags;
+        int htmlTagPos = 0;
         try {
-            htmlDoc = Jsoup.connect(auFacultyURL).get();
-            htmlTags = htmlDoc.getElementsByClass("ueb");
-            for (Element htmlTag : htmlTags) {
-                countTags++;
-                if (countTags <= escapeHeaderTag) {
+            htmlDoc = Jsoup.connect(url).get();
+            uebHtmlTags = htmlDoc.getElementsByClass(AUItem.UEB);
+            for (Element uebHtmlTag : uebHtmlTags) {
+                if (++htmlTagPos <= escapeHeaderTag) {
                     continue;
                 }
-                String title = htmlTag.attr(AUItem.TITLE);
-                String href = htmlTag.attr(AUItem.HREF);
+                String title = uebHtmlTag.attr(AUItem.TITLE);
+                String href = uebHtmlTag.attr(AUItem.HREF);
                 AUFacultyHeader auFacultyHeader = new AUFacultyHeader();
                 auFacultyHeader.setTitle(title);
                 auFacultyHeader.setUrl(href);
-                RealmList innerAUFacultyHead = parseAUFacultyHeaders(href, ++escapeHeaderTag, auFacultyHeader);
-                auFacultyHeader.setAuFacultyHeaderLis(innerAUFacultyHead);
+                auFacultyHeader.setHeaderLevel(escapeHeaderTag);
                 auFacultyHeader.setTopLevelHeader(topLevelHeader);
-
-                if (autype == AUFacultyNameLevel) {
-                    auFacultyHeader.setAUFacultyType(AUItem.FACULTY);
-                } else {
-                    auFacultyHeader.setAUFacultyType(AUItem.AUTYPE);
-                }
-
+                auFacultyHeader.setTopLevelHeaderName(topLevelHeader != null ? topLevelHeader.getTitle() : null);
+                auFacultyHeader.setAUFacultyType((escapeHeaderTag == AU_FACULTY_NAME_TAG) ? AUItem.FACULTY : AUItem.AUTYPE);
                 auFaculties.add(auFacultyHeader);
+            }
+            if (topLevelHeader != null) {
+                topLevelHeader.setAuFacultyHeaderLis(auFaculties);
             }
         } catch (IOException e) {
             throw new AUParseException(e.getMessage());
         }
+
         return auFaculties;
+    }
+
+    @NonNull
+    private String checkNotNullUrl(String url) {
+        if (url == null) {
+            url = auFacultyHeaderUrl;
+            checkNotNull(url);
+        }
+        return url;
+    }
+
+    private RealmList<AUFacultyHeader> parseAUFacultyHeaders(String auFacultyURL, int escapeHeaderTag, AUFacultyHeader topLevelHeader) throws AUParseException {
+        RealmList<AUFacultyHeader> auFaculties = new RealmList<>();
+        Document htmlDoc;
+        try {
+            htmlDoc = Jsoup.connect(auFacultyURL).get();
+            if (escapeHeaderTag != 1) getAUFacultyEvents(topLevelHeader, auFaculties, htmlDoc);
+            getAUFacultyHeaders(escapeHeaderTag,
+                    topLevelHeader,
+                    auFaculties,
+                    htmlDoc);
+        } catch (IOException e) {
+            throw new AUParseException(e.getMessage());
+        }
+        return auFaculties;
+    }
+
+    private void getAUFacultyEvents(AUFacultyHeader topLevelHeader, RealmList<AUFacultyHeader> auFaculties,
+                                    Document htmlDoc) {
+        Elements eventsHtmlTags;
+        int escapeTags = 0;
+        eventsHtmlTags = htmlDoc.getElementsByClass(AUItem.EVENT);
+        for (Element eventHtmlTag : eventsHtmlTags) {
+            if (++escapeTags <= 3) continue;
+            String title = eventHtmlTag.attr(AUItem.TITLE);
+            String href = eventHtmlTag.attr(AUItem.HREF);
+            AUFacultyHeader auFacultyHeader = new AUFacultyHeader();
+            auFacultyHeader.setTitle(title);
+            auFacultyHeader.setUrl(href);
+            auFacultyHeader.setTopLevelHeader(topLevelHeader);
+            auFacultyHeader.setAUFacultyType(AUItem.EVENT);
+            auFaculties.add(auFacultyHeader);
+        }
+    }
+
+    private void getAUFacultyHeaders(int escapeHeaderTag,
+                                     AUFacultyHeader topLevelHeader,
+                                     RealmList<AUFacultyHeader> auFaculties,
+                                     Document htmlDoc) throws AUParseException {
+        Elements uebHtmlTags;
+        int htmlTagPos = 0;
+        uebHtmlTags = htmlDoc.getElementsByClass(AUItem.UEB);
+        for (Element uebTag : uebHtmlTags) {
+            if (++htmlTagPos <= escapeHeaderTag) {
+                continue;
+            }
+            String title = uebTag.attr(AUItem.TITLE);
+            String href = uebTag.attr(AUItem.HREF);
+            AUFacultyHeader auFacultyHeader = new AUFacultyHeader();
+            auFacultyHeader.setTitle(title);
+            auFacultyHeader.setUrl(href);
+            int nextEscapeHeaderTag = escapeHeaderTag + 1;
+            RealmList<AUFacultyHeader> innerAUFacultyHead = parseAUFacultyHeaders(href, nextEscapeHeaderTag, auFacultyHeader);
+            auFacultyHeader.setAuFacultyHeaderLis(innerAUFacultyHead);
+            auFacultyHeader.setTopLevelHeader(topLevelHeader);
+            auFacultyHeader.setAUFacultyType((escapeHeaderTag == AU_FACULTY_NAME_TAG) ? AUItem.FACULTY : AUItem.AUTYPE);
+            auFaculties.add(auFacultyHeader);
+        }
     }
 
 

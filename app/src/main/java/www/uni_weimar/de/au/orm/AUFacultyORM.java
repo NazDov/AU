@@ -3,6 +3,7 @@ package www.uni_weimar.de.au.orm;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 import www.uni_weimar.de.au.models.AUFacultyHeader;
 
@@ -26,11 +27,18 @@ public class AUFacultyORM implements AUBaseORM<AUFacultyHeader> {
         return item;
     }
 
-    @Override
-    public List<AUFacultyHeader> addAll(List<AUFacultyHeader> items) {
+
+    public AUFacultyHeader update(AUFacultyHeader item) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        realm.delete(AUFacultyHeader.class);
+        item = realm.copyToRealmOrUpdate(item);
+        realm.commitTransaction();
+        return item;
+    }
+
+    @Override
+    public List<AUFacultyHeader> addAll(List<AUFacultyHeader> items) {
+        realm.beginTransaction();
         items = realm.copyToRealmOrUpdate(items);
         realm.commitTransaction();
         return items;
@@ -60,5 +68,10 @@ public class AUFacultyORM implements AUBaseORM<AUFacultyHeader> {
     @Override
     public List<AUFacultyHeader> findAllBy(String key, String name) {
         return realm.where(AUFacultyHeader.class).equalTo(key, name).findAll();
+    }
+
+    public List<AUFacultyHeader> findAllBy(String key, Integer name) {
+        RealmResults<AUFacultyHeader> facultyHeaders = realm.where(AUFacultyHeader.class).equalTo(key, name).findAll();
+        return facultyHeaders;
     }
 }

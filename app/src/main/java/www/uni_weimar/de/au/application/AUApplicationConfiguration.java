@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import www.uni_weimar.de.au.parsers.impl.AUMainMenuTabParser;
 import www.uni_weimar.de.au.utils.SSLUtilities;
 import www.uni_weimar.de.au.view.activity.AUMainMenuActivity;
 
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -40,7 +42,7 @@ public class AUApplicationConfiguration extends Application {
         configRealmDatabase();
         Log.i(TAG, "realm database configured");
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+2:00"));
-        SSLUtilities.trustAllCerts();
+        if (Build.VERSION.SDK_INT < LOLLIPOP) SSLUtilities.trustAllCerts();
     }
 
 
