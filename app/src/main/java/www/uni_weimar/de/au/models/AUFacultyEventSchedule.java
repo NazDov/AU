@@ -20,6 +20,8 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
     private String eventScheduleTime;
     private String eventSchedulePeriod;
     private String eventScheduleDuration;
+    private String eventScheduleRoom;
+    private String eventScheduleLecturer;
 
 
     public AUFacultyEventSchedule() {
@@ -29,18 +31,24 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
     public AUFacultyEventSchedule(String eventScheduleDay,
                                   String eventScheduleTime,
                                   String eventSchedulePeriod,
+                                  String eventScheduleRoom,
+                                  String eventScheduleLecturer,
                                   String eventScheduleDuration) {
         this.eventScheduleDay = eventScheduleDay;
         this.eventScheduleTime = eventScheduleTime;
         this.eventSchedulePeriod = eventSchedulePeriod;
         this.eventScheduleDuration = eventScheduleDuration;
+        this.eventScheduleLecturer = eventScheduleLecturer;
+        this.eventScheduleRoom = eventScheduleRoom;
     }
 
     public AUFacultyEventSchedule(EventScheduleBuilder eventScheduleBuilder) {
         this(eventScheduleBuilder.eventScheduleDay,
                 eventScheduleBuilder.eventScheduleTime,
                 eventScheduleBuilder.eventSchedulePeriod,
-                eventScheduleBuilder.eventScheduleDuration);
+                eventScheduleBuilder.eventScheduleRoom,
+                eventScheduleBuilder.eventScheduleDuration,
+                eventScheduleBuilder.eventScheduleLecturer);
     }
 
 
@@ -48,40 +56,24 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
         return eventScheduleId;
     }
 
-    public void setEventScheduleId(String eventScheduleId) {
-        this.eventScheduleId = eventScheduleId;
-    }
-
     public String getEventScheduleDay() {
         return eventScheduleDay;
-    }
-
-    public void setEventScheduleDay(String eventScheduleDay) {
-        this.eventScheduleDay = eventScheduleDay;
     }
 
     public String getEventScheduleTime() {
         return eventScheduleTime;
     }
 
-    public void setEventScheduleTime(String eventScheduleTime) {
-        this.eventScheduleTime = eventScheduleTime;
-    }
-
     public String getEventSchedulePeriod() {
         return eventSchedulePeriod;
-    }
-
-    public void setEventSchedulePeriod(String eventSchedulePeriod) {
-        this.eventSchedulePeriod = eventSchedulePeriod;
     }
 
     public String getEventScheduleDuration() {
         return eventScheduleDuration;
     }
 
-    public void setEventScheduleDuration(String eventScheduleDuration) {
-        this.eventScheduleDuration = eventScheduleDuration;
+    public String getEventScheduleRoom() {
+        return eventScheduleRoom;
     }
 
     @Override
@@ -93,14 +85,15 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
                 Objects.equal(getEventScheduleDay(), that.getEventScheduleDay()) &&
                 Objects.equal(getEventScheduleTime(), that.getEventScheduleTime()) &&
                 Objects.equal(getEventSchedulePeriod(), that.getEventSchedulePeriod()) &&
-                Objects.equal(getEventScheduleDuration(), that.getEventScheduleDuration());
+                Objects.equal(getEventScheduleDuration(), that.getEventScheduleDuration()) &&
+                Objects.equal(getEventScheduleRoom(), that.getEventScheduleRoom()) &&
+                Objects.equal(eventScheduleLecturer, that.eventScheduleLecturer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getEventScheduleId(), getEventScheduleDay(), getEventScheduleTime(), getEventSchedulePeriod(), getEventScheduleDuration());
+        return Objects.hashCode(getEventScheduleId(), getEventScheduleDay(), getEventScheduleTime(), getEventSchedulePeriod(), getEventScheduleDuration(), getEventScheduleRoom(), eventScheduleLecturer);
     }
-
 
     @Override
     public String toString() {
@@ -110,6 +103,8 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
                 .add("eventScheduleTime", eventScheduleTime)
                 .add("eventSchedulePeriod", eventSchedulePeriod)
                 .add("eventScheduleDuration", eventScheduleDuration)
+                .add("eventScheduleRoom", eventScheduleRoom)
+                .add("eventScheduleLecturer", eventScheduleLecturer)
                 .toString();
     }
 
@@ -118,6 +113,8 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
         private String eventScheduleTime;
         private String eventSchedulePeriod;
         private String eventScheduleDuration;
+        private String eventScheduleRoom;
+        private String eventScheduleLecturer;
 
         public EventScheduleBuilder setEventScheduleDay(String eventScheduleDay) {
             this.eventScheduleDay = eventScheduleDay;
@@ -136,6 +133,16 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
 
         public EventScheduleBuilder setEventScheduleDuration(String eventScheduleDuration) {
             this.eventScheduleDuration = eventScheduleDuration;
+            return this;
+        }
+
+        public EventScheduleBuilder setEventScheduleRoom(String eventScheduleRoom) {
+            this.eventScheduleRoom = eventScheduleRoom;
+            return this;
+        }
+
+        public EventScheduleBuilder setEventScheduleLecturer(String eventScheduleLecturer) {
+            this.eventScheduleLecturer = eventScheduleLecturer;
             return this;
         }
 

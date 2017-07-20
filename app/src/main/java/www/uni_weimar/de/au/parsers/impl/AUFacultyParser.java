@@ -25,6 +25,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class AUFacultyParser implements AUParser<AUFacultyHeader> {
 
     private final static int AU_FACULTY_NAME_TAG = 1;
+    public static final String VERANSTALTUNG_SELECTOR = "a[href$='veranstaltung']";
     private String auFacultyHeaderUrl;
 
     AUFacultyParser(String url) {
@@ -125,9 +126,8 @@ public class AUFacultyParser implements AUParser<AUFacultyHeader> {
                                     Document htmlDoc) {
         Elements eventsHtmlTags;
         int escapeTags = 0;
-        eventsHtmlTags = htmlDoc.getElementsByClass(AUItem.EVENT);
+        eventsHtmlTags = htmlDoc.select(VERANSTALTUNG_SELECTOR);
         for (Element eventHtmlTag : eventsHtmlTags) {
-            if (++escapeTags <= 3) continue;
             String title = eventHtmlTag.attr(AUItem.TITLE);
             String href = eventHtmlTag.attr(AUItem.HREF);
             AUFacultyHeader auFacultyHeader = new AUFacultyHeader();

@@ -21,6 +21,10 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
     private String eventLecturer;
     private String eventSemester;
     private String eventMaxParticipants;
+    private String eventType;
+    private String eventNumber;
+    private String eventRhytmus;
+    private String eventSWS;
     private RealmList<AUFacultyEventSchedule> auEventScheduleList;
 
     public AUFacultyEvent() {
@@ -31,11 +35,19 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
                            String eventLecturer,
                            String eventSemester,
                            String eventMaxParticipants,
+                           String eventType,
+                           String eventNumber,
+                           String eventRhytmus,
+                           String eventSWS,
                            RealmList<AUFacultyEventSchedule> auEventScheduleList) {
         this.eventName = eventName;
         this.eventLecturer = eventLecturer;
         this.eventSemester = eventSemester;
         this.eventMaxParticipants = eventMaxParticipants;
+        this.eventType = eventType;
+        this.eventNumber = eventNumber;
+        this.eventRhytmus = eventRhytmus;
+        this.eventSWS = eventSWS;
         this.auEventScheduleList = auEventScheduleList;
     }
 
@@ -44,6 +56,10 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
                 eventBuilder.eventLecturer,
                 eventBuilder.eventSemester,
                 eventBuilder.eventMaxParticipants,
+                eventBuilder.eventType,
+                eventBuilder.eventNumber,
+                eventBuilder.eventRhytmus,
+                eventBuilder.eventSWS,
                 eventBuilder.auEventScheduleList);
     }
 
@@ -67,6 +83,21 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
         return eventMaxParticipants;
     }
 
+    public String getEventType() {
+        return eventType;
+    }
+
+    public String getEventSWS() {
+        return eventSWS;
+    }
+
+    public String getEventNumber() {
+        return eventNumber;
+    }
+
+    public String getEventRhytmus() {
+        return eventRhytmus;
+    }
 
     public RealmList<AUFacultyEventSchedule> getAuEventScheduleList() {
         return auEventScheduleList;
@@ -107,7 +138,11 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
         private String eventLecturer;
         private String eventSemester;
         private String eventMaxParticipants;
+        private String eventType;
         private RealmList<AUFacultyEventSchedule> auEventScheduleList;
+        private String eventNumber;
+        private String eventRhytmus;
+        private String eventSWS;
 
         public EventBuilder setEventName(String eventName) {
             this.eventName = eventName;
@@ -133,6 +168,27 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
             this.auEventScheduleList = auEventScheduleList;
             return this;
         }
+
+        public EventBuilder setEventType(String eventType) {
+            this.eventType = eventType;
+            return this;
+        }
+
+        public EventBuilder setEventNumber(String eventNumber) {
+            this.eventNumber = eventNumber;
+            return this;
+        }
+
+        public EventBuilder setEventRhytmus(String eventRhytmus) {
+            this.eventRhytmus = eventRhytmus;
+            return this;
+        }
+
+        public EventBuilder setEventSWS(String eventSWS) {
+            this.eventSWS = eventSWS;
+            return this;
+        }
+
 
         public AUFacultyEvent build() {
             return new AUFacultyEvent(this);
