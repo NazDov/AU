@@ -58,26 +58,15 @@ public class AUFacultyHeaderParserTest {
     }
 
 
-    @Test(expected = NullPointerException.class)
-    public void testAUFacultyParserNullUrlConstructor() {
-        String url = null;
-        auFacultyParser = AUFacultyParser.of(url);
-    }
-
     @Test
-    public void testAUFacultyParser() throws AUParseException {
-        String url = "http://url.net";
-        //when
-        List<AUFacultyHeader> actualAUFacultyHeaderList = auFacultyParser.parseAU(url);
-        //then
-        assertEquals("Institute of Architecture", actualAUFacultyHeaderList.get(0).getTitle());
-    }
-
-    @Test
-    public void testAUFacultyHeaderParse() throws AUParseException {
-        String url = "https://www.uni-weimar.de/qisserver/rds?state=wtree&search=1&trex=step&root120171=20648&P.vx=kurz";
-        AUFacultyParser auFacultyParser = AUFacultyParser.of(url);
-        auFacultyParser.parseAU();
+    public void testAUEventParser() {
+        try {
+            AUEventParser
+                    .of("https://www.uni-weimar.de/qisserver/rds?state=verpublish&status=init&vmfile=no&publishid=34459&moduleCall=webInfo&publishConfFile=webInfo&publishSubDir=veranstaltung")
+                    .parseAU();
+        } catch (AUParseException e) {
+            e.printStackTrace();
+        }
     }
 
 

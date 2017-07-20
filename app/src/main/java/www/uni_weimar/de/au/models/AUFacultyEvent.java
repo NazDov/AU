@@ -119,8 +119,9 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
             return this;
         }
 
-        public void setEventSemester(String eventSemester) {
+        public EventBuilder setEventSemester(String eventSemester) {
             this.eventSemester = eventSemester;
+            return this;
         }
 
         public EventBuilder setEventMaxParticipants(String eventMaxParticipants) {

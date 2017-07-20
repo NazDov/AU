@@ -64,30 +64,36 @@ public class AUFacultyParser implements AUParser<AUFacultyHeader> {
         int htmlTagPos = 0;
         try {
             htmlDoc = Jsoup.connect(url).get();
-            uebHtmlTags = htmlDoc.getElementsByClass(AUItem.UEB);
-            for (Element uebHtmlTag : uebHtmlTags) {
-                if (++htmlTagPos <= escapeHeaderTag) {
-                    continue;
-                }
-                String title = uebHtmlTag.attr(AUItem.TITLE);
-                String href = uebHtmlTag.attr(AUItem.HREF);
-                AUFacultyHeader auFacultyHeader = new AUFacultyHeader();
-                auFacultyHeader.setTitle(title);
-                auFacultyHeader.setUrl(href);
-                auFacultyHeader.setHeaderLevel(escapeHeaderTag);
-                auFacultyHeader.setTopLevelHeader(topLevelHeader);
-                auFacultyHeader.setTopLevelHeaderName(topLevelHeader != null ? topLevelHeader.getTitle() : null);
-                auFacultyHeader.setAUFacultyType((escapeHeaderTag == AU_FACULTY_NAME_TAG) ? AUItem.FACULTY : AUItem.AUTYPE);
-                auFaculties.add(auFacultyHeader);
-            }
-            if (topLevelHeader != null) {
-                topLevelHeader.setAuFacultyHeaderLis(auFaculties);
-            }
+            if (escapeHeaderTag != 1) getAUFacultyEvents(topLevelHeader, auFaculties, htmlDoc);
+            getAUFacultyHeaders(escapeHeaderTag, topLevelHeader, auFaculties, htmlDoc, htmlTagPos);
         } catch (IOException e) {
             throw new AUParseException(e.getMessage());
         }
 
         return auFaculties;
+    }
+
+    private void getAUFacultyHeaders(int escapeHeaderTag, AUFacultyHeader topLevelHeader, RealmList<AUFacultyHeader> auFaculties, Document htmlDoc, int htmlTagPos) {
+        Elements uebHtmlTags;
+        uebHtmlTags = htmlDoc.getElementsByClass(AUItem.UEB);
+        for (Element uebHtmlTag : uebHtmlTags) {
+            if (++htmlTagPos <= escapeHeaderTag) {
+                continue;
+            }
+            String title = uebHtmlTag.attr(AUItem.TITLE);
+            String href = uebHtmlTag.attr(AUItem.HREF);
+            AUFacultyHeader auFacultyHeader = new AUFacultyHeader();
+            auFacultyHeader.setTitle(title);
+            auFacultyHeader.setUrl(href);
+            auFacultyHeader.setHeaderLevel(escapeHeaderTag);
+            auFacultyHeader.setTopLevelHeader(topLevelHeader);
+            auFacultyHeader.setTopLevelHeaderName(topLevelHeader != null ? topLevelHeader.getTitle() : null);
+            auFacultyHeader.setAUFacultyType((escapeHeaderTag == AU_FACULTY_NAME_TAG) ? AUItem.FACULTY : AUItem.AUTYPE);
+            auFaculties.add(auFacultyHeader);
+        }
+        if (topLevelHeader != null) {
+            topLevelHeader.setAuFacultyHeaderLis(auFaculties);
+        }
     }
 
     @NonNull
