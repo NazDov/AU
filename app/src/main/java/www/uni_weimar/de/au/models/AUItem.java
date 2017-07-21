@@ -21,4 +21,6 @@ public interface AUItem {
     String FACULTY = "faculty";
     String UEB = "ueb";
     String EVENT = "regular";
+    String AU_ITEM_URL_TAG = "AU_ITEM_URL";
+    String AU_ITEM_NAME_TAG = "AU_ITEM_NAME";
 }

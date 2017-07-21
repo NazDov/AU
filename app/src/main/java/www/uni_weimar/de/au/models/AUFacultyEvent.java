@@ -113,12 +113,16 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
                 Objects.equal(getEventLecturer(), that.getEventLecturer()) &&
                 Objects.equal(getEventSemester(), that.getEventSemester()) &&
                 Objects.equal(getEventMaxParticipants(), that.getEventMaxParticipants()) &&
+                Objects.equal(getEventType(), that.getEventType()) &&
+                Objects.equal(getEventNumber(), that.getEventNumber()) &&
+                Objects.equal(getEventRhytmus(), that.getEventRhytmus()) &&
+                Objects.equal(getEventSWS(), that.getEventSWS()) &&
                 Objects.equal(getAuEventScheduleList(), that.getAuEventScheduleList());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getEventId(), getEventName(), getEventLecturer(), getEventSemester(), getEventMaxParticipants(), getAuEventScheduleList());
+        return Objects.hashCode(getEventId(), getEventName(), getEventLecturer(), getEventSemester(), getEventMaxParticipants(), getEventType(), getEventNumber(), getEventRhytmus(), getEventSWS(), getAuEventScheduleList());
     }
 
     @Override
@@ -129,6 +133,10 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
                 .add("eventLecturer", eventLecturer)
                 .add("eventSemester", eventSemester)
                 .add("eventMaxParticipants", eventMaxParticipants)
+                .add("eventType", eventType)
+                .add("eventNumber", eventNumber)
+                .add("eventRhytmus", eventRhytmus)
+                .add("eventSWS", eventSWS)
                 .add("auEventScheduleList", auEventScheduleList)
                 .toString();
     }

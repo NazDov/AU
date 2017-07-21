@@ -20,8 +20,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class AUAbstractContentRequestService<T extends RealmObject> implements AUCacheService<T>, AUCacheNotifier<T> {
 
-    protected AUBaseORM<T> auBaseORM;
-    protected AUParser<T> auParser;
+    protected final AUBaseORM<T> auBaseORM;
+    protected final AUParser<T> auParser;
 
     public AUAbstractContentRequestService(AUBaseORM<T> auBaseORm, AUParser<T> auParser) {
         this.auBaseORM = auBaseORm;

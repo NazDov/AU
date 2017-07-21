@@ -76,19 +76,19 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
         Elements eventTRItems = htmlDoc.select("table[summary=" + eventScheduleTable + "] tr:not(:first-child)");
         for (Element eventTRItem : eventTRItems) {
             eventScheduleList.add(new AUFacultyEventSchedule.EventScheduleBuilder()
-                    .setEventScheduleDay(getEventTDValBySelector(eventTRItem, TD_TAG_SELECTOR))
-                    .setEventScheduleTime(getEventTDValBySelector(eventTRItem, TD_ZEIT_SELECTOR))
-                    .setEventScheduleDuration(getEventTDValBySelector(eventTRItem, TD_DAUER_SELECTOR))
-                    .setEventSchedulePeriod(getEventTDValBySelector(eventTRItem, TD_RHYTMUS_SELECTOR))
-                    .setEventScheduleRoom(getEventTDValBySelector(eventTRItem, TD_RAUM_SELECTOR))
-                    .setEventScheduleLecturer(getEventTDValBySelector(eventTRItem, TD_LEHR_PERSON_SELECTOR))
+                    .setEventScheduleDay(parseEventTDValBySelector(eventTRItem, TD_TAG_SELECTOR))
+                    .setEventScheduleTime(parseEventTDValBySelector(eventTRItem, TD_ZEIT_SELECTOR))
+                    .setEventScheduleDuration(parseEventTDValBySelector(eventTRItem, TD_DAUER_SELECTOR))
+                    .setEventSchedulePeriod(parseEventTDValBySelector(eventTRItem, TD_RHYTMUS_SELECTOR))
+                    .setEventScheduleRoom(parseEventTDValBySelector(eventTRItem, TD_RAUM_SELECTOR))
+                    .setEventScheduleLecturer(parseEventTDValBySelector(eventTRItem, TD_LEHR_PERSON_SELECTOR))
                     .build());
         }
         return eventScheduleList;
     }
 
-    private String getEventTDValBySelector(Element eventTRItem, String tdTagSelector) {
-        return eventTRItem.select(tdTagSelector).get(0).text();
+    private String parseEventTDValBySelector(Element trItem, String selector) {
+        return trItem.select(selector).get(0).text();
     }
 
     private String parseEventName(Document html) {

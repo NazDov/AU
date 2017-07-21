@@ -1,5 +1,6 @@
 package www.uni_weimar.de.au.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,9 @@ import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUFacultyHeader;
+import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.service.impl.AUFacultyContentRequestService;
+import www.uni_weimar.de.au.view.activity.AUEventItemDetailsActivity;
 import www.uni_weimar.de.au.view.adapters.AUFacultyRecyclerViewAdapter;
 
 /**
@@ -59,16 +62,23 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         auScheduleSwipeRefreshLayout.setOnRefreshListener(this);
         auFacultyRecyclerViewAdapter = new AUFacultyRecyclerViewAdapter(getContext(), auFacultyHeaderList);
         auFacultyRecyclerViewAdapter.setOnItemClickListener(auItem -> {
-            Toast.makeText(getContext(), "select " + auItem.getTitle(), Toast.LENGTH_SHORT).show();
-            auFacultyContentRequestService
-                    .requestContent(auItem.getUrl(), auItem.getHeaderLevel() + 1, new AUFacultyHeader(auItem))
-                    .subscribe((items) -> {
-                        auFacultyHeaderList = items;
-                        updateAUFacultyRecyclerViewAdapter();
-                        auFacultyContentRequestService.update(auItem);
-                    }, this::onError);
-            goBackToPreviousFacultyHeader.setText(auItem.getTitle());
-            readFromCacheBy(auItem.getTitle());
+            if (AUItem.EVENT.equals(auItem.getAutype())) {
+                Intent intent = new Intent(getContext(), AUEventItemDetailsActivity.class);
+                intent.putExtra(AUItem.AU_ITEM_URL_TAG, auItem.getUrl());
+                intent.putExtra(AUItem.AU_ITEM_NAME_TAG, auItem.getTitle());
+                startActivity(intent);
+            } else {
+                auFacultyContentRequestService
+                        .requestContent(auItem.getUrl(), auItem.getHeaderLevel() + 1, new AUFacultyHeader(auItem))
+                        .subscribe((items) -> {
+                            auFacultyHeaderList = items;
+                            updateAUFacultyRecyclerViewAdapter();
+                            auFacultyContentRequestService.update(auItem);
+                        }, this::onError);
+                goBackToPreviousFacultyHeader.setText(auItem.getTitle());
+                readFromCacheBy(auItem.getTitle());
+            }
+
         });
         auFacultyContentRequestService = AUFacultyContentRequestService.of(realm, getString(R.string.COURSES_URL));
         auFacultyContentRequestService
