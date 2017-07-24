@@ -20,12 +20,12 @@
     <dimen name="text14">14sp</dimen>
     <dimen name="text16">16sp</dimen>
     <dimen name="text18">18sp</dimen>
+    <dimen name="text20">20sp</dimen>
     <dimen name="indicator_height">2dp</dimen>
     <dimen name="news_card_image_height">140dp</dimen>
     <dimen name="padding_10">10dp</dimen>
     <dimen name="padding_15">15dp</dimen>
     <dimen name="padding_30">30dp</dimen>
-    <dimen name="text20">20dp</dimen>
     <dimen name="news_title_padding">20dp</dimen>
     <dimen name="news_feed_time_since_margin_left">10dp</dimen>
     <dimen name="news_feed_clock_img_margin_left">10dp</dimen>
@@ -46,5 +46,5 @@
     <dimen name="au_menu_circle">60dp</dimen>
 
     <dimen name="au_main_menu_viewpager_margin_top">-80dp</dimen>
-    <dimen name="table_row_cent">20dp</dimen>
+    <dimen name="table_row_cent">25dp</dimen>
 </resources>

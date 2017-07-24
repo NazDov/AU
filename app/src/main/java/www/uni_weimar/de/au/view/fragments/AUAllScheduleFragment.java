@@ -60,13 +60,16 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         ButterKnife.inject(this, root);
         realm = Realm.getDefaultInstance();
         auScheduleSwipeRefreshLayout.setOnRefreshListener(this);
+        auScheduleSwipeRefreshLayout.setRefreshing(true);
         auFacultyRecyclerViewAdapter = new AUFacultyRecyclerViewAdapter(getContext(), auFacultyHeaderList);
         auFacultyRecyclerViewAdapter.setOnItemClickListener(auItem -> {
+            auScheduleSwipeRefreshLayout.setRefreshing(true);
             if (AUItem.EVENT.equals(auItem.getAutype())) {
                 Intent intent = new Intent(getContext(), AUEventItemDetailsActivity.class);
                 intent.putExtra(AUItem.AU_ITEM_URL_TAG, auItem.getUrl());
                 intent.putExtra(AUItem.AU_ITEM_NAME_TAG, auItem.getTitle());
                 startActivity(intent);
+                stopRefreshing();
             } else {
                 auFacultyContentRequestService
                         .requestContent(auItem.getUrl(), auItem.getHeaderLevel() + 1, new AUFacultyHeader(auItem))
@@ -74,6 +77,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
                             auFacultyHeaderList = items;
                             updateAUFacultyRecyclerViewAdapter();
                             auFacultyContentRequestService.update(auItem);
+                            stopRefreshing();
                         }, this::onError);
                 goBackToPreviousFacultyHeader.setText(auItem.getTitle());
                 readFromCacheBy(auItem.getTitle());

@@ -38,4 +38,11 @@
     <string name="au_sws">SWS</string>
     <string name="au_event_lecturers">Zugeordnete Personen</string>
     <string name="au_event_description">Beschreibung</string>
+    <string name="title_activity_auevent_schedule">AUEventScheduleActivity</string>
+    <string name="TAG">Tag</string>
+    <string name="ZEIT">Zeit</string>
+    <string name="RHYTMUS">Rhytmus</string>
+    <string name="DAUER">Dauer</string>
+    <string name="RAUM">Raum</string>
+    <string name="max_teilnehmer_innen">Max. Teilnehmer/-innen</string>
 </resources>

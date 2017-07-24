@@ -26,6 +26,7 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
     private String eventRhytmus;
     private String eventSWS;
     private String eventDescription;
+    private String eventURL;
     private RealmList<AUFacultyEventSchedule> auEventScheduleList;
 
     public AUFacultyEvent() {
@@ -41,6 +42,7 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
                            String eventRhytmus,
                            String eventSWS,
                            String eventDescription,
+                           String eventURL,
                            RealmList<AUFacultyEventSchedule> auEventScheduleList) {
         this.eventName = eventName;
         this.eventLecturer = eventLecturer;
@@ -51,6 +53,7 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
         this.eventRhytmus = eventRhytmus;
         this.eventSWS = eventSWS;
         this.eventDescription = eventDescription;
+        this.eventURL = eventURL;
         this.auEventScheduleList = auEventScheduleList;
     }
 
@@ -64,6 +67,7 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
                 eventBuilder.eventRhytmus,
                 eventBuilder.eventSWS,
                 eventBuilder.eventDescription,
+                eventBuilder.eventURL,
                 eventBuilder.auEventScheduleList);
     }
 
@@ -101,6 +105,10 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
 
     public String getEventRhytmus() {
         return eventRhytmus;
+    }
+
+    public String getEventURL() {
+        return eventURL;
     }
 
     public RealmList<AUFacultyEventSchedule> getAuEventScheduleList() {
@@ -160,6 +168,7 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
         private String eventRhytmus;
         private String eventSWS;
         private String eventDescription;
+        private String eventURL;
 
         public EventBuilder setEventName(String eventName) {
             this.eventName = eventName;
@@ -209,6 +218,11 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
 
         public EventBuilder setEventDescription(String eventDescription) {
             this.eventDescription = eventDescription;
+            return this;
+        }
+
+        public EventBuilder setEventURL(String eventURL) {
+            this.eventURL = eventURL;
             return this;
         }
 

@@ -36,6 +36,7 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
     private static final String TD_DAUER_SELECTOR = "td:nth-child(5)";
     private static final String TD_RAUM_SELECTOR = "td:nth-child(6)";
     private static final String TD_LEHR_PERSON_SELECTOR = "td:nth-child(8)";
+    private static final String TD_MAX_PART_SELECTOR = "td:nth-child(11)";
     private final String url;
 
     public AUEventParser(String url) {
@@ -56,6 +57,7 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
             htmlDoc = Jsoup.connect(url).get();
             checkNotNull(htmlDoc);
             auFacultyEvents.add(new AUFacultyEvent.EventBuilder()
+                    .setEventURL(url)
                     .setEventName(parseEventName(htmlDoc))
                     .setEventType(parseEventTableVal(htmlDoc, EVENT_TYPE))
                     .setEventNumber(parseEventTableVal(htmlDoc, EVENT_NUMBER))
@@ -84,6 +86,7 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
                     .setEventSchedulePeriod(parseEventTDValBySelector(eventTRItem, TD_RHYTMUS_SELECTOR))
                     .setEventScheduleRoom(parseEventTDValBySelector(eventTRItem, TD_RAUM_SELECTOR))
                     .setEventScheduleLecturer(parseEventTDValBySelector(eventTRItem, TD_LEHR_PERSON_SELECTOR))
+                    .setEventMaxParticipants(parseEventTDValBySelector(eventTRItem, TD_MAX_PART_SELECTOR))
                     .build());
         }
         return eventScheduleList;
@@ -100,14 +103,12 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
 
     private String parseEventLectureName(Document htmlDoc) {
         Elements lectureHref = htmlDoc.select(LECTURER_SELECTOR);
-        String text = lectureHref.text();
-        return lectureHref != null && !lectureHref.isEmpty() ? text : null;
+        return lectureHref != null && !lectureHref.isEmpty() ? lectureHref.text() : null;
     }
 
     private String parseEventTableVal(Document htmlDoc, String key) {
         Elements th = htmlDoc.select("th:containsOwn(" + key + ") + td");
-        String text = th.get(0).text();
-        return th != null && !th.isEmpty() ? text : null;
+        return th != null && !th.isEmpty() ? th.get(0).text() : null;
     }
 
     @Override

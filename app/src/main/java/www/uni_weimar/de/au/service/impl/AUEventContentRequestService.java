@@ -1,5 +1,7 @@
 package www.uni_weimar.de.au.service.impl;
 
+import java.util.List;
+
 import io.realm.Realm;
 import www.uni_weimar.de.au.models.AUFacultyEvent;
 import www.uni_weimar.de.au.orm.AUBaseORM;
@@ -17,7 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class AUEventContentRequestService extends AUAbstractContentRequestService<AUFacultyEvent> {
 
-    public AUEventContentRequestService(Realm realm, String url) {
+    private AUEventContentRequestService(Realm realm, String url) {
         this(new AUEventORM(realm), new AUEventParser(url));
     }
 
@@ -31,4 +33,14 @@ public class AUEventContentRequestService extends AUAbstractContentRequestServic
         return new AUEventContentRequestService(realm, url);
     }
 
+    public AUEventContentRequestService notifyContentOnCacheUpdate(AUContentChangeListener<AUFacultyEvent> auContentChangeListener, String key, String value) {
+        List<AUFacultyEvent> cachedContent = readFromCache(key, value);
+        auContentChangeListener.notifyContentChange(cachedContent);
+        return this;
+    }
+
+
+    private List<AUFacultyEvent> readFromCache(String key, String value) {
+        return getAuBaseORM().findAllBy(key, value);
+    }
 }

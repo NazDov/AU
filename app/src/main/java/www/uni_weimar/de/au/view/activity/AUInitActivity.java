@@ -12,14 +12,12 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUFacultyHeader;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.models.AUNewsFeed;
-import www.uni_weimar.de.au.service.impl.AUFacultyContentRequestService;
 import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
 
 import static www.uni_weimar.de.au.application.AUApplicationConfiguration.hasInternetConnection;
@@ -48,14 +46,12 @@ public class AUInitActivity extends AppCompatActivity {
         auInitTextView.setText("Please wait...");
         realm = Realm.getDefaultInstance();
         if (!hasInternetConnection(activity) || hasCacheableData()) {
-            new Handler().postDelayed(() -> {
-                callAUMainMenuActivity();
-            }, 3000);
+            new Handler().postDelayed(this::callAUMainMenuActivity, 3000);
             return;
         }
         auMainMenuDisposable = AUMainMenuContentRequestService
                 .of(realm, getResources().getString(R.string.MAIN_MENU))
-                .requestContent()
+                .requestNewContent()
                 .subscribe(this::onMainMenuLoaded, this::onError);
     }
 

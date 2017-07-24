@@ -1,10 +1,15 @@
 package www.uni_weimar.de.au.view.activity;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.PorterDuff;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,10 +22,10 @@ import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUFacultyEvent;
 import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.service.impl.AUEventContentRequestService;
-import www.uni_weimar.de.au.service.inter.AUContentChangeListener;
 
 public class AUEventItemDetailsActivity extends AppCompatActivity {
 
+    protected static final String EVENT_URL = "eventURL";
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
     @InjectView(R.id.auEventItemName)
@@ -37,9 +42,10 @@ public class AUEventItemDetailsActivity extends AppCompatActivity {
     TextView auLecturerName;
     @InjectView(R.id.auEventDescriptionName)
     TextView auEventDescriptionName;
-    @InjectView(R.id.au_event_description_recycler_view)
-    RecyclerView auEventRecyclerView;
-    AUEventContentRequestService auEventContentRequestService;
+    @InjectView(R.id.progressBar)
+    ProgressBar spinner;
+    @InjectView(R.id.auEventSchedule)
+    FloatingActionButton auEventShowScheduleBtn;
     Realm realmUI;
     AUFacultyEvent auFacultyEvent;
 
@@ -50,16 +56,24 @@ public class AUEventItemDetailsActivity extends AppCompatActivity {
         ButterKnife.inject(this);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
-        String auItemURL = (String) intent.getExtras().getCharSequence(AUItem.AU_ITEM_URL_TAG);
-        String auItemName = (String) intent.getExtras().getCharSequence(AUItem.AU_ITEM_NAME_TAG);
+        String eventURL = (String) intent.getExtras().getCharSequence(AUItem.AU_ITEM_URL_TAG);
+        String eventName = (String) intent.getExtras().getCharSequence(AUItem.AU_ITEM_NAME_TAG);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(auItemName);
+        getSupportActionBar().setTitle(eventName);
+        spinner.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.schedule_tab_color), PorterDuff.Mode.MULTIPLY);
+        spinner.setVisibility(View.VISIBLE);
         realmUI = Realm.getDefaultInstance();
-        auEventContentRequestService = AUEventContentRequestService.of(realmUI, auItemURL);
-        auEventContentRequestService
-                .requestContent()
+        AUEventContentRequestService.of(realmUI, eventURL)
+                .notifyContentOnCacheUpdate(this::onSuccess, EVENT_URL, eventURL)
+                .requestNewContent()
                 .subscribe(this::onSuccess, this::onError);
-        auEventContentRequestService.notifyContentOnCacheUpdate(this::onSuccess);
+        auEventShowScheduleBtn.setOnClickListener(v -> {
+            Toast.makeText(getBaseContext(), "show " + auEventName.getText() + " schedule", Toast.LENGTH_SHORT).show();
+            Intent nextIntent = new Intent(getBaseContext(), AUEventScheduleActivity.class);
+            nextIntent.putExtra(AUItem.AU_ITEM_URL_TAG, eventURL);
+            nextIntent.putExtra(AUItem.AU_ITEM_NAME_TAG, auEventName.getText());
+            startActivity(nextIntent);
+        });
     }
 
     private void onError(Throwable throwable) {
@@ -68,8 +82,7 @@ public class AUEventItemDetailsActivity extends AppCompatActivity {
     }
 
     private void onSuccess(List<AUFacultyEvent> auFacultyEvents) {
-        if (auFacultyEvents == null || auFacultyEvents.isEmpty())
-            return;
+        if (auFacultyEvents == null || auFacultyEvents.isEmpty()) return;
         auFacultyEvent = auFacultyEvents.get(0);
         auEventName.setText(auFacultyEvent.getEventName());
         auEventNumber.setText(auFacultyEvent.getEventNumber());
@@ -78,5 +91,15 @@ public class AUEventItemDetailsActivity extends AppCompatActivity {
         auSWSName.setText(auFacultyEvent.getEventSWS());
         auLecturerName.setText(auFacultyEvent.getEventLecturer());
         auEventDescriptionName.setText(auFacultyEvent.getEventDescription());
+        spinner.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (realmUI != null) {
+            realmUI.close();
+            realmUI = null;
+        }
     }
 }

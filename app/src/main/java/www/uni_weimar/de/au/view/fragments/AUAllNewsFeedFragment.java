@@ -5,16 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.List;
@@ -31,7 +26,6 @@ import www.uni_weimar.de.au.models.AUNewsFeedFavourite;
 import www.uni_weimar.de.au.orm.AUNewsFeedFavouriteORM;
 import www.uni_weimar.de.au.service.impl.AUNewsFeedContentRequestService;
 import www.uni_weimar.de.au.service.impl.AUNewsFeedFavouriteContentRequestService;
-import www.uni_weimar.de.au.service.inter.AUContentChangeListener;
 import www.uni_weimar.de.au.utils.AUNewsFeedStaticCategory;
 import www.uni_weimar.de.au.view.adapters.AUNewsFeedRecyclerViewAdapter;
 
@@ -80,7 +74,7 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         auNewsFeedContentRequestService = new AUNewsFeedContentRequestService(realm, getContext().getResources().getString(R.string.ALL_NEWS));
         auNewsFeedFavouriteContentRequestService = new AUNewsFeedFavouriteContentRequestService(realm);
         auNewsFeedContentRequestService.notifyContentOnCacheUpdate(content -> auNewsFeedList = content);
-        auNewsFeedObservable = auNewsFeedContentRequestService.requestContent();
+        auNewsFeedObservable = auNewsFeedContentRequestService.requestNewContent();
         auNewsFeedRecyclerViewAdapter = new AUNewsFeedRecyclerViewAdapter(getContext(), auNewsFeedList);
         auNewsFeedRecyclerViewAdapter.setAuNewsFeedLikedItemListener(auItem -> {
             Toast.makeText(getContext(), "news item " + auItem.getTitle() + " was added to favourites", Toast.LENGTH_SHORT).show();

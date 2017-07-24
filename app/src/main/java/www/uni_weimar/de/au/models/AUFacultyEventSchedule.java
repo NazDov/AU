@@ -22,6 +22,7 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
     private String eventScheduleDuration;
     private String eventScheduleRoom;
     private String eventScheduleLecturer;
+    private String eventMaxParticipants;
 
 
     public AUFacultyEventSchedule() {
@@ -33,12 +34,14 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
                                   String eventSchedulePeriod,
                                   String eventScheduleRoom,
                                   String eventScheduleLecturer,
+                                  String eventMaxParticipants,
                                   String eventScheduleDuration) {
         this.eventScheduleDay = eventScheduleDay;
         this.eventScheduleTime = eventScheduleTime;
         this.eventSchedulePeriod = eventSchedulePeriod;
         this.eventScheduleDuration = eventScheduleDuration;
         this.eventScheduleLecturer = eventScheduleLecturer;
+        this.eventMaxParticipants = eventMaxParticipants;
         this.eventScheduleRoom = eventScheduleRoom;
     }
 
@@ -48,6 +51,7 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
                 eventScheduleBuilder.eventSchedulePeriod,
                 eventScheduleBuilder.eventScheduleRoom,
                 eventScheduleBuilder.eventScheduleDuration,
+                eventScheduleBuilder.eventMaxParticipants,
                 eventScheduleBuilder.eventScheduleLecturer);
     }
 
@@ -76,6 +80,14 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
         return eventScheduleRoom;
     }
 
+    public String getEventMaxParticipants() {
+        return eventMaxParticipants;
+    }
+
+    public String getEventScheduleLecturer() {
+        return eventScheduleLecturer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,12 +99,13 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
                 Objects.equal(getEventSchedulePeriod(), that.getEventSchedulePeriod()) &&
                 Objects.equal(getEventScheduleDuration(), that.getEventScheduleDuration()) &&
                 Objects.equal(getEventScheduleRoom(), that.getEventScheduleRoom()) &&
-                Objects.equal(eventScheduleLecturer, that.eventScheduleLecturer);
+                Objects.equal(getEventScheduleLecturer(), that.getEventScheduleLecturer()) &&
+                Objects.equal(getEventMaxParticipants(), that.getEventMaxParticipants());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getEventScheduleId(), getEventScheduleDay(), getEventScheduleTime(), getEventSchedulePeriod(), getEventScheduleDuration(), getEventScheduleRoom(), eventScheduleLecturer);
+        return Objects.hashCode(getEventScheduleId(), getEventScheduleDay(), getEventScheduleTime(), getEventSchedulePeriod(), getEventScheduleDuration(), getEventScheduleRoom(), getEventScheduleLecturer(), getEventMaxParticipants());
     }
 
     @Override
@@ -105,6 +118,7 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
                 .add("eventScheduleDuration", eventScheduleDuration)
                 .add("eventScheduleRoom", eventScheduleRoom)
                 .add("eventScheduleLecturer", eventScheduleLecturer)
+                .add("eventMaxParticipants", eventMaxParticipants)
                 .toString();
     }
 
@@ -115,6 +129,7 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
         private String eventScheduleDuration;
         private String eventScheduleRoom;
         private String eventScheduleLecturer;
+        private String eventMaxParticipants;
 
         public EventScheduleBuilder setEventScheduleDay(String eventScheduleDay) {
             this.eventScheduleDay = eventScheduleDay;
@@ -143,6 +158,11 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
 
         public EventScheduleBuilder setEventScheduleLecturer(String eventScheduleLecturer) {
             this.eventScheduleLecturer = eventScheduleLecturer;
+            return this;
+        }
+
+        public EventScheduleBuilder setEventMaxParticipants(String eventMaxParticipants) {
+            this.eventMaxParticipants = eventMaxParticipants;
             return this;
         }
 

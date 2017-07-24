@@ -39,7 +39,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="www.uni_weimar.de.au.view.activity.AUMainMenuActivity" />
         </activity>
-        <activity android:name=".view.activity.AUEventItemDetailsActivity"
+        <activity
+            android:name=".view.activity.AUEventItemDetailsActivity"
+            android:parentActivityName=".view.activity.AUMainMenuActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AUEventItemDetailTeam">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="www.uni_weimar.de.au.view.activity.AUMainMenuActivity" />
+        </activity>
+        <activity
+            android:name=".view.activity.AUEventScheduleActivity"
             android:parentActivityName=".view.activity.AUMainMenuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AUEventItemDetailTeam">

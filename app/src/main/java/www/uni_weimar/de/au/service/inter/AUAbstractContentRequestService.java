@@ -28,7 +28,7 @@ public abstract class AUAbstractContentRequestService<T extends RealmObject> imp
         this.auParser = auParser;
     }
 
-    public Observable<List<T>> requestContent() {
+    public Observable<List<T>> requestNewContent() {
         return Observable.create((ObservableOnSubscribe<List<T>>) e -> {
             try {
                 e.onNext(auParser.parseAU());
