@@ -7,6 +7,7 @@ import www.uni_weimar.de.au.orm.AUEventORM;
 import www.uni_weimar.de.au.parsers.impl.AUEventParser;
 import www.uni_weimar.de.au.parsers.inter.AUParser;
 import www.uni_weimar.de.au.service.inter.AUAbstractContentRequestService;
+import www.uni_weimar.de.au.service.inter.AUContentChangeListener;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -24,9 +25,10 @@ public class AUEventContentRequestService extends AUAbstractContentRequestServic
         super(auBaseORm, auParser);
     }
 
-    public static AUAbstractContentRequestService of(Realm realm, String url) {
+    public static AUEventContentRequestService of(Realm realm, String url) {
         checkNotNull(realm);
         checkNotNull(url);
         return new AUEventContentRequestService(realm, url);
     }
+
 }

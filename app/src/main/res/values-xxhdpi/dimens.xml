@@ -44,4 +44,5 @@
 
     <dimen name="navigation_views_width">420dp</dimen>
     <dimen name="au_main_menu_viewpager_margin_top">-90dp</dimen>
+    <dimen name="table_row_cent">100dp</dimen>
 </resources>

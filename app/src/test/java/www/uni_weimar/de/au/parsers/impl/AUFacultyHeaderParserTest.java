@@ -62,7 +62,7 @@ public class AUFacultyHeaderParserTest {
     public void testAUEventParser() {
         try {
             AUEventParser
-                    .of("https://www.uni-weimar.de/qisserver/rds?state=verpublish&status=init&vmfile=no&publishid=34459&moduleCall=webInfo&publishConfFile=webInfo&publishSubDir=veranstaltung")
+                    .of("https://www.uni-weimar.de/qisserver/rds?state=verpublish&status=init&vmfile=no&publishid=34536&moduleCall=webInfo&publishConfFile=webInfo&publishSubDir=veranstaltung")
                     .parseAU();
         } catch (AUParseException e) {
             e.printStackTrace();

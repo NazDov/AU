@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_auevent_item_detailed"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="www.uni_weimar.de.au.view.activity.AUEventItemDetailsActivity"
+    tools:showIn="@layout/activity_auevent_item_details">
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/auEventItemNameWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/au_event_name_wrapper_height">
+
+        <TextView
+            android:id="@+id/auEventItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Bauhaus Open"
+            android:textSize="24sp" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/auEventItemBasicDataWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        app:layout_anchor="@id/auEventItemNameWrapper">
+
+        <TableLayout
+            android:id="@+id/auEventBasicDataGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TableRow
+                android:background="@drawable/event_table_row_drawable"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/VeranstaltungsartID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/au_event_type" />
+
+                <View
+                    android:layout_width="@dimen/table_row_cent"
+                    android:layout_height="0dp" />
+
+                <TextView
+                    android:id="@+id/auVeranstaltungsartName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="Other event" />
+
+            </TableRow>
+
+
+            <TableRow
+                android:background="@drawable/event_table_row_drawable"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/VeranstaltungsnummerID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/au_event_number" />
+
+                <View
+                    android:layout_width="@dimen/table_row_cent"
+                    android:layout_height="0dp" />
+
+                <TextView
+                    android:id="@+id/auVeranstaltungsnummerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="22383983938" />
+
+            </TableRow>
+
+            <TableRow
+                android:background="@drawable/event_table_row_drawable"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/SemeterID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/au_event_semester" />
+
+                <View
+                    android:layout_width="@dimen/table_row_cent"
+                    android:layout_height="0dp" />
+
+                <TextView
+                    android:id="@+id/auSemesterName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Summer" />
+
+            </TableRow>
+
+            <TableRow
+                android:background="@drawable/event_table_row_drawable"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/SWSID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/au_sws" />
+
+                <View
+                    android:layout_width="@dimen/table_row_cent"
+                    android:layout_height="0dp" />
+
+                <TextView
+                    android:id="@+id/auSWSName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Summer" />
+
+            </TableRow>
+
+        </TableLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/auEventLedctcturerWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="240dp"
+        app:layout_anchor="@id/auEventItemBasicDataWrapper">
+
+        <TableLayout
+            android:id="@+id/auEventLectureGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TableRow
+                android:background="@drawable/event_table_row_drawable"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/auZugeordnetePersonenID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/au_event_lecturers"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <TableRow
+                android:background="@drawable/event_table_row_drawable"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/auZugeordnetePersonenName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text=""
+                    android:textSize="16sp" />
+            </TableRow>
+
+        </TableLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/auEventDescriptionWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="350dp"
+        app:layout_anchor="@id/auEventLedctcturerWrapper">
+
+        <TableLayout
+            android:id="@+id/auEventDescriptionGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TableRow
+                android:background="@drawable/event_table_row_drawable"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/auEventDescriptionID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/au_event_description"
+                    android:textSize="16sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:background="@drawable/event_table_row_drawable"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/auEventDescriptionName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text=""
+                    android:textSize="16sp" />
+
+            </TableRow>
+
+
+        </TableLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/au_event_description_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="450dp"
+        app:layout_anchor="@id/auEventDescriptionWrapper"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+</android.support.design.widget.CoordinatorLayout>

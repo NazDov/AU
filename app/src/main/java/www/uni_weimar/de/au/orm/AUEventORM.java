@@ -3,6 +3,7 @@ package www.uni_weimar.de.au.orm;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import www.uni_weimar.de.au.models.AUFacultyEvent;
 
 /**
@@ -20,6 +21,7 @@ public class AUEventORM implements AUBaseORM<AUFacultyEvent> {
 
     @Override
     public AUFacultyEvent add(AUFacultyEvent item) {
+        Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         item = realm.copyToRealm(item);
         realm.commitTransaction();
@@ -28,6 +30,7 @@ public class AUEventORM implements AUBaseORM<AUFacultyEvent> {
 
     @Override
     public List<AUFacultyEvent> addAll(List<AUFacultyEvent> items) {
+        Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.delete(AUFacultyEvent.class);
         items = realm.copyToRealm(items);
@@ -47,7 +50,8 @@ public class AUEventORM implements AUBaseORM<AUFacultyEvent> {
 
     @Override
     public List<AUFacultyEvent> findAll() {
-        return realm.where(AUFacultyEvent.class).findAll();
+        RealmResults<AUFacultyEvent> facultyEvents = realm.where(AUFacultyEvent.class).findAll();
+        return facultyEvents;
     }
 
     @Override

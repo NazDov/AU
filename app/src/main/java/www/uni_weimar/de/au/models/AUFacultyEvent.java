@@ -25,6 +25,7 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
     private String eventNumber;
     private String eventRhytmus;
     private String eventSWS;
+    private String eventDescription;
     private RealmList<AUFacultyEventSchedule> auEventScheduleList;
 
     public AUFacultyEvent() {
@@ -39,6 +40,7 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
                            String eventNumber,
                            String eventRhytmus,
                            String eventSWS,
+                           String eventDescription,
                            RealmList<AUFacultyEventSchedule> auEventScheduleList) {
         this.eventName = eventName;
         this.eventLecturer = eventLecturer;
@@ -48,6 +50,7 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
         this.eventNumber = eventNumber;
         this.eventRhytmus = eventRhytmus;
         this.eventSWS = eventSWS;
+        this.eventDescription = eventDescription;
         this.auEventScheduleList = auEventScheduleList;
     }
 
@@ -60,6 +63,7 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
                 eventBuilder.eventNumber,
                 eventBuilder.eventRhytmus,
                 eventBuilder.eventSWS,
+                eventBuilder.eventDescription,
                 eventBuilder.auEventScheduleList);
     }
 
@@ -101,6 +105,10 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
 
     public RealmList<AUFacultyEventSchedule> getAuEventScheduleList() {
         return auEventScheduleList;
+    }
+
+    public String getEventDescription() {
+        return eventDescription;
     }
 
     @Override
@@ -151,6 +159,7 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
         private String eventNumber;
         private String eventRhytmus;
         private String eventSWS;
+        private String eventDescription;
 
         public EventBuilder setEventName(String eventName) {
             this.eventName = eventName;
@@ -197,6 +206,11 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
             return this;
         }
 
+
+        public EventBuilder setEventDescription(String eventDescription) {
+            this.eventDescription = eventDescription;
+            return this;
+        }
 
         public AUFacultyEvent build() {
             return new AUFacultyEvent(this);

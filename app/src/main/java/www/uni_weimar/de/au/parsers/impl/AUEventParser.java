@@ -28,6 +28,7 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
     private static final String EVENT_NUMBER = "Veranstaltungsnummer";
     private static final String EVENT_RHYTMUS = "Rhythmus";
     private static final String EVENT_SWS = "SWS";
+    private static final String EVENT_DESCRIPTION = "Beschreibung";
     private static final String EVENT_SCHEDULE_TABLE = "Übersicht über alle Veranstaltungstermine";
     private static final String TD_TAG_SELECTOR = "td:nth-child(2)";
     private static final String TD_ZEIT_SELECTOR = "td:nth-child(3)";
@@ -62,6 +63,7 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
                     .setEventSWS(parseEventTableVal(htmlDoc, EVENT_SWS))
                     .setEventSemester(parseEventTableVal(htmlDoc, SEMESTER))
                     .setEventLecturer(parseEventLectureName(htmlDoc))
+                    .setEventDescription(parseEventTableVal(htmlDoc, EVENT_DESCRIPTION))
                     .setAuEventScheduleList(parseEventSchedule(htmlDoc, EVENT_SCHEDULE_TABLE))
                     .build());
         } catch (IOException e) {
@@ -98,12 +100,14 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
 
     private String parseEventLectureName(Document htmlDoc) {
         Elements lectureHref = htmlDoc.select(LECTURER_SELECTOR);
-        return lectureHref != null && !lectureHref.isEmpty() ? lectureHref.text() : null;
+        String text = lectureHref.text();
+        return lectureHref != null && !lectureHref.isEmpty() ? text : null;
     }
 
     private String parseEventTableVal(Document htmlDoc, String key) {
         Elements th = htmlDoc.select("th:containsOwn(" + key + ") + td");
-        return th != null && !th.isEmpty() ? th.get(0).html() : null;
+        String text = th.get(0).text();
+        return th != null && !th.isEmpty() ? text : null;
     }
 
     @Override
