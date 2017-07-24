@@ -46,4 +46,6 @@
     <dimen name="au_event_name_wrapper_height">40dp</dimen>
     <dimen name="table_row_cent">100dp</dimen>
     <dimen name="au_event_padding">8dp</dimen>
+
+    <dimen name="au_event_schedule_tab_width">40dp</dimen>
 </resources>
