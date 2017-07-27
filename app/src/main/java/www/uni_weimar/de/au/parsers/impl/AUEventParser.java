@@ -37,6 +37,7 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
     private static final String TD_RAUM_SELECTOR = "td:nth-child(6)";
     private static final String TD_LEHR_PERSON_SELECTOR = "td:nth-child(8)";
     private static final String TD_MAX_PART_SELECTOR = "td:nth-child(11)";
+    private static final String EVENT_NAME_SELECTOR = "h1";
     private final String url;
 
     public AUEventParser(String url) {
@@ -93,11 +94,12 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
     }
 
     private String parseEventTDValBySelector(Element trItem, String selector) {
-        return trItem.select(selector).get(0).text();
+        Elements select = trItem.select(selector);
+        return select == null || select.isEmpty() ? null : select.get(0).text();
     }
 
     private String parseEventName(Document html) {
-        Element eventNameHtmlElement = html.getElementsByTag("h1").get(0);
+        Element eventNameHtmlElement = html.select(EVENT_NAME_SELECTOR).get(0);
         return eventNameHtmlElement != null ? eventNameHtmlElement.text().split("-")[0] : null;
     }
 

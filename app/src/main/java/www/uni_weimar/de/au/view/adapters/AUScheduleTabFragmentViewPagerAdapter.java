@@ -25,9 +25,9 @@ public class AUScheduleTabFragmentViewPagerAdapter extends FragmentStatePagerAda
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return AUMyScheduleFragment.newInstance();
-            case 1:
                 return AUAllScheduleFragment.newInstance();
+            case 1:
+                return AUMyScheduleFragment.newInstance();
             default:
                 return AUAllScheduleFragment.newInstance();
         }

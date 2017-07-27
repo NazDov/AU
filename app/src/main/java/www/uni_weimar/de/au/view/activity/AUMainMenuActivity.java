@@ -1,6 +1,5 @@
 package www.uni_weimar.de.au.view.activity;
 
-import android.app.Fragment;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -32,7 +31,6 @@ import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
 import www.uni_weimar.de.au.view.adapters.AUMainMenuViewPagerAdapter;
-import www.uni_weimar.de.au.view.fragments.AUAllScheduleFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AUScheduleTabFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AUMainMenuTabFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AUNewsFeedTabFragment;
@@ -41,6 +39,8 @@ import static www.uni_weimar.de.au.application.AUApplicationConfiguration.*;
 
 public class AUMainMenuActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final int NEWS_FEED_CATEGORY_ITEM_ID = 0;
+    public static final int COURSES_CATEGORY_ITEM_ID = 1;
     @InjectView(R.id.au_main_menu_nav_view)
     NavigationView auMainMenuTabNavigationView;
     @InjectView(R.id.au_main_menu_drawer_layout)
@@ -167,7 +167,7 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View menuBtnView) {
-        int currentItem = 0;
+        int currentItem = NEWS_FEED_CATEGORY_ITEM_ID;
         int menuBtnId = menuBtnView.getId();
         deactivateAllNavMenuBtnExcept(menuBtnId);
         if (menuBtnId == R.id.news_feed_menu_btn_img) {
@@ -176,6 +176,7 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
         }
 
         if (menuBtnId == R.id.schedule_menu_btn_img) {
+            currentItem = COURSES_CATEGORY_ITEM_ID;
             scheduleMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
             scheduleMenuBtn.setBackgroundResource(R.mipmap.schedule_active);
         }

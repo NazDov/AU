@@ -17,7 +17,7 @@
         android:id="@+id/auEventItemNameWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="60dp">
 
         <TextView
             android:id="@+id/auEventItemName"
@@ -43,7 +43,6 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/event_table_row_drawable"
                 android:padding="10dp">
 
                 <TextView
@@ -69,7 +68,6 @@
 
 
             <TableRow
-                android:background="@drawable/event_table_row_drawable"
                 android:padding="10dp">
 
                 <TextView
@@ -94,7 +92,6 @@
             </TableRow>
 
             <TableRow
-                android:background="@drawable/event_table_row_drawable"
                 android:padding="10dp">
 
                 <TextView
@@ -119,7 +116,6 @@
             </TableRow>
 
             <TableRow
-                android:background="@drawable/event_table_row_drawable"
                 android:padding="10dp">
 
                 <TextView
@@ -162,7 +158,6 @@
             android:padding="10dp">
 
             <TableRow
-                android:background="@drawable/event_table_row_drawable"
                 android:padding="10dp">
 
                 <TextView
@@ -171,11 +166,10 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text="@string/au_event_lecturers"
-                    android:textSize="@dimen/text14" />
+                    android:textSize="@dimen/text16" />
             </TableRow>
 
             <TableRow
-                android:background="@drawable/event_table_row_drawable"
                 android:padding="10dp">
 
                 <TextView
@@ -214,7 +208,6 @@
             android:padding="10dp">
 
             <TableRow
-                android:background="@drawable/event_table_row_drawable"
                 android:padding="10dp">
 
                 <TextView
@@ -223,12 +216,11 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text="@string/au_event_description"
-                    android:textSize="@dimen/text14" />
+                    android:textSize="@dimen/text16" />
 
             </TableRow>
 
             <TableRow
-                android:background="@drawable/event_table_row_drawable"
                 android:padding="10dp">
 
                 <ScrollView
@@ -242,7 +234,8 @@
                         android:layout_width="280dp"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:minLines="10"
+                        android:minLines="8"
+                        android:layout_marginBottom="40dp"
                         android:overScrollMode="always"
                         android:text=""
                         android:textSize="@dimen/text16" />

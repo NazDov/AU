@@ -20,6 +20,7 @@ import butterknife.InjectView;
 import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
+import www.uni_weimar.de.au.models.AUFacultyEvent;
 import www.uni_weimar.de.au.models.AUFacultyHeader;
 import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.service.impl.AUFacultyContentRequestService;
@@ -43,6 +44,8 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
     private Realm realm;
     private List<AUFacultyHeader> auFacultyHeaderList;
     private Disposable auScheduleDisposable;
+    private AUFacultyHeader topLevelHeader;
+    private List<AUFacultyHeader> cachedAUFAcultyHeaderList;
 
 
     public static AUAllScheduleFragment newInstance() {
@@ -75,6 +78,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
                         .requestContent(auItem.getUrl(), auItem.getHeaderLevel() + 1, new AUFacultyHeader(auItem))
                         .subscribe((items) -> {
                             auFacultyHeaderList = items;
+                            updateCachedAUFacultyHeaderList();
                             updateAUFacultyRecyclerViewAdapter();
                             auFacultyContentRequestService.update(auItem);
                             stopRefreshing();
@@ -97,12 +101,10 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         auScheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         auScheduleRecyclerView.setAdapter(auFacultyRecyclerViewAdapter);
         goBackToPreviousFacultyHeader.setOnClickListener(v -> {
-            AUFacultyHeader topLevelHeader = null;
             if (!auFacultyHeaderList.isEmpty()) {
                 topLevelHeader = auFacultyHeaderList.get(0).getTopLevelHeader();
             } else {
-                goBackToPreviousFacultyHeader.setText("");
-                auFacultyNotifyContentOnCacheUpdate();
+                topLevelHeader = cachedAUFAcultyHeaderList.get(0).getTopLevelHeader();
             }
             if (topLevelHeader != null) {
                 topLevelHeader = topLevelHeader.getTopLevelHeader();
@@ -120,8 +122,15 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         return root;
     }
 
+    private void updateCachedAUFacultyHeaderList() {
+        if (!auFacultyHeaderList.isEmpty()) {
+            cachedAUFAcultyHeaderList = auFacultyHeaderList;
+        }
+    }
+
     private void readFromCacheBy(String topLevelHeaderName) {
         auFacultyHeaderList = auFacultyContentRequestService.readFromCache("topLevelHeaderName", topLevelHeaderName);
+        updateCachedAUFacultyHeaderList();
         updateAUFacultyRecyclerViewAdapter();
         stopRefreshing();
     }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -50,8 +51,9 @@ public class AUScheduleTabFragment extends AUMainMenuTabFragment implements TabL
     }
 
     private void initAUScheduleTabs() {
-        List<AUMainMenuItem> auMainMenuItemList = auMainMenuTab.getAuMainMenuItemList();
-        for (AUMainMenuItem auMainMenuItem : auMainMenuItemList) {
+        LinkedList<AUMainMenuItem> auMainMenuItemList = new LinkedList<>(auMainMenuTab.getAuMainMenuItemList());
+        while (auMainMenuItemList.peekLast() != null) {
+            AUMainMenuItem auMainMenuItem = auMainMenuItemList.pollLast();
             auScheduleTabLayout.addTab(auScheduleTabLayout.newTab().setText(auMainMenuItem.getTitle()));
         }
         auScheduleTabFragmentViewPagerAdapter = new AUScheduleTabFragmentViewPagerAdapter(getChildFragmentManager(), auScheduleTabLayout.getTabCount());
