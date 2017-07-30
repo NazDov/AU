@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_auevent_schedule" />
+    <include layout="@layout/au_timetable" />
 
 
 </android.support.design.widget.CoordinatorLayout>

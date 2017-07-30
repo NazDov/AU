@@ -46,4 +46,7 @@
     <dimen name="au_main_menu_viewpager_margin_top">-90dp</dimen>
     <dimen name="table_row_cent">25dp</dimen>
     <dimen name="au_event_schedule_tab_width">55dp</dimen>
+
+    <dimen name="au_timetable_time_block_height">80dp</dimen>
+    <dimen name="au_timetable_time_block_width">65dp</dimen>
 </resources>

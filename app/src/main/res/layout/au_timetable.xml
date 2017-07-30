@@ -1,0 +1,1193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="www.uni_weimar.de.au.view.activity.AUEventScheduleActivity"
+    tools:showIn="@layout/activity_auevent_schedule">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#a9d2d0"
+            android:columnCount="6"
+            android:rowCount="16"
+            android:rowOrderPreserved="true"
+            android:scrollbars="vertical">
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_header_size"
+                android:layout_column="1"
+                android:layout_row="1"
+                android:background="#a9d2d0"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/MONDAY_TAG"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_header_size"
+                android:layout_column="2"
+                android:layout_row="1"
+                android:background="#a9d2d0"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/TUESDAY_TAG"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_header_size"
+                android:layout_column="3"
+                android:layout_row="1"
+                android:background="#a9d2d0"
+                android:padding="10dp"
+                android:textAlignment="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/WEDNESDAY_TAG"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_header_size"
+                android:layout_column="4"
+                android:layout_row="1"
+                android:background="#a9d2d0"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/THURSDAY_TAG"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_header_size"
+                android:layout_column="5"
+                android:layout_row="1"
+                android:background="#a9d2d0"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/FRIDAY_TAG"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_header_size"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:background="#a9d2d0"
+                android:padding="10dp">
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="2"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/_08_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="3"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_09_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="4"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_10_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="5"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_11_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="6"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_12_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="7"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_13_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="8"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_14_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="9"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_15_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="10"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_16_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="11"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_17_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="12"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_18_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="13"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_19_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="14"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_20_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/au_timeblock_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="0"
+                android:layout_row="15"
+                android:background="#a9d2d0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="@string/_21_00"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <!--wrapper for day schedules -->
+            <LinearLayout
+                android:id="@+id/au_tt_mo_08_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="2"
+                android:layout_gravity="center"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_08_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="2"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_08_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="2"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_08_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="2"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fri_08_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="2"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_09_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="3"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_09_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="3"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_09_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="3"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_09_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="3"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_09_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="3"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_10_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="4"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_10_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="4"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_10_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="4"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_10_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="4"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_10_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="4"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_11_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="5"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_11_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="5"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_11_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="5"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_11_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="5"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_11_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="5"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_12_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="6"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_12_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="6"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_12_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="6"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_12_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="6"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_12_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="6"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_13_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="7"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_13_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="7"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_13_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="7"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_13_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="7"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_13_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="7"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_14_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="8"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_14_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="8"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_14_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="8"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_14_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="8"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_14_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="8"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_15_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="9"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_15_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="9"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_15_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="9"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_15_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="9"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_15_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="9"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_16_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="10"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_16_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="10"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_16_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="10"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_16_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="10"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_16_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="10"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_17_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="11"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_17_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="11"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_17_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="11"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_17_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="11"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_17_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="11"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_18_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="12"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_18_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="12"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_18_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="12"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_18_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="12"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_18_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="12"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_19_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="13"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_19_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="13"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_19_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="13"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_19_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="13"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_19_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="13"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_20_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="14"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_20_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="14"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_20_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="14"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_20_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="14"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_20_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="14"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/au_tt_mo_21_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="1"
+                android:layout_row="15"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_tue_21_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="2"
+                android:layout_row="15"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_wed_21_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="3"
+                android:layout_row="15"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_thu_21_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="4"
+                android:layout_row="15"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/au_tt_fr_21_00_wrapper"
+                android:layout_width="@dimen/au_timetable_time_block_width"
+                android:layout_height="@dimen/au_timetable_time_block_height"
+                android:layout_column="5"
+                android:layout_row="15"
+                android:background="#f3f7f6"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+        </GridLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

@@ -8,4 +8,10 @@
     <color name="news_feed_button_divider">#1e191919</color>
     <color name="news_feed_tab_color">#3fa039</color>
     <color name="schedule_tab_color">#1a77e9</color>
+
+    <color name="TIME_TABLE_MO_COLOR">#fca368</color>
+    <color name="TIME_TABLE_TUE_COLOR">#f7e969</color>
+    <color name="TIME_TABLE_WED_COLOR">#73dc76</color>
+    <color name="TIME_TABLE_THU_COLOR">#66ccc2</color>
+    <color name="TIME_TABLE_FR_COLOR">#8476e2</color>
 </resources>

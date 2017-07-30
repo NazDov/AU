@@ -2,7 +2,7 @@
     <string name="app_name">AU</string>
     <string name="MAIN_MENU">http://ec2-35-157-27-16.eu-central-1.compute.amazonaws.com/menu.xml</string>
     <string name="ALL_NEWS">https://www.uni-weimar.de/de/universitaet/aktuell/pinnwaende/rss/</string>
-    <string name="COURSES_URL">https://lsf.verwaltung.uni-muenchen.de/qisserver/rds?state=wtree&amp;search=1&amp;category=veranstaltung.browse&amp;navigationPosition=functions%2Clectureindex&amp;breadcrumb=lectureindex&amp;topitem=locallinks&amp;subitem=lectureindex</string>
+    <string name="COURSES_URL">https://www.uni-weimar.de/qisserver/rds?state=wtree&amp;search=1&amp;category=veranstaltung.browse&amp;navigationPosition=lectures%2Clectureindex&amp;breadcrumb=lectureindex&amp;topitem=lectures&amp;subitem=lectureindex</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
@@ -45,4 +45,23 @@
     <string name="DAUER">Dauer</string>
     <string name="RAUM">Raum</string>
     <string name="max_teilnehmer_innen">Max. Teilnehmer/-innen</string>
+    <string name="MONDAY_TAG">Mo</string>
+    <string name="TUESDAY_TAG">Tue</string>
+    <string name="WEDNESDAY_TAG">We</string>
+    <string name="THURSDAY_TAG">Thu</string>
+    <string name="FRIDAY_TAG">Fri</string>
+    <string name="_08_00">08:00</string>
+    <string name="_09_00">09:00</string>
+    <string name="_10_00">10:00</string>
+    <string name="_11_00">11:00</string>
+    <string name="_12_00">12:00</string>
+    <string name="_13_00">13:00</string>
+    <string name="_14_00">14:00</string>
+    <string name="_15_00">15:00</string>
+    <string name="_16_00">16:00</string>
+    <string name="_17_00">17:00</string>
+    <string name="_18_00">18:00</string>
+    <string name="_19_00">19:00</string>
+    <string name="_20_00">20:00</string>
+    <string name="_21_00">21:00</string>
 </resources>
