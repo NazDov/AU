@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -45,7 +46,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
     private List<AUFacultyHeader> auFacultyHeaderList;
     private Disposable auScheduleDisposable;
     private AUFacultyHeader topLevelHeader;
-    private List<AUFacultyHeader> cachedAUFAcultyHeaderList;
+    private List<AUFacultyHeader> cachedAUFAcultyHeaderList = new ArrayList<>();
 
 
     public static AUAllScheduleFragment newInstance() {
@@ -104,7 +105,8 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
             if (!auFacultyHeaderList.isEmpty()) {
                 topLevelHeader = auFacultyHeaderList.get(0).getTopLevelHeader();
             } else {
-                topLevelHeader = cachedAUFAcultyHeaderList.get(0).getTopLevelHeader();
+                AUFacultyHeader auFacultyHeader = cachedAUFAcultyHeaderList.isEmpty() ? null : cachedAUFAcultyHeaderList.get(0);
+                topLevelHeader = auFacultyHeader != null ? auFacultyHeader.getTopLevelHeader() : null;
             }
             if (topLevelHeader != null) {
                 topLevelHeader = topLevelHeader.getTopLevelHeader();

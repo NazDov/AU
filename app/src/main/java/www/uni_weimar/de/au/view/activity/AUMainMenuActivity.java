@@ -141,23 +141,25 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
         profileMenuBtnWrapper = (RelativeLayout) auMainMenuHeaderView.findViewById(R.id.profile_menu_btn_wrapper);
         settingsMenuBtnWrapper = (RelativeLayout) auMainMenuHeaderView.findViewById(R.id.settings_menu_btn_wrapper);
         newsFeedMenuBtn = (ImageButton) auMainMenuHeaderView.findViewById(R.id.news_feed_menu_btn_img);
-        newsFeedMenuBtn.setOnClickListener(this);
+        newsFeedMenuBtn.setOnClickListener(v -> AUMainMenuActivity.this.onClick(newsFeedMenuBtnWrapper));
+        newsFeedMenuBtnWrapper.setOnClickListener(this);
         scheduleMenuBtn = (ImageButton) auMainMenuHeaderView.findViewById(R.id.schedule_menu_btn_img);
-        scheduleMenuBtn.setOnClickListener(this);
+        scheduleMenuBtn.setOnClickListener(v -> AUMainMenuActivity.this.onClick(scheduleMenuBtnWrapper));
+        scheduleMenuBtnWrapper.setOnClickListener(this);
         cafeteriaMenuBtn = (ImageButton) auMainMenuHeaderView.findViewById(R.id.cafeteria_menu_btn_img);
-        cafeteriaMenuBtn.setOnClickListener(this);
+        cafeteriaMenuBtnWrapper.setOnClickListener(this);
         libraryMenuBtn = (ImageButton) auMainMenuHeaderView.findViewById(R.id.library_menu_btn_img);
-        libraryMenuBtn.setOnClickListener(this);
+        libraryMenuBtnWrapper.setOnClickListener(this);
         profileMenuBtn = (ImageButton) auMainMenuHeaderView.findViewById(R.id.profile_menu_btn_img);
-        profileMenuBtn.setOnClickListener(this);
+        profileMenuBtnWrapper.setOnClickListener(this);
         settingsMenuBtn = (ImageButton) auMainMenuHeaderView.findViewById(R.id.settings_menu_btn_img);
-        settingsMenuBtn.setOnClickListener(this);
-        navMenuButtonIds.add(R.id.news_feed_menu_btn_img);
-        navMenuButtonIds.add(R.id.schedule_menu_btn_img);
-        navMenuButtonIds.add(R.id.cafeteria_menu_btn_img);
-        navMenuButtonIds.add(R.id.library_menu_btn_img);
-        navMenuButtonIds.add(R.id.profile_menu_btn_img);
-        navMenuButtonIds.add(R.id.settings_menu_btn_img);
+        settingsMenuBtnWrapper.setOnClickListener(this);
+        navMenuButtonIds.add(R.id.news_feed_menu_btn_wrapper);
+        navMenuButtonIds.add(R.id.schedule_menu_btn_wrapper);
+        navMenuButtonIds.add(R.id.cafeteria_menu_btn_wrapper);
+        navMenuButtonIds.add(R.id.library_menu_btn_wrapper);
+        navMenuButtonIds.add(R.id.profile_menu_btn_wrapper);
+        navMenuButtonIds.add(R.id.settings_menu_btn_wrapper);
     }
 
     private void showNoConnectionViewAs(int visibility) {
@@ -170,33 +172,33 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
         int currentItem = NEWS_FEED_CATEGORY_ITEM_ID;
         int menuBtnId = menuBtnView.getId();
         deactivateAllNavMenuBtnExcept(menuBtnId);
-        if (menuBtnId == R.id.news_feed_menu_btn_img) {
+        if (menuBtnId == R.id.news_feed_menu_btn_wrapper) {
             newsFeedMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
             newsFeedMenuBtn.setBackgroundResource(R.mipmap.news_rss_active);
         }
 
-        if (menuBtnId == R.id.schedule_menu_btn_img) {
+        if (menuBtnId == R.id.schedule_menu_btn_wrapper) {
             currentItem = COURSES_CATEGORY_ITEM_ID;
             scheduleMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
             scheduleMenuBtn.setBackgroundResource(R.mipmap.schedule_active);
         }
 
-        if (menuBtnId == R.id.cafeteria_menu_btn_img) {
+        if (menuBtnId == R.id.cafeteria_menu_btn_wrapper) {
             cafeteriaMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
             cafeteriaMenuBtn.setBackgroundResource(R.mipmap.cafeteria_active);
         }
 
-        if (menuBtnId == R.id.library_menu_btn_img) {
+        if (menuBtnId == R.id.library_menu_btn_wrapper) {
             libraryMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
             libraryMenuBtn.setBackgroundResource(R.mipmap.library_active);
         }
 
-        if (menuBtnId == R.id.profile_menu_btn_img) {
+        if (menuBtnId == R.id.profile_menu_btn_wrapper) {
             profileMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
             profileMenuBtn.setBackgroundResource(R.mipmap.profile_active);
         }
 
-        if (menuBtnId == R.id.settings_menu_btn_img) {
+        if (menuBtnId == R.id.settings_menu_btn_wrapper) {
             settingsMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
             settingsMenuBtn.setBackgroundResource(R.mipmap.settings_active);
         }
@@ -208,32 +210,32 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
     private void deactivateAllNavMenuBtnExcept(int toBeActiveNavMenuBtnId) {
         for (int navMenuBtn : navMenuButtonIds) {
             if (navMenuBtn != toBeActiveNavMenuBtnId) {
-                if (navMenuBtn == R.id.news_feed_menu_btn_img) {
+                if (navMenuBtn == R.id.news_feed_menu_btn_wrapper) {
                     newsFeedMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_inactive);
                     newsFeedMenuBtn.setBackgroundResource(R.mipmap.news_rss_inactive);
                 }
 
-                if (navMenuBtn == R.id.schedule_menu_btn_img) {
+                if (navMenuBtn == R.id.schedule_menu_btn_wrapper) {
                     scheduleMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_inactive);
                     scheduleMenuBtn.setBackgroundResource(R.mipmap.schedule_inactive);
                 }
 
-                if (navMenuBtn == R.id.cafeteria_menu_btn_img) {
+                if (navMenuBtn == R.id.cafeteria_menu_btn_wrapper) {
                     cafeteriaMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_inactive);
                     cafeteriaMenuBtn.setBackgroundResource(R.mipmap.cafeteria_inactive);
                 }
 
-                if (navMenuBtn == R.id.library_menu_btn_img) {
+                if (navMenuBtn == R.id.library_menu_btn_wrapper) {
                     libraryMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_inactive);
                     libraryMenuBtn.setBackgroundResource(R.mipmap.library_inactive);
                 }
 
-                if (navMenuBtn == R.id.profile_menu_btn_img) {
+                if (navMenuBtn == R.id.profile_menu_btn_wrapper) {
                     profileMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_inactive);
                     profileMenuBtn.setBackgroundResource(R.mipmap.profile_inactive);
                 }
 
-                if (navMenuBtn == R.id.settings_menu_btn_img) {
+                if (navMenuBtn == R.id.settings_menu_btn_wrapper) {
                     settingsMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_inactive);
                     settingsMenuBtn.setBackgroundResource(R.mipmap.settings_inactive);
                 }
