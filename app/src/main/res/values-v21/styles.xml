@@ -13,10 +13,16 @@
     </style>
 
     <style name="AUNewsFeedItemDetailTheme" parent="AppTheme.NoActionBar">
+        <item name="colorControlNormal">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/news_feed_tab_color</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/news_feed_tab_color</item>
     </style>
 
     <style name="AUEventItemDetailTeam" parent="AppTheme.NoActionBar">
+        <item name="colorControlNormal">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/schedule_tab_color</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/schedule_tab_color</item>
     </style>
 </resources>
