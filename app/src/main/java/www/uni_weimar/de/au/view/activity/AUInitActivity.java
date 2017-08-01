@@ -43,7 +43,6 @@ public class AUInitActivity extends AppCompatActivity {
     }
 
     public void initSystemMainMenuComponents(Activity activity) {
-        auInitTextView.setText("Please wait...");
         realm = Realm.getDefaultInstance();
         if (!hasInternetConnection(activity) || hasCacheableData()) {
             new Handler().postDelayed(this::callAUMainMenuActivity, 3000);
@@ -67,7 +66,6 @@ public class AUInitActivity extends AppCompatActivity {
     }
 
     private void onMainMenuLoaded(List<AUMainMenuTab> auMainMenuTabs) {
-        auInitTextView.setText("Loading components...");
         callAUMainMenuActivity();
     }
 

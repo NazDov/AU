@@ -21,7 +21,6 @@ public class AUFacultyHeader extends RealmObject implements AUItem {
     private String topLevelHeaderName;
     private int headerLevel;
     private RealmList<AUFacultyHeader> auFacultyHeaderLis;
-    private RealmList<AUFacultyEvent> auFacultyEvents;
     private AUFacultyHeader topLevelHeader;
 
 
@@ -35,7 +34,6 @@ public class AUFacultyHeader extends RealmObject implements AUItem {
         this.autype = auItem.getAutype();
         this.headerLevel = auItem.getHeaderLevel();
         this.auFacultyHeaderLis = auItem.getAuFacultyHeaderList();
-        this.auFacultyEvents = auItem.getAuFacultyEvents();
         this.topLevelHeader = auItem.getTopLevelHeader();
         this.topLevelHeaderName = auItem.getTopLevelHeaderName();
     }
@@ -60,16 +58,8 @@ public class AUFacultyHeader extends RealmObject implements AUItem {
         return auFacultyHeaderLis;
     }
 
-    public void setAuFacultyHeaderLis(RealmList<AUFacultyHeader> auFacultyHeaderLis) {
+    public void setAuFacultyHeaderList(RealmList<AUFacultyHeader> auFacultyHeaderLis) {
         this.auFacultyHeaderLis = auFacultyHeaderLis;
-    }
-
-    public RealmList<AUFacultyEvent> getAuFacultyEvents() {
-        return auFacultyEvents;
-    }
-
-    public void setAuFacultyEvents(RealmList<AUFacultyEvent> auFacultyEvents) {
-        this.auFacultyEvents = auFacultyEvents;
     }
 
     public int getHeaderLevel() {

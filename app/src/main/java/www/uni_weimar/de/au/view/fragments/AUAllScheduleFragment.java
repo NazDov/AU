@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,6 @@ import butterknife.InjectView;
 import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
-import www.uni_weimar.de.au.models.AUFacultyEvent;
 import www.uni_weimar.de.au.models.AUFacultyHeader;
 import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.service.impl.AUFacultyContentRequestService;
@@ -39,7 +39,9 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
     @InjectView(R.id.au_schedule_swipe_refresh)
     SwipeRefreshLayout auScheduleSwipeRefreshLayout;
     @InjectView(R.id.goToPreviousFacultyHeader)
-    TextView goBackToPreviousFacultyHeader;
+    TextView auFacultyHeaderText;
+    @InjectView(R.id.progressBar)
+    ProgressBar progressBar;
     AUFacultyContentRequestService auFacultyContentRequestService;
     AUFacultyRecyclerViewAdapter auFacultyRecyclerViewAdapter;
     private Realm realm;
@@ -67,25 +69,12 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         auScheduleSwipeRefreshLayout.setRefreshing(true);
         auFacultyRecyclerViewAdapter = new AUFacultyRecyclerViewAdapter(getContext(), auFacultyHeaderList);
         auFacultyRecyclerViewAdapter.setOnItemClickListener(auItem -> {
-            auScheduleSwipeRefreshLayout.setRefreshing(true);
+            progressBar.setVisibility(View.VISIBLE);
             if (AUItem.EVENT.equals(auItem.getAutype())) {
-                Intent intent = new Intent(getContext(), AUEventItemDetailsActivity.class);
-                intent.putExtra(AUItem.AU_ITEM_URL_TAG, auItem.getUrl());
-                intent.putExtra(AUItem.AU_ITEM_NAME_TAG, auItem.getTitle());
-                startActivity(intent);
-                stopRefreshing();
+                forwardToEventPage(auItem);
             } else {
-                auFacultyContentRequestService
-                        .requestContent(auItem.getUrl(), auItem.getHeaderLevel() + 1, new AUFacultyHeader(auItem))
-                        .subscribe((items) -> {
-                            auFacultyHeaderList = items;
-                            updateCachedAUFacultyHeaderList();
-                            updateAUFacultyRecyclerViewAdapter();
-                            auFacultyContentRequestService.update(auItem);
-                            stopRefreshing();
-                        }, this::onError);
-                goBackToPreviousFacultyHeader.setText(auItem.getTitle());
-                readFromCacheBy(auItem.getTitle());
+                readAUFacultyDataFromCacheBy(auItem.getTitle());
+                requestAUFacultyDataFromService(auItem);
             }
 
         });
@@ -101,7 +90,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         });
         auScheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         auScheduleRecyclerView.setAdapter(auFacultyRecyclerViewAdapter);
-        goBackToPreviousFacultyHeader.setOnClickListener(v -> {
+        auFacultyHeaderText.setOnClickListener(v -> {
             if (!auFacultyHeaderList.isEmpty()) {
                 topLevelHeader = auFacultyHeaderList.get(0).getTopLevelHeader();
             } else {
@@ -113,15 +102,36 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
                 if (topLevelHeader != null) {
                     auFacultyHeaderList = topLevelHeader.getAuFacultyHeaderList();
                     updateAUFacultyRecyclerViewAdapter();
-                    goBackToPreviousFacultyHeader.setText(topLevelHeader.getTitle());
+                    auFacultyHeaderText.setText(topLevelHeader.getTitle());
                 } else {
-                    goBackToPreviousFacultyHeader.setText("");
+                    auFacultyHeaderText.setText("");
                     auFacultyNotifyContentOnCacheUpdate();
                 }
             }
-
         });
         return root;
+    }
+
+    private void requestAUFacultyDataFromService(AUFacultyHeader auItem) {
+        auFacultyContentRequestService
+                .requestContent(auItem.getUrl(), auItem.getHeaderLevel() + 1, new AUFacultyHeader(auItem))
+                .subscribe((items) -> {
+                    auFacultyHeaderList = items;
+                    updateCachedAUFacultyHeaderList();
+                    updateAUFacultyRecyclerViewAdapter();
+                    auFacultyContentRequestService.update(auItem);
+                    progressBar.setVisibility(View.INVISIBLE);
+                }, this::onError);
+        auFacultyHeaderText.setText(auItem.getTitle());
+    }
+
+
+    private void forwardToEventPage(AUFacultyHeader auItem) {
+        Intent intent = new Intent(getContext(), AUEventItemDetailsActivity.class);
+        intent.putExtra(AUItem.AU_ITEM_URL_TAG, auItem.getUrl());
+        intent.putExtra(AUItem.AU_ITEM_NAME_TAG, auItem.getTitle());
+        startActivity(intent);
+        stopRefreshing();
     }
 
     private void updateCachedAUFacultyHeaderList() {
@@ -130,7 +140,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         }
     }
 
-    private void readFromCacheBy(String topLevelHeaderName) {
+    private void readAUFacultyDataFromCacheBy(String topLevelHeaderName) {
         auFacultyHeaderList = auFacultyContentRequestService.readFromCache("topLevelHeaderName", topLevelHeaderName);
         updateCachedAUFacultyHeaderList();
         updateAUFacultyRecyclerViewAdapter();

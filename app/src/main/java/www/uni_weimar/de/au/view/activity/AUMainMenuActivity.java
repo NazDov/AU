@@ -2,6 +2,7 @@ package www.uni_weimar.de.au.view.activity;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -326,7 +328,21 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                new AUInitActivity().initSystemMainMenuComponents(AUMainMenuActivity.this);
+                Realm realm = Realm.getDefaultInstance();
+                if (!hasInternetConnection(AUMainMenuActivity.this)) {
+                    Toast.makeText(AUMainMenuActivity.this, "no internet connection", Toast.LENGTH_SHORT).show();
+                }
+                AUMainMenuContentRequestService
+                        .of(realm, getResources().getString(R.string.MAIN_MENU))
+                        .requestNewContent()
+                        .subscribe(this::onMainMenuLoaded, this::onError);
+            }
+
+            private void onError(Throwable throwable) {
+                Toast.makeText(AUMainMenuActivity.this, throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            private void onMainMenuLoaded(List<AUMainMenuTab> auMainMenuTabs) {
                 recreate();
             }
 
