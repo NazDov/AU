@@ -64,6 +64,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.au_all_schedule_layout, container, false);
         ButterKnife.inject(this, root);
+        progressBar.setVisibility(View.INVISIBLE);
         realm = Realm.getDefaultInstance();
         auScheduleSwipeRefreshLayout.setOnRefreshListener(this);
         auScheduleSwipeRefreshLayout.setRefreshing(true);

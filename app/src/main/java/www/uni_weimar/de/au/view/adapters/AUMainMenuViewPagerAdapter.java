@@ -34,6 +34,7 @@ public class AUMainMenuViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mainMenuTabFragments.get(position).getMainMenuTabTitle();
+        return mainMenuTabFragments != null && !mainMenuTabFragments.isEmpty() ?
+                mainMenuTabFragments.get(position).getMainMenuTabTitle().toUpperCase() : "";
     }
 }

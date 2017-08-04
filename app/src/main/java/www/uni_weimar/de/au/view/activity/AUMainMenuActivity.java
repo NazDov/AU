@@ -2,7 +2,6 @@ package www.uni_weimar.de.au.view.activity;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,6 +32,8 @@ import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
 import www.uni_weimar.de.au.view.adapters.AUMainMenuViewPagerAdapter;
+import www.uni_weimar.de.au.view.fragments.tabs.AUCafeteriaTabFragment;
+import www.uni_weimar.de.au.view.fragments.tabs.AULibraryTabFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AUScheduleTabFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AUMainMenuTabFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AUNewsFeedTabFragment;
@@ -41,8 +42,14 @@ import static www.uni_weimar.de.au.application.AUApplicationConfiguration.*;
 
 public class AUMainMenuActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final int NEWS_FEED_CATEGORY_ITEM_ID = 0;
-    public static final int COURSES_CATEGORY_ITEM_ID = 1;
+    private static final int NEWS_FEED_MENUTAB_ITEM_ID = 0;
+    private static final int COURSES_MENUTAB_ITEM_ID = 1;
+    private static final int CAFETERIA_MENUTAB_ITEM_ID = 2;
+    private static final int LIBRARY_MENUTAB_ITEM_ID = 3;
+    public static final String NEWS_MENUTAB_TITLE = "News";
+    public static final String COURSES_MENUTAB_TITLE = "Veranstaltungen";
+    public static final String CAFETERIA_MENUTAB_TITLE = "Cafeteria";
+    public static final String LIBRARY_MENUTAB_TITLE = "Library";
     @InjectView(R.id.au_main_menu_nav_view)
     NavigationView auMainMenuTabNavigationView;
     @InjectView(R.id.au_main_menu_drawer_layout)
@@ -112,13 +119,21 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 switch (position) {
-                    case 0:
+                    case NEWS_FEED_MENUTAB_ITEM_ID:
                         auMainMenuCategoryIcon.setBackgroundResource(R.drawable.news_icon);
                         auMainMenuImageHeader.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.news_bg));
                         break;
-                    case 1:
+                    case COURSES_MENUTAB_ITEM_ID:
                         auMainMenuCategoryIcon.setBackgroundResource(R.drawable.lecture_shedule_icon);
                         auMainMenuImageHeader.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.lecture_shedule_bg));
+                        break;
+                    case CAFETERIA_MENUTAB_ITEM_ID:
+                        auMainMenuCategoryIcon.setBackgroundResource(R.drawable.cafeteria_icon);
+                        auMainMenuImageHeader.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.cafeteria_bg));
+                        break;
+                    case LIBRARY_MENUTAB_ITEM_ID:
+                        auMainMenuCategoryIcon.setBackgroundResource(R.drawable.library_icon);
+                        auMainMenuImageHeader.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.library_bg));
                         break;
                 }
             }
@@ -171,7 +186,7 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View menuBtnView) {
-        int currentItem = NEWS_FEED_CATEGORY_ITEM_ID;
+        int currentMenuItemID = NEWS_FEED_MENUTAB_ITEM_ID;
         int menuBtnId = menuBtnView.getId();
         deactivateAllNavMenuBtnExcept(menuBtnId);
         if (menuBtnId == R.id.news_feed_menu_btn_wrapper) {
@@ -180,17 +195,19 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
         }
 
         if (menuBtnId == R.id.schedule_menu_btn_wrapper) {
-            currentItem = COURSES_CATEGORY_ITEM_ID;
+            currentMenuItemID = COURSES_MENUTAB_ITEM_ID;
             scheduleMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
             scheduleMenuBtn.setBackgroundResource(R.mipmap.schedule_active);
         }
 
         if (menuBtnId == R.id.cafeteria_menu_btn_wrapper) {
+            currentMenuItemID = CAFETERIA_MENUTAB_ITEM_ID;
             cafeteriaMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
             cafeteriaMenuBtn.setBackgroundResource(R.mipmap.cafeteria_active);
         }
 
         if (menuBtnId == R.id.library_menu_btn_wrapper) {
+            currentMenuItemID = LIBRARY_MENUTAB_ITEM_ID;
             libraryMenuBtnWrapper.setBackgroundResource(R.drawable.circle_shape_active);
             libraryMenuBtn.setBackgroundResource(R.mipmap.library_active);
         }
@@ -205,7 +222,7 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
             settingsMenuBtn.setBackgroundResource(R.mipmap.settings_active);
         }
 
-        auMainMenuViewPager.setCurrentItem(currentItem);
+        auMainMenuViewPager.setCurrentItem(currentMenuItemID);
         auMainMenuDrawerLayout.closeDrawer(GravityCompat.START);
     }
 
@@ -293,12 +310,22 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
         for (AUMainMenuTab auMainMenuTab : auMainMenuTabsList) {
             AUMainMenuTabFragment auMainMenuTabFragment;
             String mainMenuTabTitle = auMainMenuTab.getTitle();
-            if ("News".equalsIgnoreCase(mainMenuTabTitle)) {
+            if (NEWS_MENUTAB_TITLE.equalsIgnoreCase(mainMenuTabTitle)) {
                 auMainMenuTabFragment = AUNewsFeedTabFragment.newInstance(auMainMenuTab);
                 auMainMenuTabFragmentList.add(auMainMenuTabFragment);
             }
-            if ("Veranstaltungen".equalsIgnoreCase(mainMenuTabTitle)) {
+            if (COURSES_MENUTAB_TITLE.equalsIgnoreCase(mainMenuTabTitle)) {
                 auMainMenuTabFragment = AUScheduleTabFragment.newInstance(auMainMenuTab);
+                auMainMenuTabFragmentList.add(auMainMenuTabFragment);
+            }
+
+            if (CAFETERIA_MENUTAB_TITLE.equalsIgnoreCase(mainMenuTabTitle)) {
+                auMainMenuTabFragment = AUCafeteriaTabFragment.newInstance(auMainMenuTab);
+                auMainMenuTabFragmentList.add(auMainMenuTabFragment);
+            }
+
+            if (LIBRARY_MENUTAB_TITLE.equalsIgnoreCase(mainMenuTabTitle)) {
+                auMainMenuTabFragment = AULibraryTabFragment.newInstance(auMainMenuTab);
                 auMainMenuTabFragmentList.add(auMainMenuTabFragment);
             }
         }

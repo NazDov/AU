@@ -46,9 +46,6 @@ public class AUEventScheduleActivity extends AppCompatActivity {
     private static final String _21_HOUR = "21";
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
-    //    @InjectView(R.id.auEventScheduleRecyclerView)
-//    RecyclerView auEventScheduleRecyclerView;
-//    AUEventScheduleRecyclerViewAdapter adapter;
     String eventName;
     String eventURL;
     Realm realmUI;
@@ -328,7 +325,7 @@ public class AUEventScheduleActivity extends AppCompatActivity {
         eventName = getIntent().getStringExtra(AUItem.AU_ITEM_NAME_TAG);
         eventURL = getIntent().getStringExtra(AUItem.AU_ITEM_URL_TAG);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(eventName + " Schedule");
+        getSupportActionBar().setTitle(eventName + getString(R.string.SCHEDULE_NAME_TAG));
         realmUI = Realm.getDefaultInstance();
         AUEventContentRequestService.of(realmUI, eventURL)
                 .notifyContentOnCacheUpdate(this::onSuccess, EVENT_URL, eventURL);
@@ -339,11 +336,6 @@ public class AUEventScheduleActivity extends AppCompatActivity {
         if (content == null || content.isEmpty()) return;
         auFacultyEvent = content.get(0);
         auFacultyEventSchedules = auFacultyEvent != null ? auFacultyEvent.getAuEventScheduleList() : EMPTY_SCHEDULE_LIST;
-//        adapter = new AUEventScheduleRecyclerViewAdapter(getBaseContext(), auFacultyEventSchedules);
-//        auEventScheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-//        auEventScheduleRecyclerView.setAdapter(adapter);
-
-
         initAUTimeTableItems();
 
     }
@@ -398,7 +390,6 @@ public class AUEventScheduleActivity extends AppCompatActivity {
             }
             activeTimeTable.setBackgroundColor(getColorByDay());
             activeTimeTable.setOnClickListener(v -> {
-
             });
         }
     }
