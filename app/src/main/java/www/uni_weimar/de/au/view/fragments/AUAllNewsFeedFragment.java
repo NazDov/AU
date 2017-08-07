@@ -161,6 +161,12 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
             realm.close();
             realm = null;
         }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
             disposable = null;

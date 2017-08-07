@@ -31,8 +31,8 @@
         android:id="@+id/auEventItemBasicDataWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/auEventItemNameWrapper">
+        android:layout_below="@id/auEventItemNameWrapper"
+        android:layout_marginTop="10dp">
 
         <TableLayout
             android:id="@+id/auEventBasicDataGrid"
@@ -67,8 +67,7 @@
             </TableRow>
 
 
-            <TableRow
-                android:padding="10dp">
+            <TableRow android:padding="10dp">
 
                 <TextView
                     android:id="@+id/VeranstaltungsnummerID"
@@ -91,8 +90,7 @@
 
             </TableRow>
 
-            <TableRow
-                android:padding="10dp">
+            <TableRow android:padding="10dp">
 
                 <TextView
                     android:id="@+id/SemeterID"
@@ -115,8 +113,7 @@
 
             </TableRow>
 
-            <TableRow
-                android:padding="10dp">
+            <TableRow android:padding="10dp">
 
                 <TextView
                     android:id="@+id/SWSID"
@@ -148,8 +145,8 @@
         android:id="@+id/auEventLedctcturerWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/auEventItemBasicDataWrapper">
+        android:layout_below="@id/auEventItemBasicDataWrapper"
+        android:layout_marginTop="10dp">
 
         <TableLayout
             android:id="@+id/auEventLectureGrid"
@@ -157,8 +154,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp">
 
-            <TableRow
-                android:padding="10dp">
+            <TableRow android:padding="10dp">
 
                 <TextView
                     android:id="@+id/auZugeordnetePersonenID"
@@ -169,14 +165,14 @@
                     android:textSize="@dimen/text16" />
             </TableRow>
 
-            <TableRow
-                android:padding="10dp">
+            <TableRow android:padding="10dp">
 
                 <TextView
                     android:id="@+id/auZugeordnetePersonenName"
-                    android:layout_width="match_parent"
+                    android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:gravity="start"
+                    android:minLines="2"
                     android:overScrollMode="always"
                     android:scrollbars="horizontal"
                     android:text=""
@@ -184,6 +180,7 @@
             </TableRow>
 
         </TableLayout>
+
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -195,11 +192,45 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/auEventScheduleWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/auEventLedctcturerWrapper"
+        android:layout_marginTop="10dp">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TableRow android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/auEventScheduleTitleID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/au_event_schedule"
+                    android:textSize="@dimen/text16" />
+            </TableRow>
+
+            <TableRow>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/auEventScheduleRecyclerView"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+        </TableLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
         android:id="@+id/auEventDescriptionWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/auEventLedctcturerWrapper">
+        android:layout_below="@id/auEventScheduleWrapper"
+        android:layout_marginTop="10dp">
 
         <TableLayout
             android:id="@+id/auEventDescriptionGrid"
@@ -207,8 +238,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp">
 
-            <TableRow
-                android:padding="10dp">
+            <TableRow android:padding="10dp">
 
                 <TextView
                     android:id="@+id/auEventDescriptionID"
@@ -220,8 +250,7 @@
 
             </TableRow>
 
-            <TableRow
-                android:padding="10dp">
+            <TableRow android:padding="10dp">
 
                 <ScrollView
                     android:id="@+id/auEventDescriptionNameScrollView"
@@ -233,9 +262,9 @@
                         android:id="@+id/auEventDescriptionName"
                         android:layout_width="280dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="40dp"
                         android:gravity="start"
                         android:minLines="8"
-                        android:layout_marginBottom="40dp"
                         android:overScrollMode="always"
                         android:text=""
                         android:textSize="@dimen/text16" />
@@ -248,9 +277,6 @@
         </TableLayout>
 
     </android.support.v7.widget.CardView>
-
-
-
 
 
 </RelativeLayout>

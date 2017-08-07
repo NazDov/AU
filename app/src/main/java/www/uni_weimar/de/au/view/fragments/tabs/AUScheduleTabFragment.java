@@ -71,7 +71,6 @@ public class AUScheduleTabFragment extends AUMainMenuTabFragment implements TabL
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        Toast.makeText(getContext(), tab.getText(), Toast.LENGTH_SHORT).show();
         auScheduleViewPager.setCurrentItem(tab.getPosition());
     }
 

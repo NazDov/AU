@@ -95,7 +95,8 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
 
     private String parseEventTDValBySelector(Element trItem, String selector) {
         Elements select = trItem.select(selector);
-        return select == null || select.isEmpty() ? null : select.get(0).text();
+        String text = select.get(0).text();
+        return select == null || select.isEmpty() ? null : text;
     }
 
     private String parseEventName(Document html) {

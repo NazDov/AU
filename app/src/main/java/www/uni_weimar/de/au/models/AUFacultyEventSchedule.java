@@ -33,9 +33,9 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
                                   String eventScheduleTime,
                                   String eventSchedulePeriod,
                                   String eventScheduleRoom,
-                                  String eventScheduleLecturer,
+                                  String eventScheduleDuration,
                                   String eventMaxParticipants,
-                                  String eventScheduleDuration) {
+                                  String eventScheduleLecturer) {
         this.eventScheduleDay = eventScheduleDay;
         this.eventScheduleTime = eventScheduleTime;
         this.eventSchedulePeriod = eventSchedulePeriod;

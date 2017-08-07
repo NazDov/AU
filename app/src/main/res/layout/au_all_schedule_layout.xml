@@ -6,14 +6,26 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:id="@+id/goToPreviousFacultyHeader"
+    <LinearLayout
+        android:id="@+id/goToPreviousFacultyHeaderWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:padding="5dp" />
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/faculty_header_arrow"/>
+        <TextView
+            android:id="@+id/goToPreviousFacultyHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:text="@string/AU_FACULTY_TOP_HEADER"/>
+    </LinearLayout>
+
 
 
     <ProgressBar
@@ -29,7 +41,8 @@
         android:id="@+id/au_schedule_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/au_schedule_recycler_view"

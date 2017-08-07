@@ -45,7 +45,7 @@ public class AUInitActivity extends AppCompatActivity {
     public void initSystemMainMenuComponents(Activity activity) {
         realm = Realm.getDefaultInstance();
         if (!hasInternetConnection(activity) || hasCacheableData()) {
-            new Handler().postDelayed(this::callAUMainMenuActivity, 3000);
+            new Handler().postDelayed(this::callAUMainMenuActivity, 100);
             return;
         }
         auMainMenuDisposable = AUMainMenuContentRequestService

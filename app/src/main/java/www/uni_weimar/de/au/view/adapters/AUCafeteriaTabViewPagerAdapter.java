@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import www.uni_weimar.de.au.view.fragments.AUCafeteriaMenuProgramFragment;
+import www.uni_weimar.de.au.view.fragments.AUCafeteriaMyFavouritesFragment;
 
 /**
  * Created by ndovhuy on 04.08.2017.
@@ -20,7 +21,14 @@ public class AUCafeteriaTabViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return AUCafeteriaMenuProgramFragment.newInstance();
+        switch (position){
+            case 0:
+                return AUCafeteriaMenuProgramFragment.newInstance();
+            case 1:
+                return AUCafeteriaMyFavouritesFragment.newInstance();
+            default:
+                return AUCafeteriaMenuProgramFragment.newInstance();
+        }
     }
 
     @Override

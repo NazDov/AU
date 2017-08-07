@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,8 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
     TextView auFacultyHeaderText;
     @InjectView(R.id.progressBar)
     ProgressBar progressBar;
+    @InjectView(R.id.goToPreviousFacultyHeaderWrapper)
+    LinearLayout goToPreviousFacultyHeader;
     AUFacultyContentRequestService auFacultyContentRequestService;
     AUFacultyRecyclerViewAdapter auFacultyRecyclerViewAdapter;
     private Realm realm;
@@ -91,7 +94,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         });
         auScheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         auScheduleRecyclerView.setAdapter(auFacultyRecyclerViewAdapter);
-        auFacultyHeaderText.setOnClickListener(v -> {
+        goToPreviousFacultyHeader.setOnClickListener(v -> {
             if (!auFacultyHeaderList.isEmpty()) {
                 topLevelHeader = auFacultyHeaderList.get(0).getTopLevelHeader();
             } else {
@@ -105,7 +108,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
                     updateAUFacultyRecyclerViewAdapter();
                     auFacultyHeaderText.setText(topLevelHeader.getTitle());
                 } else {
-                    auFacultyHeaderText.setText("");
+                    auFacultyHeaderText.setText(getString(R.string.AU_FACULTY_TOP_HEADER));
                     auFacultyNotifyContentOnCacheUpdate();
                 }
             }

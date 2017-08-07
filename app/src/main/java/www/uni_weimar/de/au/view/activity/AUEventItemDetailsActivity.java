@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -22,6 +23,7 @@ import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUFacultyEvent;
 import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.service.impl.AUEventContentRequestService;
+import www.uni_weimar.de.au.view.adapters.AUEventScheduleItemRecyclerViewAdapter;
 
 public class AUEventItemDetailsActivity extends AppCompatActivity {
 
@@ -44,10 +46,11 @@ public class AUEventItemDetailsActivity extends AppCompatActivity {
     TextView auEventDescriptionName;
     @InjectView(R.id.progressBar)
     ProgressBar spinner;
-    @InjectView(R.id.auEventSchedule)
-    FloatingActionButton auEventShowScheduleBtn;
     Realm realmUI;
     AUFacultyEvent auFacultyEvent;
+    @InjectView(R.id.auEventScheduleRecyclerView)
+    RecyclerView auEventScheduleRecyclerView;
+    AUEventScheduleItemRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +70,6 @@ public class AUEventItemDetailsActivity extends AppCompatActivity {
                 .notifyContentOnCacheUpdate(this::onSuccess, EVENT_URL, eventURL)
                 .requestNewContent()
                 .subscribe(this::onSuccess, this::onError);
-        auEventShowScheduleBtn.setOnClickListener(v -> {
-            Toast.makeText(getBaseContext(), "show " + auEventName.getText() + " schedule", Toast.LENGTH_SHORT).show();
-            Intent nextIntent = new Intent(getBaseContext(), AUEventScheduleActivity.class);
-            nextIntent.putExtra(AUItem.AU_ITEM_URL_TAG, eventURL);
-            nextIntent.putExtra(AUItem.AU_ITEM_NAME_TAG, auEventName.getText());
-            startActivity(nextIntent);
-        });
     }
 
     private void onError(Throwable throwable) {
@@ -92,6 +88,9 @@ public class AUEventItemDetailsActivity extends AppCompatActivity {
         auLecturerName.setText(auFacultyEvent.getEventLecturer());
         auEventDescriptionName.setText(auFacultyEvent.getEventDescription());
         spinner.setVisibility(View.GONE);
+        adapter = new AUEventScheduleItemRecyclerViewAdapter(auFacultyEvent.getAuEventScheduleList());
+        auEventScheduleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        auEventScheduleRecyclerView.setAdapter(adapter);
     }
 
     @Override
