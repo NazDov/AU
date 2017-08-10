@@ -26,6 +26,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class AUMainMenuTabParser implements AUParser<AUMainMenuTab> {
 
+    private static final String AUTYPE = "autype";
+    private static final String ALL_NEWS = "All News";
     private String mainMenuURL;
 
     private AUMainMenuTabParser(String mainMenuURL) {
@@ -48,7 +50,7 @@ public class AUMainMenuTabParser implements AUParser<AUMainMenuTab> {
         Document document;
         try {
             document = Jsoup.connect(url).get();
-            Elements tabs = document.getElementsByAttributeValue("autype", AUMainMenuTab.AUTYPE);
+            Elements tabs = document.getElementsByAttributeValue(AUTYPE, AUMainMenuTab.AUTYPE);
             for (Element tab : tabs) {
                 String tabTitle = tab.attr(AUItem.TITLE);
                 Elements tabItems = tab.children();
@@ -58,7 +60,7 @@ public class AUMainMenuTabParser implements AUParser<AUMainMenuTab> {
                     String tabItemUrl = tabItem.attr(AUItem.URL);
                     AUMainMenuItem auMainMenuItem = new AUMainMenuItem();
                     auMainMenuItem.setTitle(tabItemTitle);
-                    auMainMenuItem.setUrl(tabItemTitle.equals("All News") ? allNewsUrl : tabItemUrl);
+                    auMainMenuItem.setUrl(tabItemTitle.equals(ALL_NEWS) ? allNewsUrl : tabItemUrl);
                     mainMenuTabItems.add(auMainMenuItem);
                 }
                 AUMainMenuTab auMainMenuTab = AUMainMenuTab.of(tabTitle, mainMenuTabItems);
