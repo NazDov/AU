@@ -176,7 +176,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
 
 
     private void stopRefreshing() {
-        if (auScheduleSwipeRefreshLayout.isRefreshing()) {
+        if (auScheduleSwipeRefreshLayout != null && auScheduleSwipeRefreshLayout.isRefreshing()) {
             auScheduleSwipeRefreshLayout.setRefreshing(false);
         }
     }
@@ -189,11 +189,6 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         if (realm != null) {
             realm.close();
             realm = null;
-        }
-
-        if (auScheduleDisposable != null) {
-            auScheduleDisposable.dispose();
-            auScheduleDisposable = null;
         }
     }
 

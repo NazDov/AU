@@ -45,7 +45,6 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
     AUNewsFeedFavouriteContentRequestService auNewsFeedFavouriteContentRequestService;
     Observable<List<AUNewsFeed>> auNewsFeedObservable;
     List<AUNewsFeed> auNewsFeedList;
-    Disposable disposable;
     Realm realm;
     AUNewsFeedFavouriteORM auNewsFeedFavouriteORM;
     View rootView;
@@ -83,7 +82,7 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
             auNewsFeedFavouriteORM.add(auNewsFeedFavourite);
         });
         auAllNewsFeedRecyclerView.setAdapter(auNewsFeedRecyclerViewAdapter);
-        disposable = auNewsFeedObservable.subscribe(this::onSuccess, this::onError);
+        auNewsFeedObservable.subscribe(this::onSuccess, this::onError);
         configureAUNewsItemCategoryMenu();
         return rootView;
     }
@@ -141,14 +140,16 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
     private void onSuccess(final List<AUNewsFeed> auNewsFeeds) {
         auNewsFeedList = auNewsFeeds;
         auNewsFeedRecyclerViewAdapter.notifyDataSetChanged();
-        if (newsFeedSwipeRefreshLayout.isRefreshing()) {
-            newsFeedSwipeRefreshLayout.setRefreshing(false);
-        }
+        stopRefreshing();
     }
 
     private void onError(Throwable throwable) {
         Toast.makeText(getContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
-        if (newsFeedSwipeRefreshLayout.isRefreshing()) {
+        stopRefreshing();
+    }
+
+    private void stopRefreshing() {
+        if (newsFeedSwipeRefreshLayout != null && newsFeedSwipeRefreshLayout.isRefreshing()) {
             newsFeedSwipeRefreshLayout.setRefreshing(false);
         }
     }
@@ -167,11 +168,6 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-            disposable = null;
-        }
-        auNewsFeedList = null;
     }
 
     @Override
