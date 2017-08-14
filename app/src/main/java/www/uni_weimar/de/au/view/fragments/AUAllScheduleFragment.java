@@ -49,7 +49,6 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
     AUFacultyRecyclerViewAdapter auFacultyRecyclerViewAdapter;
     private Realm realm;
     private List<AUFacultyHeader> auFacultyHeaderList;
-    private Disposable auScheduleDisposable;
     private AUFacultyHeader topLevelHeader;
     private List<AUFacultyHeader> cachedAUFAcultyHeaderList = new ArrayList<>();
 
@@ -191,6 +190,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
             realm = null;
         }
     }
+
 
     @Override
     public void onRefresh() {
