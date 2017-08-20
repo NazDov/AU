@@ -38,10 +38,11 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
     private static final String TD_LEHR_PERSON_SELECTOR = "td:nth-child(8)";
     private static final String TD_MAX_PART_SELECTOR = "td:nth-child(11)";
     private static final String EVENT_NAME_SELECTOR = "h1";
-    private final String url;
+    private final String eventURL;
+    private String eventName;
 
-    public AUEventParser(String url) {
-        this.url = url;
+    private AUEventParser(String eventURL) {
+        this.eventURL = eventURL;
     }
 
     public static AUEventParser of(String url) {
@@ -57,9 +58,10 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
         try {
             htmlDoc = Jsoup.connect(url).get();
             checkNotNull(htmlDoc);
+            eventName = parseEventName(htmlDoc);
             auFacultyEvents.add(new AUFacultyEvent.EventBuilder()
                     .setEventURL(url)
-                    .setEventName(parseEventName(htmlDoc))
+                    .setEventName(eventName)
                     .setEventType(parseEventTableVal(htmlDoc, EVENT_TYPE))
                     .setEventNumber(parseEventTableVal(htmlDoc, EVENT_NUMBER))
                     .setEventRhytmus(parseEventTableVal(htmlDoc, EVENT_RHYTMUS))
@@ -81,6 +83,8 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
         Elements eventTRItems = htmlDoc.select("table[summary=" + eventScheduleTable + "] tr:not(:first-child)");
         for (Element eventTRItem : eventTRItems) {
             eventScheduleList.add(new AUFacultyEventSchedule.EventScheduleBuilder()
+                    .setEventURL(eventURL)
+                    .setEventName(eventName)
                     .setEventScheduleDay(parseEventTDValBySelector(eventTRItem, TD_TAG_SELECTOR))
                     .setEventScheduleTime(parseEventTDValBySelector(eventTRItem, TD_ZEIT_SELECTOR))
                     .setEventScheduleDuration(parseEventTDValBySelector(eventTRItem, TD_DAUER_SELECTOR))
@@ -116,6 +120,6 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
 
     @Override
     public List<AUFacultyEvent> parseAU() throws AUParseException {
-        return parseAU(url);
+        return parseAU(eventURL);
     }
 }

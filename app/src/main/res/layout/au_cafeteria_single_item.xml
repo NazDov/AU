@@ -46,7 +46,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="@string/lorem_ipsum_dolor_sit_amen"
-                            android:textSize="@dimen/text12" />
+                            android:textSize="@dimen/text14" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -58,6 +58,7 @@
                     android:layout_gravity="end"
                     android:orientation="horizontal">
                     <ImageView
+                        android:id="@+id/au_cafeteria_item_like"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginTop="10dp"

@@ -6,15 +6,12 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/auCafeteriaProgramViewPager"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/auCafeteriaMenuRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <android.support.v4.view.PagerTabStrip
-            android:id="@+id/auCafeteriaPagerTabStrip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </android.support.v4.view.ViewPager>
+
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.design.widget.CoordinatorLayout>

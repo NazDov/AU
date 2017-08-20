@@ -32,17 +32,5 @@
         <include layout="@layout/content_auevent_item_detailed"/>
     </ScrollView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/auEventLIkeBtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginEnd="20dp"
-        android:src="@drawable/unselected_star" />
 
 </RelativeLayout>

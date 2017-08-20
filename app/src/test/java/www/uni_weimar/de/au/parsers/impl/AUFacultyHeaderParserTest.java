@@ -17,7 +17,9 @@ import java.util.List;
 import io.realm.RealmList;
 import www.uni_weimar.de.au.AUTestApplicationConfig;
 import www.uni_weimar.de.au.BuildConfig;
+import www.uni_weimar.de.au.models.AUCafeteriaMenu;
 import www.uni_weimar.de.au.models.AUFacultyHeader;
+import www.uni_weimar.de.au.orm.AUCafeteriaMenuORM;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 
 import static junit.framework.Assert.*;
@@ -60,9 +62,10 @@ public class AUFacultyHeaderParserTest {
 
     @Test
     public void testAUEventParser() {
+
         try {
-            AUEventParser
-                    .of("https://www.uni-weimar.de/qisserver/rds?state=verpublish&status=init&vmfile=no&publishid=34536&moduleCall=webInfo&publishConfFile=webInfo&publishSubDir=veranstaltung")
+            AUCafeteriaMenuParser
+                    .of("http://www.studentenwerk-muenchen.de/mensa/speiseplan/speiseplan_421_-de.html")
                     .parseAU();
         } catch (AUParseException e) {
             e.printStackTrace();

@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class AUEventContentRequestService extends AUAbstractContentRequestService<AUFacultyEvent> {
 
     private AUEventContentRequestService(Realm realm, String url) {
-        this(new AUEventORM(realm), new AUEventParser(url));
+        this(new AUEventORM(realm), AUEventParser.of(url));
     }
 
     private AUEventContentRequestService(AUBaseORM<AUFacultyEvent> auBaseORm, AUParser<AUFacultyEvent> auParser) {

@@ -23,7 +23,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="20dp"
                 android:text=""
-                android:textSize="@dimen/text16" />
+                android:textSize="@dimen/text14" />
 
             <View
                 android:layout_width="match_parent"

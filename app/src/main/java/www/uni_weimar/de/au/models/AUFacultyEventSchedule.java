@@ -23,19 +23,24 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
     private String eventScheduleRoom;
     private String eventScheduleLecturer;
     private String eventMaxParticipants;
+    private String eventURL;
+    private String eventName;
 
 
     public AUFacultyEventSchedule() {
 
     }
 
-    public AUFacultyEventSchedule(String eventScheduleDay,
-                                  String eventScheduleTime,
-                                  String eventSchedulePeriod,
-                                  String eventScheduleRoom,
-                                  String eventScheduleDuration,
-                                  String eventMaxParticipants,
-                                  String eventScheduleLecturer) {
+
+    private AUFacultyEventSchedule(String eventScheduleDay,
+                                   String eventScheduleTime,
+                                   String eventSchedulePeriod,
+                                   String eventScheduleRoom,
+                                   String eventScheduleDuration,
+                                   String eventMaxParticipants,
+                                   String eventScheduleLecturer,
+                                   String eventURL,
+                                   String eventName) {
         this.eventScheduleDay = eventScheduleDay;
         this.eventScheduleTime = eventScheduleTime;
         this.eventSchedulePeriod = eventSchedulePeriod;
@@ -43,6 +48,8 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
         this.eventScheduleLecturer = eventScheduleLecturer;
         this.eventMaxParticipants = eventMaxParticipants;
         this.eventScheduleRoom = eventScheduleRoom;
+        this.eventURL = eventURL;
+        this.eventName = eventName;
     }
 
     public AUFacultyEventSchedule(EventScheduleBuilder eventScheduleBuilder) {
@@ -52,7 +59,9 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
                 eventScheduleBuilder.eventScheduleRoom,
                 eventScheduleBuilder.eventScheduleDuration,
                 eventScheduleBuilder.eventMaxParticipants,
-                eventScheduleBuilder.eventScheduleLecturer);
+                eventScheduleBuilder.eventScheduleLecturer,
+                eventScheduleBuilder.eventURL,
+                eventScheduleBuilder.eventName);
     }
 
 
@@ -86,6 +95,14 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
 
     public String getEventScheduleLecturer() {
         return eventScheduleLecturer;
+    }
+
+    public String getEventURL() {
+        return eventURL;
+    }
+
+    public String getEventName() {
+        return eventName;
     }
 
     @Override
@@ -130,6 +147,8 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
         private String eventScheduleRoom;
         private String eventScheduleLecturer;
         private String eventMaxParticipants;
+        private String eventURL;
+        private String eventName;
 
         public EventScheduleBuilder setEventScheduleDay(String eventScheduleDay) {
             this.eventScheduleDay = eventScheduleDay;
@@ -166,8 +185,18 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
             return this;
         }
 
+        public EventScheduleBuilder setEventURL(String eventURL) {
+            this.eventURL = eventURL;
+            return this;
+        }
+
         public AUFacultyEventSchedule build() {
             return new AUFacultyEventSchedule(this);
+        }
+
+        public EventScheduleBuilder setEventName(String eventName) {
+            this.eventName = eventName;
+            return this;
         }
     }
 }

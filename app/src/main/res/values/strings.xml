@@ -68,4 +68,5 @@
     <string name="SCHEDULE_NAME_TAG">" Schedule"</string>
     <string name="AU_FACULTY_TOP_HEADER">Veranstaltungsverzeichnis der Bauhaus-Universität Weimar</string>
     <string name="lorem_ipsum_dolor_sit_amen">lorem ipsum dolor sit amen</string>
+    <string name="DEFAULT_CAFETERIA_URL">http://www.studentenwerk-muenchen.de/mensa/speiseplan/speiseplan_421_-de.html</string>
 </resources>

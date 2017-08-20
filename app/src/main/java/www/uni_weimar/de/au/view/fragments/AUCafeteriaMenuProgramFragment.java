@@ -3,30 +3,36 @@ package www.uni_weimar.de.au.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.view.PagerTabStrip;
+import android.support.v4.view.PagerTitleStrip;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import io.realm.Realm;
 import www.uni_weimar.de.au.R;
-import www.uni_weimar.de.au.view.adapters.AUCafeteriaMenuProgramRecyclerViewAdapter;
+import www.uni_weimar.de.au.models.AUCafeteriaMenu;
+import www.uni_weimar.de.au.service.impl.AUCafeteriaMenuContentRequestService;
+import www.uni_weimar.de.au.view.adapters.AUCafeteriaMainMenuPagerAdapter;
 
 /**
  * Created by ndovhuy on 04.08.2017.
  */
-public class AUCafeteriaMenuProgramFragment extends Fragment {
+public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPager.OnPageChangeListener {
 
-    @InjectView(R.id.au_cafeteria_menu_program_recycler_view)
-    RecyclerView auCafeteriaMenuProgramRecyclerView;
-    AUCafeteriaMenuProgramRecyclerViewAdapter adapter;
-    List<String> auCafeteriaMainMenuItems = new ArrayList<>();
-
+    @InjectView(R.id.auCafeteriaProgramViewPager)
+    ViewPager auCafeteriaViewPager;
+    @InjectView(R.id.auCafeteriaPagerTabStrip)
+    PagerTabStrip auCafeteriaPagerTabStrip;
+    Realm realmUI;
+    private List<AUCafeteriaMenu> auCafeteriaMenus;
 
     public static AUCafeteriaMenuProgramFragment newInstance() {
         Bundle args = new Bundle();
@@ -41,12 +47,59 @@ public class AUCafeteriaMenuProgramFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.au_cafeteria_menu_program_layout, container, false);
         ButterKnife.inject(this, rootView);
-        for (int i = 0; i < 10; i++) {
-            auCafeteriaMainMenuItems.add("item");
-        }
-        adapter = new AUCafeteriaMenuProgramRecyclerViewAdapter();
-        auCafeteriaMenuProgramRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        auCafeteriaMenuProgramRecyclerView.setAdapter(adapter);
+        realmUI = Realm.getDefaultInstance();
+        AUCafeteriaMenuContentRequestService contentRequestService = AUCafeteriaMenuContentRequestService.of(realmUI, getString(R.string.DEFAULT_CAFETERIA_URL));
+        contentRequestService.notifyContentOnCacheUpdate(this::updateViewPager);
+        contentRequestService.requestNewContent().subscribe(this::onSuccess, this::onError);
+        auCafeteriaPagerTabStrip.setTextColor(getResources().getColor(R.color.cafeteria_tab_color));
+        auCafeteriaPagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.cafeteria_tab_color));
+        auCafeteriaViewPager.addOnPageChangeListener(this);
         return rootView;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (realmUI != null) realmUI = null;
+        super.onDestroy();
+    }
+
+
+    private void onError(Throwable throwable) {
+        Toast.makeText(getContext(), throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void onSuccess(List<AUCafeteriaMenu> auCafeteriaMenus) {
+        updateViewPager(auCafeteriaMenus);
+    }
+
+    private void updateViewPager(List<AUCafeteriaMenu> content) {
+        auCafeteriaMenus = content;
+        List<AUCafeteriaMenuItemFragment> cafeteriaMenuItemFragments = initAUCafeteriaMenuItemFragments();
+        AUCafeteriaMainMenuPagerAdapter auCafeteriaMenuPagerAdapter = new AUCafeteriaMainMenuPagerAdapter(getChildFragmentManager(), cafeteriaMenuItemFragments);
+        auCafeteriaViewPager.setAdapter(auCafeteriaMenuPagerAdapter);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        auCafeteriaViewPager.setCurrentItem(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    public List<AUCafeteriaMenuItemFragment> initAUCafeteriaMenuItemFragments() {
+        List<AUCafeteriaMenuItemFragment> fragments = new ArrayList<>();
+        for (AUCafeteriaMenu auCafeteriaMenu : auCafeteriaMenus) {
+            AUCafeteriaMenuItemFragment cafeteriaMenuItemFragment = AUCafeteriaMenuItemFragment.newInstance(auCafeteriaMenu);
+            fragments.add(cafeteriaMenuItemFragment);
+        }
+        return fragments;
     }
 }

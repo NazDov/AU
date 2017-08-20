@@ -56,6 +56,7 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
         holder.newsFeedTitle.setText(auNewsFeedItem.getTitle());
         holder.newsFeedDescription.setText(auNewsFeedItem.getDesciption());
         Glide.with(context).load(auNewsFeedItem.getImgUrl())
+                .thumbnail(0.2f)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .placeholder(context.getResources().getDrawable(R.drawable.news_article))
                 .into(holder.newsFeedImage);

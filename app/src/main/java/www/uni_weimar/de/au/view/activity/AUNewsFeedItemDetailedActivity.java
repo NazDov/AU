@@ -63,7 +63,6 @@ public class AUNewsFeedItemDetailedActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(auNewsFeedItem.getTitle());
         Glide.with(this)
                 .load(auNewsFeedItem.getImgUrl())
-                .thumbnail(0.6f)
                 .diskCacheStrategy(RESULT)
                 .placeholder(R.drawable.news_article)
                 .into(auNewsFeedItemDetailedImageView);

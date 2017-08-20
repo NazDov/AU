@@ -56,7 +56,7 @@
             android:name=".view.activity.AUEventScheduleActivity"
             android:parentActivityName=".view.activity.AUMainMenuActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AUEventItemDetailTeam">
+            android:theme="@style/AUNewsFeedItemDetailTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="www.uni_weimar.de.au.view.activity.AUMainMenuActivity" />
