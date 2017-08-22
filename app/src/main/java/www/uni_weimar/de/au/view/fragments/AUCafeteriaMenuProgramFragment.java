@@ -29,8 +29,6 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
 
     @InjectView(R.id.auCafeteriaProgramViewPager)
     ViewPager auCafeteriaViewPager;
-    @InjectView(R.id.auCafeteriaPagerTabStrip)
-    PagerTabStrip auCafeteriaPagerTabStrip;
     Realm realmUI;
     private List<AUCafeteriaMenu> auCafeteriaMenus;
 
@@ -51,8 +49,6 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
         AUCafeteriaMenuContentRequestService contentRequestService = AUCafeteriaMenuContentRequestService.of(realmUI, getString(R.string.DEFAULT_CAFETERIA_URL));
         contentRequestService.notifyContentOnCacheUpdate(this::updateViewPager);
         contentRequestService.requestNewContent().subscribe(this::onSuccess, this::onError);
-        auCafeteriaPagerTabStrip.setTextColor(getResources().getColor(R.color.cafeteria_tab_color));
-        auCafeteriaPagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.cafeteria_tab_color));
         auCafeteriaViewPager.addOnPageChangeListener(this);
         return rootView;
     }

@@ -14,6 +14,8 @@
         <android.support.v4.view.PagerTabStrip
             android:id="@+id/auCafeteriaPagerTabStrip"
             android:layout_width="match_parent"
+            android:background="@drawable/background_toolbar_transparent"
+            android:textColor="@color/cafeteria_tab_color"
             android:layout_height="wrap_content"/>
     </android.support.v4.view.ViewPager>
 
