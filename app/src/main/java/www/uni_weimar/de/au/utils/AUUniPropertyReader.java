@@ -1,7 +1,6 @@
 package www.uni_weimar.de.au.utils;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +13,7 @@ import java.util.Properties;
 public class AUUniPropertyReader {
 
     private static final String FILE_NAME = "university.properties";
-    private static final java.lang.String UNI = "uni";
+    private static final java.lang.String NAME = "name";
 
     public AUUniPropertyReader(Context context){
         InputStream is = null;
@@ -22,7 +21,7 @@ public class AUUniPropertyReader {
             is =context.getAssets().open(FILE_NAME);
             Properties properties = new Properties();
             properties.load(is);
-            String uni = properties.getProperty(UNI);
+            String uni = properties.getProperty(NAME);
         } catch (IOException e) {
             e.printStackTrace();
         }finally {

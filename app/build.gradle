@@ -57,18 +57,16 @@ dependencies {
     androidTestCompile 'org.mockito:mockito-android:2.7.22'
 }
 
-def UNI = 'LMU'
 
 task buildForUNI {
-    def propertyFile = file("src/main/res/assets/university.properties")
+    def propertyFile = file("src/main/assets/university.properties")
     def props = new Properties()
     def fileWriter = new FileWriter(propertyFile)
-    props.setProperty("uni", UNI)
-    try{
-        props.store(fileWriter,"");
+    props.setProperty("name", project.hasProperty("UNI") ? project.property("UNI") : "WEIMAR")
+    try {
+        props.store(fileWriter, null);
         fileWriter.flush();
-    }finally{
+    } finally {
         fileWriter.close();
     }
-
 }
