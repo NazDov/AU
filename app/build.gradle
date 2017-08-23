@@ -56,3 +56,19 @@ dependencies {
     androidTestCompile 'junit:junit:4.12'
     androidTestCompile 'org.mockito:mockito-android:2.7.22'
 }
+
+def UNI = 'LMU'
+
+task buildForUNI {
+    def propertyFile = file("src/main/res/assets/university.properties")
+    def props = new Properties()
+    def fileWriter = new FileWriter(propertyFile)
+    props.setProperty("uni", UNI)
+    try{
+        props.store(fileWriter,"");
+        fileWriter.flush();
+    }finally{
+        fileWriter.close();
+    }
+
+}
