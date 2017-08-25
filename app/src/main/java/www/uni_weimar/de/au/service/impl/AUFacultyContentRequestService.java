@@ -24,11 +24,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class AUFacultyContentRequestService extends AUAbstractContentRequestService<AUFacultyHeader> {
 
-    AUFacultyContentRequestService(Realm realm, String url) {
+    private AUFacultyContentRequestService(Realm realm, String url) {
         super(new AUFacultyORM(realm), AUFacultyParser.of(url));
     }
 
-    AUFacultyContentRequestService(AUBaseORM<AUFacultyHeader> auBaseORm, AUParser<AUFacultyHeader> auParser) {
+    private AUFacultyContentRequestService(AUBaseORM<AUFacultyHeader> auBaseORm, AUParser<AUFacultyHeader> auParser) {
         super(auBaseORm, auParser);
     }
 

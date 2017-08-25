@@ -2,7 +2,9 @@
     <string name="app_name">AU</string>
     <string name="MAIN_MENU">http://ec2-35-157-27-16.eu-central-1.compute.amazonaws.com/menu.xml</string>
     <string name="ALL_NEWS">https://www.uni-weimar.de/de/universitaet/aktuell/pinnwaende/rss/</string>
-    <string name="COURSES_URL">https://www.uni-weimar.de/qisserver/rds?state=wtree&amp;search=1&amp;category=veranstaltung.browse&amp;navigationPosition=lectures%2Clectureindex&amp;breadcrumb=lectureindex&amp;topitem=lectures&amp;subitem=lectureindex</string>
+    <string name="WEIMAR_COURSES_URL">https://www.uni-weimar.de/qisserver/rds?state=wtree&amp;search=1&amp;category=veranstaltung.browse&amp;navigationPosition=lectures%2Clectureindex&amp;breadcrumb=lectureindex&amp;topitem=lectures&amp;subitem=lectureindex</string>
+    <string name="LMU_COURSES_URL">https://lsf.verwaltung.uni-muenchen.de/qisserver/rds?state=wtree&amp;search=1&amp;category=veranstaltung.browse&amp;navigationPosition=functions%2Clectureindex&amp;breadcrumb=lectureindex&amp;topitem=locallinks&amp;subitem=lectureindex</string>
+    <string name="DEFAULT_COURSES_URL">https://www.uni-weimar.de/qisserver/rds?state=wtree&amp;search=1&amp;category=veranstaltung.browse&amp;navigationPosition=lectures%2Clectureindex&amp;breadcrumb=lectureindex&amp;topitem=lectures&amp;subitem=lectureindex</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
@@ -67,6 +69,8 @@
     <string name="_21_00">21:00</string>
     <string name="SCHEDULE_NAME_TAG">" Schedule"</string>
     <string name="AU_FACULTY_TOP_HEADER">Veranstaltungsverzeichnis der Bauhaus-Universität Weimar</string>
+    <string name="WEIMAR_FACULTY_TOP_HEADER">Veranstaltungsverzeichnis der Bauhaus-Universität Weimar</string>
+    <string name="LMU_FACULTY_TOP_HEADER">Vorlesungsverzeichnis (WiSe 2017/18)</string>
     <string name="lorem_ipsum_dolor_sit_amen">lorem ipsum dolor sit amen</string>
     <string name="DEFAULT_CAFETERIA_URL">http://www.studentenwerk-muenchen.de/mensa/speiseplan/speiseplan_421_-de.html</string>
 </resources>

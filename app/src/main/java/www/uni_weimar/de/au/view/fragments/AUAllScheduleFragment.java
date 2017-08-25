@@ -20,7 +20,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUFacultyHeader;
@@ -28,6 +27,8 @@ import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.service.impl.AUFacultyContentRequestService;
 import www.uni_weimar.de.au.view.activity.AUEventItemDetailsActivity;
 import www.uni_weimar.de.au.view.adapters.AUFacultyRecyclerViewAdapter;
+
+import static www.uni_weimar.de.au.utils.AUUtilityDefaultLinksFactory.*;
 
 /**
  * Created by nazar on 13.07.17.
@@ -68,6 +69,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         ButterKnife.inject(this, root);
         progressBar.setVisibility(View.INVISIBLE);
         realm = Realm.getDefaultInstance();
+        auFacultyHeaderText.setText(getDefaultLink(R.string.AU_FACULTY_TOP_HEADER));
         auScheduleSwipeRefreshLayout.setOnRefreshListener(this);
         auScheduleSwipeRefreshLayout.setRefreshing(true);
         auFacultyRecyclerViewAdapter = new AUFacultyRecyclerViewAdapter(getContext(), auFacultyHeaderList);
@@ -81,9 +83,10 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
             }
 
         });
-        auFacultyContentRequestService = AUFacultyContentRequestService.of(realm, getString(R.string.COURSES_URL));
+        String defaultCoursesUrl = getDefaultLink(R.string.DEFAULT_COURSES_URL);
+        auFacultyContentRequestService = AUFacultyContentRequestService.of(realm, defaultCoursesUrl);
         auFacultyContentRequestService
-                .requestContent(getString(R.string.COURSES_URL), 1, null)
+                .requestContent(defaultCoursesUrl, 1, null)
                 .subscribe(this::onSuccess, this::onError);
 
         auFacultyContentRequestService.notifyContentOnCacheUpdate(content -> {
@@ -107,7 +110,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
                     updateAUFacultyRecyclerViewAdapter();
                     auFacultyHeaderText.setText(topLevelHeader.getTitle());
                 } else {
-                    auFacultyHeaderText.setText(getString(R.string.AU_FACULTY_TOP_HEADER));
+                    auFacultyHeaderText.setText(getDefaultLink(R.string.AU_FACULTY_TOP_HEADER));
                     auFacultyNotifyContentOnCacheUpdate();
                 }
             }
@@ -195,5 +198,6 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         auFacultyNotifyContentOnCacheUpdate();
+        auFacultyHeaderText.setText(getDefaultLink(R.string.AU_FACULTY_TOP_HEADER));
     }
 }

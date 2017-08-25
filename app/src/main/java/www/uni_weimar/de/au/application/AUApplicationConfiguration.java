@@ -20,6 +20,7 @@ import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.orm.AUMainMenuTabORM;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.impl.AUMainMenuTabParser;
+import www.uni_weimar.de.au.utils.AUUtilityUniversityPropertyReader;
 import www.uni_weimar.de.au.utils.SSLUtilities;
 import www.uni_weimar.de.au.view.activity.AUMainMenuActivity;
 
@@ -43,6 +44,7 @@ public class AUApplicationConfiguration extends Application {
         Log.i(TAG, "realm database configured");
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+2:00"));
         if (Build.VERSION.SDK_INT < LOLLIPOP) SSLUtilities.trustAllCerts();
+        AUUtilityUniversityPropertyReader.configureAUProperties(getApplicationContext());
     }
 
 

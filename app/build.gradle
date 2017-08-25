@@ -10,7 +10,7 @@ jacoco {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.1'
     defaultConfig {
         applicationId "au.de.uni_weimar.www"
         minSdkVersion 14
@@ -57,12 +57,13 @@ dependencies {
     androidTestCompile 'org.mockito:mockito-android:2.7.22'
 }
 
+ext.UNI = project.hasProperty("UNI") ? project.property("UNI") :"WEIMAR";
 
 task buildForUNI {
     def propertyFile = file("src/main/assets/university.properties")
     def props = new Properties()
     def fileWriter = new FileWriter(propertyFile)
-    props.setProperty("name", project.hasProperty("UNI") ? project.property("UNI") : "WEIMAR")
+    props.setProperty("name", UNI)
     try {
         props.store(fileWriter, null);
         fileWriter.flush();

@@ -1,5 +1,6 @@
 package www.uni_weimar.de.au.view.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -73,6 +77,23 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
         List<AUCafeteriaMenuItemFragment> cafeteriaMenuItemFragments = initAUCafeteriaMenuItemFragments();
         AUCafeteriaMainMenuPagerAdapter auCafeteriaMenuPagerAdapter = new AUCafeteriaMainMenuPagerAdapter(getChildFragmentManager(), cafeteriaMenuItemFragments);
         auCafeteriaViewPager.setAdapter(auCafeteriaMenuPagerAdapter);
+        auCafeteriaViewPager.setCurrentItem(getTodayCafeteriaMenuItemPosition());
+    }
+
+    private int getTodayCafeteriaMenuItemPosition() {
+        int position = 0;
+        int currentDayMenuPos = 0;
+        for (; position < auCafeteriaMenus.size(); position++) {
+            AUCafeteriaMenu auCafeteriaMenu = auCafeteriaMenus.get(position);
+            String currentDayMenu = auCafeteriaMenu.getAuCafeteriaMenuDayTitle().split(",")[1].trim();
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            String currentDay = simpleDateFormat.format(new Date());
+            if (currentDay.equalsIgnoreCase(currentDayMenu)) {
+                currentDayMenuPos = position;
+                break;
+            }
+        }
+        return currentDayMenuPos;
     }
 
     @Override
