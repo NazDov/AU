@@ -26,7 +26,7 @@ import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.utils.StaticDateUtils;
 import www.uni_weimar.de.au.view.activity.AUNewsFeedItemDetailedActivity;
-import www.uni_weimar.de.au.view.listeners.AUItemStateListener;
+import www.uni_weimar.de.au.view.listeners.AUItemChangeListener;
 
 /**
  * Created by ndovhuy on 19.06.2017.
@@ -36,7 +36,7 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
 
     private List<AUNewsFeed> auNewsFeedList;
     private Context context;
-    private AUItemStateListener<AUNewsFeed> auNewsFeedLikedItemListener;
+    private AUItemChangeListener<AUNewsFeed> auNewsFeedLikedItemListener;
 
 
     public AUNewsFeedRecyclerViewAdapter(Context context, List<AUNewsFeed> auNewsFeedList) {
@@ -145,7 +145,7 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
         this.auNewsFeedList = auNewsFeedList;
     }
 
-    public void setAuNewsFeedLikedItemListener(AUItemStateListener<AUNewsFeed> auNewsFeedLikedItemListener) {
+    public void setAuNewsFeedLikedItemListener(AUItemChangeListener<AUNewsFeed> auNewsFeedLikedItemListener) {
         this.auNewsFeedLikedItemListener = auNewsFeedLikedItemListener;
     }
 }

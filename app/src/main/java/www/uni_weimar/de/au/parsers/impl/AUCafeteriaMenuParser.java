@@ -6,7 +6,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.RealmList;
@@ -57,6 +56,7 @@ public class AUCafeteriaMenuParser implements AUParser<AUCafeteriaMenu> {
                 RealmList<AUCafeteriaMenuItem> auCafeteriaMenuItems = parseAUCafeteriaMenuItems(menuItemSchedule);
                 auCafeteriaMenu.setAuCafeteriaMenuDayTitle(menuItemScheduleHeader);
                 auCafeteriaMenu.setAuCafeteriaMenuItems(auCafeteriaMenuItems);
+                auCafeteriaMenu.setCafeteriaUrl(url);
                 auCafeteriaMenuList.add(auCafeteriaMenu);
             }
         } catch (IOException e) {

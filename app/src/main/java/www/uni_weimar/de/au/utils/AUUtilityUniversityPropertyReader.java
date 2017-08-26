@@ -50,14 +50,17 @@ public class AUUtilityUniversityPropertyReader {
             case "WEIMAR":
                 AUUtilityDefaultLinksFactory.getDefaultLink(R.string.DEFAULT_COURSES_URL, aucontext.getString(R.string.WEIMAR_COURSES_URL));
                 AUUtilityDefaultLinksFactory.getDefaultLink(R.string.AU_FACULTY_TOP_HEADER, aucontext.getString(R.string.WEIMAR_FACULTY_TOP_HEADER));
+                AUUtilityDefaultLinksFactory.getDefaultLink(R.string.DEFAULT_CAFETERIA_URL, aucontext.getString(R.string.DEFAULT_CAFETERIA_URL));
                 break;
             case "LMU":
                 AUUtilityDefaultLinksFactory.getDefaultLink(R.string.DEFAULT_COURSES_URL, aucontext.getString(R.string.LMU_COURSES_URL));
                 AUUtilityDefaultLinksFactory.getDefaultLink(R.string.AU_FACULTY_TOP_HEADER, aucontext.getString(R.string.LMU_FACULTY_TOP_HEADER));
+                AUUtilityDefaultLinksFactory.getDefaultLink(R.string.DEFAULT_CAFETERIA_URL, aucontext.getString(R.string.DEFAULT_CAFETERIA_URL));
                 break;
             default:
                 AUUtilityDefaultLinksFactory.getDefaultLink(R.string.DEFAULT_COURSES_URL, aucontext.getString(R.string.WEIMAR_COURSES_URL));
                 AUUtilityDefaultLinksFactory.getDefaultLink(R.string.AU_FACULTY_TOP_HEADER, aucontext.getString(R.string.WEIMAR_FACULTY_TOP_HEADER));
+                AUUtilityDefaultLinksFactory.getDefaultLink(R.string.DEFAULT_CAFETERIA_URL, aucontext.getString(R.string.DEFAULT_CAFETERIA_URL));
                 break;
         }
     }

@@ -49,4 +49,5 @@
 
     <dimen name="au_timetable_time_block_height">80dp</dimen>
     <dimen name="au_timetable_time_block_width">65dp</dimen>
+    <dimen name="au_cafeteria_view_pager_height">450dp</dimen>
 </resources>

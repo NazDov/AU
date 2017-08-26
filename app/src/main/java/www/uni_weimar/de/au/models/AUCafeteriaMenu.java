@@ -1,6 +1,5 @@
 package www.uni_weimar.de.au.models;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import io.realm.RealmList;
@@ -16,6 +15,7 @@ public class AUCafeteriaMenu extends RealmObject implements AUItem {
     @PrimaryKey
     private String auCafeteriaMenuDayTitle;
     private RealmList<AUCafeteriaMenuItem> auCafeteriaMenuItems;
+    private String cafeteriaUrl;
 
     public AUCafeteriaMenu(){
 
@@ -43,25 +43,35 @@ public class AUCafeteriaMenu extends RealmObject implements AUItem {
         this.auCafeteriaMenuItems = auCafeteriaMenuItems;
     }
 
+    public String getCafeteriaUrl() {
+        return cafeteriaUrl;
+    }
+
+    public void setCafeteriaUrl(String cafeteriaUrl) {
+        this.cafeteriaUrl = cafeteriaUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AUCafeteriaMenu)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         AUCafeteriaMenu that = (AUCafeteriaMenu) o;
-        return Objects.equal(getAuCafeteriaMenuDayTitle(), that.getAuCafeteriaMenuDayTitle()) &&
-                Objects.equal(getAuCafeteriaMenuItems(), that.getAuCafeteriaMenuItems());
+        return Objects.equal(auCafeteriaMenuDayTitle, that.auCafeteriaMenuDayTitle) &&
+                Objects.equal(auCafeteriaMenuItems, that.auCafeteriaMenuItems) &&
+                Objects.equal(cafeteriaUrl, that.cafeteriaUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getAuCafeteriaMenuDayTitle(), getAuCafeteriaMenuItems());
+        return Objects.hashCode(auCafeteriaMenuDayTitle, auCafeteriaMenuItems, cafeteriaUrl);
     }
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("auCafeteriaMenuDayTitle", auCafeteriaMenuDayTitle)
-                .add("auCafeteriaMenuItems", auCafeteriaMenuItems)
-                .toString();
+        return "AUCafeteriaMenu{" +
+                "auCafeteriaMenuDayTitle='" + auCafeteriaMenuDayTitle + '\'' +
+                ", auCafeteriaMenuItems=" + auCafeteriaMenuItems +
+                ", cafeteriaUrl='" + cafeteriaUrl + '\'' +
+                '}';
     }
 }

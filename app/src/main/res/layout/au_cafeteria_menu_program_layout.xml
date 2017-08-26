@@ -9,7 +9,7 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/auCafeteriaProgramViewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <android.support.v4.view.PagerTabStrip
             android:id="@+id/auCafeteriaPagerTabStrip"
@@ -17,6 +17,9 @@
             android:background="@drawable/background_toolbar_transparent"
             android:textColor="@color/cafeteria_tab_color"
             android:layout_height="wrap_content"/>
+
     </android.support.v4.view.ViewPager>
+
+
 
 </android.support.design.widget.CoordinatorLayout>

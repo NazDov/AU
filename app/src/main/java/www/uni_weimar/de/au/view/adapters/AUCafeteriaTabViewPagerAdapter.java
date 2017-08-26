@@ -2,8 +2,14 @@ package www.uni_weimar.de.au.view.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 
+import java.util.*;
+
+import www.uni_weimar.de.au.models.AUCafeteria;
+import www.uni_weimar.de.au.view.fragments.AUCafeteriaListFragment;
 import www.uni_weimar.de.au.view.fragments.AUCafeteriaMenuProgramFragment;
 import www.uni_weimar.de.au.view.fragments.AUCafeteriaMyFavouritesFragment;
 
@@ -12,27 +18,33 @@ import www.uni_weimar.de.au.view.fragments.AUCafeteriaMyFavouritesFragment;
  */
 public class AUCafeteriaTabViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    private final int tabCount;
+    private final List<Fragment> mFragments;
 
-    public AUCafeteriaTabViewPagerAdapter(FragmentManager fm, int tabCount) {
+    public AUCafeteriaTabViewPagerAdapter(FragmentManager fm, List<Fragment> auCafeteriaFragments) {
         super(fm);
-        this.tabCount = tabCount;
+        mFragments = auCafeteriaFragments;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 
     @Override
     public Fragment getItem(int position) {
-        switch (position){
-            case 0:
-                return AUCafeteriaMenuProgramFragment.newInstance();
-            case 1:
-                return AUCafeteriaMyFavouritesFragment.newInstance();
-            default:
-                return AUCafeteriaMenuProgramFragment.newInstance();
-        }
+        Fragment fragment = mFragments.get(position);
+        return fragment;
+    }
+
+
+    public void replaceFragmentItem(int position, Fragment fragment) {
+        mFragments.set(position, fragment);
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return tabCount;
+        return mFragments != null ? mFragments.size() : 0;
     }
+
 }

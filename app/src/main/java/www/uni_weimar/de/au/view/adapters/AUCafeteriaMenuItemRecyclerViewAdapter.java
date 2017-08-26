@@ -29,7 +29,7 @@ public class AUCafeteriaMenuItemRecyclerViewAdapter extends RecyclerView.Adapter
 
     @Override
     public CafeteriaMenuProgramViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.au_cafeteria_single_item, parent, false);
+        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.au_cafeteria_menu_single_item, parent, false);
         return new CafeteriaMenuProgramViewHolder(rootView);
     }
 

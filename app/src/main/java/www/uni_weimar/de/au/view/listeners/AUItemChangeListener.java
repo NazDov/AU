@@ -5,6 +5,6 @@ import www.uni_weimar.de.au.models.AUNewsFeed;
 /**
  * Created by ndovhuy on 30.06.2017.
  */
-public interface AUItemStateListener<T> {
+public interface AUItemChangeListener<T> {
    void onChanged(T auItem);
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUFacultyHeader;
-import www.uni_weimar.de.au.view.listeners.AUItemStateListener;
+import www.uni_weimar.de.au.view.listeners.AUItemChangeListener;
 
 /**
  * Created by nazar on 13.07.17.
@@ -22,7 +22,7 @@ public class AUFacultyRecyclerViewAdapter extends RecyclerView.Adapter<AUFaculty
 
     private Context context;
     private List<AUFacultyHeader> auFaculties;
-    private AUItemStateListener<AUFacultyHeader> auItemStateListener;
+    private AUItemChangeListener<AUFacultyHeader> auItemChangeListener;
 
     public AUFacultyRecyclerViewAdapter(Context context, List<AUFacultyHeader> auFacultyHeaderList) {
         this.context = context;
@@ -56,8 +56,8 @@ public class AUFacultyRecyclerViewAdapter extends RecyclerView.Adapter<AUFaculty
             auScheduleTextView = (TextView) itemView.findViewById(R.id.au_schedule_name);
             auScheduleCardView = (CardView) itemView.findViewById(R.id.au_schedule_card_view);
             auScheduleCardView.setOnClickListener(v -> {
-                if (auItemStateListener != null) {
-                    auItemStateListener.onChanged(auFaculties.get(getAdapterPosition()));
+                if (auItemChangeListener != null) {
+                    auItemChangeListener.onChanged(auFaculties.get(getAdapterPosition()));
                 }
             });
         }
@@ -68,7 +68,7 @@ public class AUFacultyRecyclerViewAdapter extends RecyclerView.Adapter<AUFaculty
         this.auFaculties = auFaculties;
     }
 
-    public void setOnItemClickListener(AUItemStateListener<AUFacultyHeader> auItemStateListener) {
-        this.auItemStateListener = auItemStateListener;
+    public void setOnItemClickListener(AUItemChangeListener<AUFacultyHeader> auItemChangeListener) {
+        this.auItemChangeListener = auItemChangeListener;
     }
 }
