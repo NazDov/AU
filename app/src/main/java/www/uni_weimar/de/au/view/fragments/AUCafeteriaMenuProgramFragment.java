@@ -2,14 +2,19 @@ package www.uni_weimar.de.au.view.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
-import android.widget.ProgressBar;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -24,7 +29,9 @@ import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUCafeteria;
 import www.uni_weimar.de.au.models.AUCafeteriaMenu;
 import www.uni_weimar.de.au.service.impl.AUCafeteriaMenuContentRequestService;
+import www.uni_weimar.de.au.utils.AUInstanceFactory;
 import www.uni_weimar.de.au.view.adapters.AUCafeteriaMainMenuPagerAdapter;
+import www.uni_weimar.de.au.view.components.AUSpinnerImageView;
 import www.uni_weimar.de.au.view.fragments.tabs.AUCafeteriaTabFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -41,8 +48,8 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
     ViewPager auCafeteriaViewPager;
     @InjectView(R.id.au_cafeteria_switch_fragment_btn)
     Button auCafeteriaSwitchFragmentBtn;
-    @InjectView(R.id.progressBar)
-    ProgressBar progressBar;
+    @InjectView(R.id.cafeteriaSpinnerImageID)
+    ImageView spinner;
     Realm realmUI;
     private List<AUCafeteriaMenu> auCafeteriaMenus;
     private AUCafeteria mAUCafeteria;
@@ -54,23 +61,18 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
     public static AUCafeteriaMenuProgramFragment newInstance(AUCafeteria auCafeteria, AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher fragmentSwitcher) {
         checkNotNull(auCafeteria);
         checkNotNull(fragmentSwitcher);
-        Bundle args = new Bundle();
         AUCafeteriaMenuProgramFragment fragment = new AUCafeteriaMenuProgramFragment();
         fragment.mAUCafeteria = auCafeteria;
         fragment.mFragmentSwitcher = fragmentSwitcher;
-        args.putSerializable(AU_CAFETERIA_TAG, auCafeteria);
-        args.putSerializable(AU_FRAGMENT_SWITCHER_TAG, fragmentSwitcher);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = this.getArguments();
-        if (args != null) {
-            mAUCafeteria = (AUCafeteria) args.getSerializable(AU_CAFETERIA_TAG);
-            mFragmentSwitcher = (AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher) args.getSerializable(AU_FRAGMENT_SWITCHER_TAG);
+        Object instance = AUInstanceFactory.getInstance(AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher.class);
+        if (instance != null) {
+            mFragmentSwitcher = (AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher) instance;
         }
     }
 
@@ -80,6 +82,8 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.au_cafeteria_menu_program_layout, container, false);
         ButterKnife.inject(this, rootView);
+        spinner.setVisibility(View.VISIBLE);
+        startLoadingAnim();
         realmUI = Realm.getDefaultInstance();
         auCafeteriaMenuPagerAdapter = new AUCafeteriaMainMenuPagerAdapter(getChildFragmentManager(), cafeteriaMenuItemFragments);
         auCafeteriaViewPager.setAdapter(auCafeteriaMenuPagerAdapter);
@@ -101,9 +105,23 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
         return rootView;
     }
 
+    private void startLoadingAnim() {
+        RotateAnimation anim = new RotateAnimation(0.0f, 360.0f , Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
+        anim.setDuration(1000);
+        anim.setInterpolator(new LinearInterpolator());
+        anim.setRepeatMode(Animation.INFINITE);
+        spinner.setAnimation(anim);
+        spinner.startAnimation(anim);
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (realmUI != null) {
+            realmUI.close();
+            realmUI = null;
+        }
+        mAUCafeteria = null;
     }
 
 
@@ -113,7 +131,9 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
 
     private void onSuccess(List<AUCafeteriaMenu> auCafeteriaMenus) {
         updateViewPager(auCafeteriaMenus);
-        progressBar.setVisibility(View.GONE);
+        new Handler().postDelayed(()->{
+            spinner.setVisibility(View.GONE);
+        },500);
     }
 
     private void updateViewPager(List<AUCafeteriaMenu> content) {

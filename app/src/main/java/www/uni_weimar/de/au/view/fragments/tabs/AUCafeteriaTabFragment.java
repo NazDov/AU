@@ -21,6 +21,7 @@ import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUCafeteria;
 import www.uni_weimar.de.au.models.AUMainMenuItem;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
+import www.uni_weimar.de.au.utils.AUInstanceFactory;
 import www.uni_weimar.de.au.view.adapters.AUCafeteriaTabViewPagerAdapter;
 import www.uni_weimar.de.au.view.fragments.AUCafeteriaListFragment;
 import www.uni_weimar.de.au.view.fragments.AUCafeteriaMenuProgramFragment;
@@ -71,6 +72,7 @@ public class AUCafeteriaTabFragment extends AUMainMenuTabFragment implements Tab
 
     private void initAUCafeteriaTabs() {
         tabFragmentSwitcher = new AUCafeteriaTabFragmentSwitcher();
+        AUInstanceFactory.storeInstance(AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher.class, tabFragmentSwitcher);
         List<AUMainMenuItem> auCafeteriaMenuItems = auMainMenuTab.getAuMainMenuItemList();
         for (AUMainMenuItem menuItem : auCafeteriaMenuItems) {
             auCafeteriaTabLayout.addTab(auCafeteriaTabLayout.newTab().setText(menuItem.getTitle()));

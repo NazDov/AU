@@ -10,7 +10,7 @@ jacoco {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '26.0.1'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "au.de.uni_weimar.www"
         minSdkVersion 14

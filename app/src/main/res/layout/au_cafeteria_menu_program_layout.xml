@@ -6,18 +6,6 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <ProgressBar
-        android:indeterminate="true"
-        android:id="@+id/progressBar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:progress="100"
-        android:layout_marginLeft="150dp"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="200dp"
-        style="@android:style/Widget.DeviceDefault.ProgressBar.Large"
-        android:progressDrawable="@drawable/circular_progress_bar"
-        android:visibility="visible" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/auCafeteriaProgramViewPager"
@@ -33,6 +21,15 @@
             android:textColor="@color/cafeteria_tab_color" />
 
     </android.support.v4.view.ViewPager>
+
+    <ImageView
+        android:id="@+id/cafeteriaSpinnerImageID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@mipmap/cafeteria_spinner"
+        android:layout_marginTop="200dp"
+        />
 
     <View
         android:id="@+id/middle_wrapper"

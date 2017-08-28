@@ -34,7 +34,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class AUApplicationConfiguration extends Application {
 
     private static String TAG = "AUConfiguration";
-    private static Context context;
 
     @Override
     public void onCreate() {
@@ -61,11 +60,4 @@ public class AUApplicationConfiguration extends Application {
         Realm.setDefaultConfiguration(realmConfiguration);
     }
 
-    public static void setContext(Activity context) {
-        AUApplicationConfiguration.context = context;
-    }
-
-    public static Context getContext() {
-        return context;
-    }
 }

@@ -88,7 +88,6 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContext(this);
         setContentView(R.layout.au_main_menu_activity);
         ButterKnife.inject(this);
         setSupportActionBar(toolbar);
