@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class AUCafeteriaTabFragment extends AUMainMenuTabFragment implements Tab
     }
 
 
-    public class AUCafeteriaTabFragmentSwitcher {
+    public class AUCafeteriaTabFragmentSwitcher implements Serializable {
         private static final int DEFAULT_REPLACE_POSITION = 0;
 
         public void switchToCafeteriaMenuProgramFragment(AUCafeteria auCafeteria) {
@@ -65,6 +67,7 @@ public class AUCafeteriaTabFragment extends AUMainMenuTabFragment implements Tab
         initAUCafeteriaTabs();
         return rootView;
     }
+
 
     private void initAUCafeteriaTabs() {
         tabFragmentSwitcher = new AUCafeteriaTabFragmentSwitcher();

@@ -22,6 +22,12 @@ public class AUCafeteriaMainMenuPagerAdapter extends FragmentStatePagerAdapter {
         this.auCafeteriaMenuItemFragments = auCafeteriaMenus;
     }
 
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = null;
@@ -54,5 +60,6 @@ public class AUCafeteriaMainMenuPagerAdapter extends FragmentStatePagerAdapter {
 
     public void setAuCafeteriaMenuItemFragments(List<AUCafeteriaMenuItemFragment> auCafeteriaMenuItemFragments) {
         this.auCafeteriaMenuItemFragments = auCafeteriaMenuItemFragments;
+        notifyDataSetChanged();
     }
 }

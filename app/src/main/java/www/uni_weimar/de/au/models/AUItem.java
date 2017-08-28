@@ -1,10 +1,12 @@
 package www.uni_weimar.de.au.models;
 
+import java.io.Serializable;
+
 /**
  * Created by nazar on 12.06.17.
  */
 
-public interface AUItem {
+public interface AUItem extends Serializable {
     String AUTYPE = "MENUITEM";
     String ITEM = "item";
     String URL = "url";

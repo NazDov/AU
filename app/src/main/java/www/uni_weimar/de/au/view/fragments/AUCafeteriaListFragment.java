@@ -29,19 +29,30 @@ import www.uni_weimar.de.au.view.fragments.tabs.AUCafeteriaTabFragment;
  */
 
 public class AUCafeteriaListFragment extends Fragment {
-
+    private static final String AU_FRAGMENT_SWITCHER_TAG = "SWITCHER";
     @InjectView(R.id.auCafeteriaListRecyclerView)
     RecyclerView auCafeteriaRecyclerView;
     Realm realmUI;
     List<AUCafeteria> auCafeterias;
     AUCafeteriaListRecyclerViewAdapter adapter;
-    private AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher mSwitchFragmentStateListener;
+    AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher mSwitchFragmentStateListener;
 
     public static AUCafeteriaListFragment newInstance(AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher mListener) {
         Bundle args = new Bundle();
         AUCafeteriaListFragment fragment = new AUCafeteriaListFragment();
         fragment.mSwitchFragmentStateListener = mListener;
+        args.putSerializable(AU_FRAGMENT_SWITCHER_TAG, mListener);
+        fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = this.getArguments();
+        if (args != null) {
+            mSwitchFragmentStateListener = (AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher) args.getSerializable(AU_FRAGMENT_SWITCHER_TAG);
+        }
     }
 
     @Nullable
@@ -53,7 +64,8 @@ public class AUCafeteriaListFragment extends Fragment {
         adapter = new AUCafeteriaListRecyclerViewAdapter(auCafeterias);
         adapter.setOnItemChangeListener(auItem -> {
             Toast.makeText(getContext(), "opening menu for " + auItem.getName(), Toast.LENGTH_SHORT).show();
-            mSwitchFragmentStateListener.switchToCafeteriaMenuProgramFragment(auItem);
+            if (mSwitchFragmentStateListener != null)
+                mSwitchFragmentStateListener.switchToCafeteriaMenuProgramFragment(auItem);
         });
         auCafeteriaRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         auCafeteriaRecyclerView.setAdapter(adapter);

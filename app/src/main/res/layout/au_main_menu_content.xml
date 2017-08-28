@@ -109,6 +109,7 @@
             android:onClick="refreshOnNoConnection"
             android:visibility="gone" />
 
+
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
