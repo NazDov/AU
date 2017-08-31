@@ -1,5 +1,7 @@
 package www.uni_weimar.de.au.service.inter;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 
@@ -45,9 +47,11 @@ public abstract class AUAbstractContentRequestService<T extends RealmObject> imp
 
 
     @Override
-    public void notifyContentOnCacheUpdate(AUContentChangeListener<T> auContentChangeListener) {
+    public AUAbstractContentRequestService<T> notifyContentOnCacheUpdate(@NonNull AUContentChangeListener<T> auContentChangeListener) {
+        checkNotNull(auContentChangeListener);
         List<T> cachedContent = readFromCache(null);
         auContentChangeListener.notifyContentChange(cachedContent);
+        return this;
     }
 
     @Override

@@ -8,8 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,7 +35,7 @@ public class AUCafeteriaTabFragment extends AUMainMenuTabFragment implements Tab
     @InjectView(R.id.au_cafeteria_tab_view_pager)
     ViewPager auCafeteriaTabViewPager;
     private AUCafeteriaTabViewPagerAdapter auCafeteriaViewPagerAdapter;
-    private AUCafeteriaTabFragmentSwitcher tabFragmentSwitcher;
+    private AUCafeteriaTabFragmentReplacer tabFragmentSwitcher;
 
     public static AUCafeteriaTabFragment newInstance(AUMainMenuTab auMainMenuTab) {
         AUCafeteriaTabFragment fragment = new AUCafeteriaTabFragment();
@@ -47,14 +45,15 @@ public class AUCafeteriaTabFragment extends AUMainMenuTabFragment implements Tab
     }
 
 
-    public class AUCafeteriaTabFragmentSwitcher implements Serializable {
+    public class AUCafeteriaTabFragmentReplacer {
         private static final int DEFAULT_REPLACE_POSITION = 0;
 
-        public void switchToCafeteriaMenuProgramFragment(AUCafeteria auCafeteria) {
+
+        public void replaceToCafeteriaMenuProgramFragment(AUCafeteria auCafeteria) {
             auCafeteriaViewPagerAdapter.replaceFragmentItem(DEFAULT_REPLACE_POSITION, AUCafeteriaMenuProgramFragment.newInstance(auCafeteria, this));
         }
 
-        public void switchToCafeteriaListFragment() {
+        public void replaceToCafeteriaListFragment() {
             auCafeteriaViewPagerAdapter.replaceFragmentItem(DEFAULT_REPLACE_POSITION, AUCafeteriaListFragment.newInstance(this));
         }
     }
@@ -71,8 +70,8 @@ public class AUCafeteriaTabFragment extends AUMainMenuTabFragment implements Tab
 
 
     private void initAUCafeteriaTabs() {
-        tabFragmentSwitcher = new AUCafeteriaTabFragmentSwitcher();
-        AUInstanceFactory.storeInstance(AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher.class, tabFragmentSwitcher);
+        tabFragmentSwitcher = new AUCafeteriaTabFragmentReplacer();
+        AUInstanceFactory.storeInstance(AUCafeteriaTabFragmentReplacer.class, tabFragmentSwitcher);
         List<AUMainMenuItem> auCafeteriaMenuItems = auMainMenuTab.getAuMainMenuItemList();
         for (AUMainMenuItem menuItem : auCafeteriaMenuItems) {
             auCafeteriaTabLayout.addTab(auCafeteriaTabLayout.newTab().setText(menuItem.getTitle()));

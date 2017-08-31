@@ -10,7 +10,7 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/auCafeteriaProgramViewPager"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v4.view.PagerTabStrip
@@ -31,51 +31,6 @@
         android:layout_marginTop="200dp"
         />
 
-    <View
-        android:id="@+id/middle_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/auCafeteriaProgramViewPager"
-        app:layout_anchor="@id/auCafeteriaProgramViewPager"
-        app:layout_anchorGravity="bottom">
-
-
-    </View>
-
-
-    <LinearLayout
-        android:id="@+id/au_cafeteria_switch_fragment_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/middle_wrapper"
-        android:layout_marginTop="0dp"
-        app:layout_anchor="@id/middle_wrapper"
-        app:layout_anchorGravity="bottom">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0.025" />
-
-
-        <Button
-            android:id="@+id/au_cafeteria_switch_fragment_btn"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/news_feed_tab_layout_height"
-            android:layout_gravity="center"
-            android:layout_marginTop="0dp"
-            android:layout_weight="0.95"
-            android:background="#ecdb5031"
-            android:text="GO EAT ELSEWHERE"
-            android:textColor="#fff" />
-
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0.025" />
-
-    </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

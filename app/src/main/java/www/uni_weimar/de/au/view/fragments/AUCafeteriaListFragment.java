@@ -34,10 +34,10 @@ public class AUCafeteriaListFragment extends Fragment {
     Realm realmUI;
     List<AUCafeteria> auCafeterias;
     AUCafeteriaListRecyclerViewAdapter adapter;
-    AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher mSwitchFragmentStateListener;
+    AUCafeteriaTabFragment.AUCafeteriaTabFragmentReplacer mSwitchFragmentStateListener;
     AUSpinner auSpinner;
 
-    public static AUCafeteriaListFragment newInstance(AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher mListener) {
+    public static AUCafeteriaListFragment newInstance(AUCafeteriaTabFragment.AUCafeteriaTabFragmentReplacer mListener) {
         AUCafeteriaListFragment fragment = new AUCafeteriaListFragment();
         fragment.mSwitchFragmentStateListener = mListener;
         return fragment;
@@ -46,9 +46,9 @@ public class AUCafeteriaListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Object instance = AUInstanceFactory.getInstance(AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher.class);
+        Object instance = AUInstanceFactory.getInstance(AUCafeteriaTabFragment.AUCafeteriaTabFragmentReplacer.class);
         if (instance != null) {
-            mSwitchFragmentStateListener = (AUCafeteriaTabFragment.AUCafeteriaTabFragmentSwitcher) instance;
+            mSwitchFragmentStateListener = (AUCafeteriaTabFragment.AUCafeteriaTabFragmentReplacer) instance;
         }
     }
 
@@ -64,7 +64,7 @@ public class AUCafeteriaListFragment extends Fragment {
         adapter.setOnItemChangeListener(auItem -> {
             Toast.makeText(getContext(), "opening menu for " + auItem.getName(), Toast.LENGTH_SHORT).show();
             if (mSwitchFragmentStateListener != null)
-                mSwitchFragmentStateListener.switchToCafeteriaMenuProgramFragment(auItem);
+                mSwitchFragmentStateListener.replaceToCafeteriaMenuProgramFragment(auItem);
         });
         auCafeteriaRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         auCafeteriaRecyclerView.setAdapter(adapter);

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,12 @@ public class AUInitActivity extends AppCompatActivity {
         setContentView(R.layout.au_screen_loader);
         ButterKnife.inject(this);
         initSystemMainMenuComponents(this);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        callAUMainMenuActivity();
     }
 
     public void initSystemMainMenuComponents(Activity activity) {

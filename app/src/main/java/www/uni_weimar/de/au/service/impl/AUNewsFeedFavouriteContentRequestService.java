@@ -30,7 +30,7 @@ public class AUNewsFeedFavouriteContentRequestService extends AUAbstractContentR
 
 
     @Override
-    public void notifyContentOnCacheUpdate(AUContentChangeListener<AUNewsFeed> auContentChangeListener) {
+    public AUNewsFeedFavouriteContentRequestService notifyContentOnCacheUpdate(AUContentChangeListener<AUNewsFeed> auContentChangeListener) {
         List<AUNewsFeed> auNewsFeeds = new ArrayList<>();
         List<AUNewsFeedFavourite> auNewsFeedFavourites = auNewsFeedFavouriteORM.findAll();
         if (!auNewsFeedFavourites.isEmpty()) {
@@ -42,5 +42,6 @@ public class AUNewsFeedFavouriteContentRequestService extends AUAbstractContentR
             auNewsFeeds = auNewsFeedORM.findAllIn(AUItem.LINK, auNewsItemSearchTokens);
         }
         auContentChangeListener.notifyContentChange(auNewsFeeds);
+        return this;
     }
 }

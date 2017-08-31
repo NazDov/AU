@@ -2,6 +2,8 @@ package www.uni_weimar.de.au.view.activity;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,7 +33,9 @@ import io.realm.Realm;
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
+import www.uni_weimar.de.au.utils.AUActivityFragmentStateStorage;
 import www.uni_weimar.de.au.view.adapters.AUMainMenuViewPagerAdapter;
+import www.uni_weimar.de.au.view.fragments.AUCafeteriaMenuProgramFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AUCafeteriaTabFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AULibraryTabFragment;
 import www.uni_weimar.de.au.view.fragments.tabs.AUScheduleTabFragment;
@@ -271,12 +275,28 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onBackPressed() {
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
 
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState);
+    }
+
+    @Override
+    public void onBackPressed() {
         if (auMainMenuDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             auMainMenuDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Fragment activeFragment = AUActivityFragmentStateStorage.active();
+            if (activeFragment != null &&
+                    activeFragment.getClass() == AUCafeteriaMenuProgramFragment.class){
+                ((AUCafeteriaMenuProgramFragment)activeFragment).onBackPressed();
+                Toast.makeText(getBaseContext(), "Tap back button again to exit application", Toast.LENGTH_SHORT).show();
+            }else{
+                super.onBackPressed();
+            }
         }
     }
 
