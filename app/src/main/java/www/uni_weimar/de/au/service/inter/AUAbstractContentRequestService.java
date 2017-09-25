@@ -47,8 +47,7 @@ public abstract class AUAbstractContentRequestService<T extends RealmObject> imp
 
 
     @Override
-    public AUAbstractContentRequestService<T> notifyContentOnCacheUpdate(@NonNull AUContentChangeListener<T> auContentChangeListener) {
-        checkNotNull(auContentChangeListener);
+    public AUAbstractContentRequestService<T> notifyContentOnCacheUpdate(AUContentChangeListener<T> auContentChangeListener) {
         List<T> cachedContent = readFromCache(null);
         auContentChangeListener.notifyContentChange(cachedContent);
         return this;
@@ -64,11 +63,11 @@ public abstract class AUAbstractContentRequestService<T extends RealmObject> imp
         return auBaseORM.findAll();
     }
 
-    public AUBaseORM<T> getAuBaseORM() {
+    protected AUBaseORM<T> getAuBaseORM() {
         return auBaseORM;
     }
 
-    public AUParser<T> getAuParser() {
+    protected AUParser<T> getAuParser() {
         return auParser;
     }
 

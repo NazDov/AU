@@ -15,8 +15,10 @@ import www.uni_weimar.de.au.models.AUFacultyHeader;
 import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.inter.AUParser;
+import www.uni_weimar.de.au.utils.AULinkUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static www.uni_weimar.de.au.utils.AULinkUtil.returnUniqueLinkPart;
 
 /**
  * Created by ndovhuy on 07.07.2017.
@@ -34,7 +36,7 @@ public class AUFacultyParser implements AUParser<AUFacultyHeader> {
 
 
     public static AUFacultyParser of(String url) {
-        checkNotNull(url);
+        url = checkNotNull(url);
         return new AUFacultyParser(url);
     }
 
@@ -78,9 +80,11 @@ public class AUFacultyParser implements AUParser<AUFacultyHeader> {
         for (Element eventHtmlTag : eventsHtmlTags) {
             String title = eventHtmlTag.attr(AUItem.TITLE);
             String href = eventHtmlTag.attr(AUItem.HREF);
+            String uId = returnUniqueLinkPart(href);
             AUFacultyHeader auFacultyHeader = new AUFacultyHeader();
             auFacultyHeader.setTitle(title);
             auFacultyHeader.setUrl(href);
+            auFacultyHeader.setGuid(uId);
             auFacultyHeader.setTopLevelHeader(topLevelHeader);
             auFacultyHeader.setAUFacultyType(AUItem.EVENT);
             auFaculties.add(auFacultyHeader);
@@ -96,9 +100,11 @@ public class AUFacultyParser implements AUParser<AUFacultyHeader> {
             }
             String title = uebHtmlTag.attr(AUItem.TITLE);
             String href = uebHtmlTag.attr(AUItem.HREF);
+            String uId = returnUniqueLinkPart(href);
             AUFacultyHeader auFacultyHeader = new AUFacultyHeader();
             auFacultyHeader.setTitle(title);
             auFacultyHeader.setUrl(href);
+            auFacultyHeader.setGuid(uId);
             auFacultyHeader.setHeaderLevel(escapeHeaderTag);
             auFacultyHeader.setTopLevelHeader(topLevelHeader);
             auFacultyHeader.setTopLevelHeaderName(topLevelHeader != null ? topLevelHeader.getTitle() : null);

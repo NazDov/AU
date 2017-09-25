@@ -1,8 +1,11 @@
 package www.uni_weimar.de.au.models;
 
+import android.support.annotation.NonNull;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
+import java.util.Comparator;
 import java.util.UUID;
 
 import io.realm.RealmObject;
@@ -12,10 +15,10 @@ import io.realm.annotations.PrimaryKey;
  * Created by nazar on 15.07.17.
  */
 
-public class AUFacultyEventSchedule extends RealmObject implements AUItem {
+public class AUFacultyEventSchedule extends RealmObject implements AUItem, Comparable<AUFacultyEventSchedule> {
 
     @PrimaryKey
-    private String eventScheduleId = UUID.randomUUID().toString();
+    private String eventScheduleId;
     private String eventScheduleDay;
     private String eventScheduleTime;
     private String eventSchedulePeriod;
@@ -31,16 +34,32 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
 
     }
 
+    public AUFacultyEventSchedule(EventScheduleBuilder eventScheduleBuilder) {
+        this(eventScheduleBuilder.eventScheduleId,
+                eventScheduleBuilder.eventScheduleDay,
+                eventScheduleBuilder.eventScheduleTime,
+                eventScheduleBuilder.eventSchedulePeriod,
+                eventScheduleBuilder.eventScheduleRoom,
+                eventScheduleBuilder.eventScheduleDuration,
+                eventScheduleBuilder.eventMaxParticipants,
+                eventScheduleBuilder.eventScheduleLecturer,
+                eventScheduleBuilder.eventURL,
+                eventScheduleBuilder.eventName);
+    }
 
-    private AUFacultyEventSchedule(String eventScheduleDay,
-                                   String eventScheduleTime,
-                                   String eventSchedulePeriod,
-                                   String eventScheduleRoom,
-                                   String eventScheduleDuration,
-                                   String eventMaxParticipants,
-                                   String eventScheduleLecturer,
-                                   String eventURL,
-                                   String eventName) {
+
+    private AUFacultyEventSchedule(
+            String eventScheduleId,
+            String eventScheduleDay,
+            String eventScheduleTime,
+            String eventSchedulePeriod,
+            String eventScheduleRoom,
+            String eventScheduleDuration,
+            String eventMaxParticipants,
+            String eventScheduleLecturer,
+            String eventURL,
+            String eventName) {
+        this.eventScheduleId = eventScheduleId;
         this.eventScheduleDay = eventScheduleDay;
         this.eventScheduleTime = eventScheduleTime;
         this.eventSchedulePeriod = eventSchedulePeriod;
@@ -50,18 +69,6 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
         this.eventScheduleRoom = eventScheduleRoom;
         this.eventURL = eventURL;
         this.eventName = eventName;
-    }
-
-    public AUFacultyEventSchedule(EventScheduleBuilder eventScheduleBuilder) {
-        this(eventScheduleBuilder.eventScheduleDay,
-                eventScheduleBuilder.eventScheduleTime,
-                eventScheduleBuilder.eventSchedulePeriod,
-                eventScheduleBuilder.eventScheduleRoom,
-                eventScheduleBuilder.eventScheduleDuration,
-                eventScheduleBuilder.eventMaxParticipants,
-                eventScheduleBuilder.eventScheduleLecturer,
-                eventScheduleBuilder.eventURL,
-                eventScheduleBuilder.eventName);
     }
 
 
@@ -139,7 +146,32 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
                 .toString();
     }
 
+    @Override
+    public int compareTo(@NonNull AUFacultyEventSchedule other) {
+        if (hasEventScheduleDurationProperty(other)) {
+            if (eventScheduleDuration.contains(AUEventScheduleDurationTags.AM.name())
+                    && other.eventScheduleDuration.contains(AUEventScheduleDurationTags.AM.name())) {
+                return eventScheduleDuration.compareTo(other.eventScheduleDuration);
+            }
+            if (eventScheduleDuration.contains(AUEventScheduleDurationTags.BIS.name())
+                    && other.eventScheduleDuration.contains(AUEventScheduleDurationTags.BIS.name())) {
+                return eventScheduleDuration.compareTo(other.eventScheduleDuration);
+            }
+            if (eventScheduleDuration.contains(AUEventScheduleDurationTags.VON.name())
+                    && other.eventScheduleDuration.contains(AUEventScheduleDurationTags.VON.name())) {
+                return eventScheduleDuration.compareTo(other.eventScheduleDuration);
+            }
+        }
+        return 0;
+    }
+
+    private boolean hasEventScheduleDurationProperty(@NonNull AUFacultyEventSchedule other) {
+        return eventScheduleDuration != null && !eventScheduleDuration.isEmpty()
+                && other.eventScheduleDuration != null && !other.eventScheduleDuration.isEmpty();
+    }
+
     public static class EventScheduleBuilder {
+        private String eventScheduleId;
         private String eventScheduleDay;
         private String eventScheduleTime;
         private String eventSchedulePeriod;
@@ -190,13 +222,18 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem {
             return this;
         }
 
-        public AUFacultyEventSchedule build() {
-            return new AUFacultyEventSchedule(this);
-        }
-
         public EventScheduleBuilder setEventName(String eventName) {
             this.eventName = eventName;
             return this;
+        }
+
+        public EventScheduleBuilder setEventScheduleID(String eventScheduleID) {
+            this.eventScheduleId = eventScheduleID;
+            return this;
+        }
+
+        public AUFacultyEventSchedule build() {
+            return new AUFacultyEventSchedule(this);
         }
     }
 }

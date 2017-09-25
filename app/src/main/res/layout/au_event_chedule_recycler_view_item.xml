@@ -53,15 +53,17 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.2"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:gravity="center">
 
 
-        <ImageButton
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+        <ImageView
+            android:id="@+id/auFavEventScheduleBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/unselected_star"/>
+            android:src="@drawable/unselected_star"/>
 
 
     </LinearLayout>

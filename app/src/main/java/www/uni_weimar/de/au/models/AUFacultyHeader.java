@@ -15,8 +15,9 @@ import io.realm.annotations.PrimaryKey;
 public class AUFacultyHeader extends RealmObject implements AUItem {
 
     @PrimaryKey
-    private String title;
+    private String guid;
     private String url;
+    private String title;
     private String autype;
     private String topLevelHeaderName;
     private int headerLevel;
@@ -31,6 +32,7 @@ public class AUFacultyHeader extends RealmObject implements AUItem {
     public AUFacultyHeader(AUFacultyHeader auItem) {
         this.title = auItem.getTitle();
         this.url = auItem.getUrl();
+        this.guid = auItem.getGuid();
         this.autype = auItem.getAutype();
         this.headerLevel = auItem.getHeaderLevel();
         this.auFacultyHeaderLis = auItem.getAuFacultyHeaderList();
@@ -90,14 +92,12 @@ public class AUFacultyHeader extends RealmObject implements AUItem {
         this.topLevelHeaderName = topLevelHeaderName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AUFacultyHeader)) return false;
-        AUFacultyHeader that = (AUFacultyHeader) o;
-        return Objects.equal(getTitle(), that.getTitle()) &&
-                Objects.equal(getUrl(), that.getUrl()) &&
-                Objects.equal(autype, that.autype);
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 
 
@@ -106,21 +106,34 @@ public class AUFacultyHeader extends RealmObject implements AUItem {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode(getTitle(), getUrl(), autype);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AUFacultyHeader that = (AUFacultyHeader) o;
+        return headerLevel == that.headerLevel &&
+                Objects.equal(guid, that.guid) &&
+                Objects.equal(url, that.url) &&
+                Objects.equal(title, that.title) &&
+                Objects.equal(autype, that.autype) &&
+                Objects.equal(topLevelHeaderName, that.topLevelHeaderName);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(guid, url, title, autype, topLevelHeaderName, headerLevel);
+    }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("title", title)
+                .add("guid", guid)
                 .add("url", url)
+                .add("title", title)
                 .add("autype", autype)
+                .add("topLevelHeaderName", topLevelHeaderName)
+                .add("headerLevel", headerLevel)
                 .add("auFacultyHeaderLis", auFacultyHeaderLis)
                 .add("topLevelHeader", topLevelHeader)
                 .toString();
     }
-
-
 }

@@ -4,10 +4,8 @@ import java.util.List;
 
 import io.realm.Realm;
 import www.uni_weimar.de.au.models.AUFacultyEvent;
-import www.uni_weimar.de.au.orm.AUBaseORM;
 import www.uni_weimar.de.au.orm.AUEventORM;
 import www.uni_weimar.de.au.parsers.impl.AUEventParser;
-import www.uni_weimar.de.au.parsers.inter.AUParser;
 import www.uni_weimar.de.au.service.inter.AUAbstractContentRequestService;
 import www.uni_weimar.de.au.service.inter.AUContentChangeListener;
 
@@ -19,12 +17,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class AUEventContentRequestService extends AUAbstractContentRequestService<AUFacultyEvent> {
 
-    private AUEventContentRequestService(Realm realm, String url) {
-        this(new AUEventORM(realm), AUEventParser.of(url));
-    }
+    private static final String EVENT_URL = "eventURL";
+    private final String eventURL;
 
-    private AUEventContentRequestService(AUBaseORM<AUFacultyEvent> auBaseORm, AUParser<AUFacultyEvent> auParser) {
-        super(auBaseORm, auParser);
+    private AUEventContentRequestService(Realm realm, String eventURL) {
+        super(new AUEventORM(realm), AUEventParser.of(eventURL));
+        this.eventURL = eventURL;
     }
 
     public static AUEventContentRequestService of(Realm realm, String url) {
@@ -39,6 +37,10 @@ public class AUEventContentRequestService extends AUAbstractContentRequestServic
         return this;
     }
 
+    @Override
+    public List<AUFacultyEvent> readFromCache(List<AUFacultyEvent> objects) {
+        return readFromCache(EVENT_URL, eventURL);
+    }
 
     private List<AUFacultyEvent> readFromCache(String key, String value) {
         return getAuBaseORM().findAllBy(key, value);

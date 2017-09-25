@@ -61,25 +61,29 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
                 .placeholder(context.getResources().getDrawable(R.drawable.news_article))
                 .into(holder.newsFeedImage);
         SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
-        String pubDate = auNewsFeedItem.getPubDate().replace("CEST", "").trim();
-        try {
-            Date currentDate = new Date();
-            Date dateOfPublication = formatter.parse(pubDate);
-            populateTimeAfterPubIndicator(holder, dateOfPublication, currentDate);
-        } catch (ParseException e) {
-            String[] dates = pubDate.split(" ");
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.DAY_OF_MONTH, Integer.valueOf(dates[1]));
-            cal.set(Calendar.MONTH, StaticDateUtils.months.get(dates[2]));
-            cal.set(Calendar.YEAR, Integer.valueOf(dates[3]));
-            String[] hours = dates[4].split(":");
-            cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(hours[0]));
-            cal.set(Calendar.MINUTE, Integer.valueOf(hours[1]));
-            cal.set(Calendar.SECOND, Integer.valueOf(hours[2]));
-            Date dateOfPublication = cal.getTime();
-            populateTimeAfterPubIndicator(holder, dateOfPublication, new Date());
-            e.printStackTrace();
+        String auNewsFeedDate = auNewsFeedItem.getPubDate();
+        if (auNewsFeedDate != null && !auNewsFeedDate.isEmpty()) {
+            String pubDate = auNewsFeedDate.replace("CEST", "").trim();
+            try {
+                Date currentDate = new Date();
+                Date dateOfPublication = formatter.parse(pubDate);
+                populateTimeAfterPubIndicator(holder, dateOfPublication, currentDate);
+            } catch (ParseException e) {
+                String[] dates = pubDate.split(" ");
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.DAY_OF_MONTH, Integer.valueOf(dates[1]));
+                cal.set(Calendar.MONTH, StaticDateUtils.months.get(dates[2]));
+                cal.set(Calendar.YEAR, Integer.valueOf(dates[3]));
+                String[] hours = dates[4].split(":");
+                cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(hours[0]));
+                cal.set(Calendar.MINUTE, Integer.valueOf(hours[1]));
+                cal.set(Calendar.SECOND, Integer.valueOf(hours[2]));
+                Date dateOfPublication = cal.getTime();
+                populateTimeAfterPubIndicator(holder, dateOfPublication, new Date());
+                e.printStackTrace();
+            }
         }
+
 
     }
 
@@ -131,7 +135,7 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
                 }
             });
             newsFeedImage.setOnClickListener(v -> {
-                Toast.makeText(context, "opening "+auNewsFeedList.get(getAdapterPosition()).getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "opening " + auNewsFeedList.get(getAdapterPosition()).getTitle(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, AUNewsFeedItemDetailedActivity.class);
                 intent.putExtra("AUNewsFeedItemLink", auNewsFeedList.get(getAdapterPosition()).getLink());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

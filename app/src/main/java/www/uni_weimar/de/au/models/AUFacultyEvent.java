@@ -16,17 +16,16 @@ import io.realm.annotations.PrimaryKey;
 public class AUFacultyEvent extends RealmObject implements AUItem {
 
     @PrimaryKey
-    private String eventId = UUID.randomUUID().toString();
     private String eventName;
     private String eventLecturer;
     private String eventSemester;
     private String eventMaxParticipants;
     private String eventType;
+    private String eventURL;
     private String eventNumber;
     private String eventRhytmus;
     private String eventSWS;
     private String eventDescription;
-    private String eventURL;
     private RealmList<AUFacultyEventSchedule> auEventScheduleList;
 
     public AUFacultyEvent() {
@@ -69,10 +68,6 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
                 eventBuilder.eventDescription,
                 eventBuilder.eventURL,
                 eventBuilder.auEventScheduleList);
-    }
-
-    public String getEventId() {
-        return eventId;
     }
 
     public String getEventName() {
@@ -124,8 +119,7 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
         if (this == o) return true;
         if (!(o instanceof AUFacultyEvent)) return false;
         AUFacultyEvent that = (AUFacultyEvent) o;
-        return Objects.equal(getEventId(), that.getEventId()) &&
-                Objects.equal(getEventName(), that.getEventName()) &&
+        return Objects.equal(getEventName(), that.getEventName()) &&
                 Objects.equal(getEventLecturer(), that.getEventLecturer()) &&
                 Objects.equal(getEventSemester(), that.getEventSemester()) &&
                 Objects.equal(getEventMaxParticipants(), that.getEventMaxParticipants()) &&
@@ -138,13 +132,12 @@ public class AUFacultyEvent extends RealmObject implements AUItem {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getEventId(), getEventName(), getEventLecturer(), getEventSemester(), getEventMaxParticipants(), getEventType(), getEventNumber(), getEventRhytmus(), getEventSWS(), getAuEventScheduleList());
+        return Objects.hashCode(getEventName(), getEventLecturer(), getEventSemester(), getEventMaxParticipants(), getEventType(), getEventNumber(), getEventRhytmus(), getEventSWS(), getAuEventScheduleList());
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("eventId", eventId)
                 .add("eventName", eventName)
                 .add("eventLecturer", eventLecturer)
                 .add("eventSemester", eventSemester)

@@ -2,12 +2,9 @@ package www.uni_weimar.de.au.view.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,14 +56,14 @@ public class AUNewsFeedItemDetailedActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
         auNewsFeedORM = new AUNewsFeedORM(realm);
         auNewsFeedFavouriteORM = new AUNewsFeedFavouriteORM(realm);
-        auNewsFeedItem = auNewsFeedORM.findBy("link", auNewsFeedItemLink);
+        auNewsFeedItem = auNewsFeedORM.findBy(AUItem.LINK, auNewsFeedItemLink);
         getSupportActionBar().setTitle(auNewsFeedItem.getTitle());
         Glide.with(this)
                 .load(auNewsFeedItem.getImgUrl())
                 .diskCacheStrategy(RESULT)
                 .placeholder(R.drawable.news_article)
                 .into(auNewsFeedItemDetailedImageView);
-        auNewsFeedCategoryName.setText(auNewsFeedItem.getCategory());
+        auNewsFeedCategoryName.setText(auNewsFeedItem.getCategoryName());
         auNewsFeedItemAuthor.setText(auNewsFeedItem.getAuthor());
         auNewsFeedItemPubDate.setText(auNewsFeedItem.getPubDate() != null ? auNewsFeedItem.getPubDate().replace("CEST", "") : "--//--//--");
         auNewsFeedItemDetailedTextView.setText(auNewsFeedItem.getDesciption());

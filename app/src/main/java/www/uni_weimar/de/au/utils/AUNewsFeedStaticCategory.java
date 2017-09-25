@@ -5,11 +5,17 @@ package www.uni_weimar.de.au.utils;
  */
 
 public enum AUNewsFeedStaticCategory {
-    ALL,
-    FAVOURITE;
+    ALL("Alle"),
+    FAVOURITE("Favourite");
+
+    private final String name;
+
+    AUNewsFeedStaticCategory(String favourite) {
+        this.name = favourite;
+    }
 
     @Override
     public String toString() {
-        return super.toString();
+        return name;
     }
 }

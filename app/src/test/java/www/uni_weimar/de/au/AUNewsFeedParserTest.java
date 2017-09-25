@@ -116,7 +116,7 @@ public class AUNewsFeedParserTest {
         auNewsFeed.setLink(link);
         auNewsFeed.setDesciption(descr);
         auNewsFeed.setTitle(title);
-        auNewsFeed.setCategory(category);
+        auNewsFeed.setCategoryUrl(category);
         auNewsFeed.setPubDate(pubDate);
         expAuNewsFeedList.add(auNewsFeed);
         List<AUNewsFeed> actualAuNewsFeedList = null;

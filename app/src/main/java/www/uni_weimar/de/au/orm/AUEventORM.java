@@ -1,10 +1,12 @@
 package www.uni_weimar.de.au.orm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 import www.uni_weimar.de.au.models.AUFacultyEvent;
+import www.uni_weimar.de.au.models.AUFacultyEventSchedule;
 
 /**
  * Created by nazar on 21.07.17.
@@ -23,19 +25,16 @@ public class AUEventORM implements AUBaseORM<AUFacultyEvent> {
     public AUFacultyEvent add(AUFacultyEvent item) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        item = realm.copyToRealm(item);
+        item = realm.copyToRealmOrUpdate(item);
         realm.commitTransaction();
         return item;
     }
 
     @Override
     public List<AUFacultyEvent> addAll(List<AUFacultyEvent> items) {
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        realm.delete(AUFacultyEvent.class);
-        items = realm.copyToRealm(items);
-        realm.commitTransaction();
-        return items;
+        List<AUFacultyEvent> savedItems = new ArrayList<>();
+        savedItems.add(add(items.get(0)));
+        return savedItems;
     }
 
     @Override

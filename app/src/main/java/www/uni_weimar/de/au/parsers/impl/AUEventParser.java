@@ -11,19 +11,23 @@ import java.util.List;
 import io.realm.RealmList;
 import www.uni_weimar.de.au.models.AUFacultyEvent;
 import www.uni_weimar.de.au.models.AUFacultyEventSchedule;
+import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.inter.AUParser;
+import www.uni_weimar.de.au.utils.AULinkUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static www.uni_weimar.de.au.utils.AULinkUtil.returnUniqueLinkPart;
 
 /**
- * Created by nazar on 20.07.17.
+ * Created by nazar on 20.07.17
  */
 
 public class AUEventParser implements AUParser<AUFacultyEvent> {
 
     private static final String SEMESTER = "Semester";
     private static final String LECTURER_SELECTOR = "a[href*='personal.pid']";
+    private static final String EVENT_SCHEDULE_ID_SELECTOR = "a[href*='veranstaltung.veranstid']";
     private static final String EVENT_TYPE = "Veranstaltungsart";
     private static final String EVENT_NUMBER = "Veranstaltungsnummer";
     private static final String EVENT_RHYTMUS = "Rhythmus";
@@ -46,7 +50,7 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
     }
 
     public static AUEventParser of(String url) {
-        checkNotNull(url);
+        url = checkNotNull(url);
         return new AUEventParser(url);
     }
 
@@ -57,7 +61,6 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
         Document htmlDoc;
         try {
             htmlDoc = Jsoup.connect(url).get();
-            checkNotNull(htmlDoc);
             eventName = parseEventName(htmlDoc);
             auFacultyEvents.add(new AUFacultyEvent.EventBuilder()
                     .setEventURL(url)
@@ -85,22 +88,28 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
             eventScheduleList.add(new AUFacultyEventSchedule.EventScheduleBuilder()
                     .setEventURL(eventURL)
                     .setEventName(eventName)
-                    .setEventScheduleDay(parseEventTDValBySelector(eventTRItem, TD_TAG_SELECTOR))
-                    .setEventScheduleTime(parseEventTDValBySelector(eventTRItem, TD_ZEIT_SELECTOR))
-                    .setEventScheduleDuration(parseEventTDValBySelector(eventTRItem, TD_DAUER_SELECTOR))
-                    .setEventSchedulePeriod(parseEventTDValBySelector(eventTRItem, TD_RHYTMUS_SELECTOR))
-                    .setEventScheduleRoom(parseEventTDValBySelector(eventTRItem, TD_RAUM_SELECTOR))
-                    .setEventScheduleLecturer(parseEventTDValBySelector(eventTRItem, TD_LEHR_PERSON_SELECTOR))
-                    .setEventMaxParticipants(parseEventTDValBySelector(eventTRItem, TD_MAX_PART_SELECTOR))
+                    .setEventScheduleID(parseEventScheduleID(eventTRItem))
+                    .setEventScheduleDay(parseEventValBySelector(eventTRItem, TD_TAG_SELECTOR))
+                    .setEventScheduleTime(parseEventValBySelector(eventTRItem, TD_ZEIT_SELECTOR))
+                    .setEventScheduleDuration(parseEventValBySelector(eventTRItem, TD_DAUER_SELECTOR))
+                    .setEventSchedulePeriod(parseEventValBySelector(eventTRItem, TD_RHYTMUS_SELECTOR))
+                    .setEventScheduleRoom(parseEventValBySelector(eventTRItem, TD_RAUM_SELECTOR))
+                    .setEventScheduleLecturer(parseEventValBySelector(eventTRItem, TD_LEHR_PERSON_SELECTOR))
+                    .setEventMaxParticipants(parseEventValBySelector(eventTRItem, TD_MAX_PART_SELECTOR))
                     .build());
         }
         return eventScheduleList;
     }
 
-    private String parseEventTDValBySelector(Element trItem, String selector) {
+    private String parseEventValBySelector(Element trItem, String selector) {
         Elements select = trItem.select(selector);
-        String text = select.get(0).text();
-        return select == null || select.isEmpty() ? null : text;
+        return select == null || select.isEmpty() ? null : select.get(0).text();
+    }
+
+    private String parseEventScheduleID(Element trItem){
+        Elements eventScheduleIdElements = trItem.select(EVENT_SCHEDULE_ID_SELECTOR);
+        String s = returnUniqueLinkPart(eventScheduleIdElements.attr(AUItem.HREF));
+        return eventScheduleIdElements != null && !eventScheduleIdElements.isEmpty()? s : null;
     }
 
     private String parseEventName(Document html) {

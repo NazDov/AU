@@ -1,6 +1,7 @@
 package www.uni_weimar.de.au.view.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,18 +13,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
-import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.models.AUNewsFeedFavourite;
+import www.uni_weimar.de.au.models.AURssChannel;
 import www.uni_weimar.de.au.orm.AUNewsFeedFavouriteORM;
+import www.uni_weimar.de.au.orm.AURssORM;
 import www.uni_weimar.de.au.service.impl.AUNewsFeedContentRequestService;
 import www.uni_weimar.de.au.service.impl.AUNewsFeedFavouriteContentRequestService;
 import www.uni_weimar.de.au.utils.AUNewsFeedStaticCategory;
@@ -35,30 +37,33 @@ import www.uni_weimar.de.au.view.adapters.AUNewsFeedRecyclerViewAdapter;
 public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @InjectView(R.id.au_all_news_feed_recycler_view)
-    RecyclerView auAllNewsFeedRecyclerView;
+    RecyclerView newsFeedRecyclerView;
     @InjectView(R.id.news_feed_swipe_refresh)
     SwipeRefreshLayout newsFeedSwipeRefreshLayout;
     @InjectView(R.id.au_category_menu_tab_layout)
-    TabLayout auCategoryMenuTabLayout;
-    AUNewsFeedRecyclerViewAdapter auNewsFeedRecyclerViewAdapter;
-    AUNewsFeedContentRequestService auNewsFeedContentRequestService;
-    AUNewsFeedFavouriteContentRequestService auNewsFeedFavouriteContentRequestService;
-    Observable<List<AUNewsFeed>> auNewsFeedObservable;
-    List<AUNewsFeed> auNewsFeedList;
+    TabLayout newsFeedCategoryTabLayout;
+    AUNewsFeedRecyclerViewAdapter newsFeedRecyclerViewAdapter;
+    AUNewsFeedContentRequestService newsFeedContentRequestService;
+    AUNewsFeedFavouriteContentRequestService newsFeedFavouriteContentRequestService;
+    Observable<List<AUNewsFeed>> newsFeedObservable;
+    List<AUNewsFeed> newsFeeds;
     Realm realm;
-    AUNewsFeedFavouriteORM auNewsFeedFavouriteORM;
+    AUNewsFeedFavouriteORM newsFeedFavouriteORM;
     View rootView;
+    AURssORM rssOrm;
+    List<AURssChannel> rssChannels;
 
     public static AUAllNewsFeedFragment newInstance() {
-        Bundle args = new Bundle();
-        AUAllNewsFeedFragment fragment = new AUAllNewsFeedFragment();
-        fragment.setArguments(args);
-        return fragment;
+        return new AUAllNewsFeedFragment();
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        realm = Realm.getDefaultInstance();
+        rssOrm = new AURssORM(realm);
+        rssChannels = rssOrm.findAll();
     }
 
     @Nullable
@@ -67,60 +72,52 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         rootView = inflater.inflate(R.layout.au_all_news_feed_layout, container, false);
         ButterKnife.inject(this, rootView);
         newsFeedSwipeRefreshLayout.setOnRefreshListener(this);
-        realm = Realm.getDefaultInstance();
-        auNewsFeedFavouriteORM = new AUNewsFeedFavouriteORM(realm);
-        auAllNewsFeedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        auNewsFeedContentRequestService = new AUNewsFeedContentRequestService(realm, getContext().getResources().getString(R.string.ALL_NEWS));
-        auNewsFeedFavouriteContentRequestService = new AUNewsFeedFavouriteContentRequestService(realm);
-        auNewsFeedContentRequestService.notifyContentOnCacheUpdate(content -> auNewsFeedList = content);
-        auNewsFeedObservable = auNewsFeedContentRequestService.requestNewContent();
-        auNewsFeedRecyclerViewAdapter = new AUNewsFeedRecyclerViewAdapter(getContext(), auNewsFeedList);
-        auNewsFeedRecyclerViewAdapter.setAuNewsFeedLikedItemListener(auItem -> {
+        newsFeedFavouriteORM = new AUNewsFeedFavouriteORM(realm);
+        newsFeedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        AURssChannel auRssChannel = rssChannels.get(0);
+        newsFeedContentRequestService = new AUNewsFeedContentRequestService(realm, new AURssChannel(auRssChannel.getUrl(), auRssChannel.getTitle()));
+        newsFeedFavouriteContentRequestService = new AUNewsFeedFavouriteContentRequestService(realm);
+        newsFeedContentRequestService.notifyContentOnCacheUpdate(content -> newsFeeds = content);
+        newsFeedObservable = newsFeedContentRequestService.requestNewContent();
+        newsFeedRecyclerViewAdapter = new AUNewsFeedRecyclerViewAdapter(getContext(), newsFeeds);
+        newsFeedRecyclerViewAdapter.setAuNewsFeedLikedItemListener(auItem -> {
             Toast.makeText(getContext(), "news item " + auItem.getTitle() + " was added to favourites", Toast.LENGTH_SHORT).show();
             AUNewsFeedFavourite auNewsFeedFavourite = new AUNewsFeedFavourite();
             auNewsFeedFavourite.setLink(auItem.getLink());
-            auNewsFeedFavouriteORM.add(auNewsFeedFavourite);
+            newsFeedFavouriteORM.add(auNewsFeedFavourite);
         });
-        auAllNewsFeedRecyclerView.setAdapter(auNewsFeedRecyclerViewAdapter);
-        auNewsFeedObservable.subscribe(this::onSuccess, this::onError);
-        configureAUNewsItemCategoryMenu();
+        newsFeedRecyclerView.setAdapter(newsFeedRecyclerViewAdapter);
+        newsFeedObservable.subscribe(this::onSuccess, this::onError);
+        initNewsFeedCategories();
         return rootView;
     }
 
-    private void configureAUNewsItemCategoryMenu() {
-        String[] auNewsFeedCategories = getResources().getStringArray(R.array.news_feed_categories);
-        for (String auCategoryMenu : auNewsFeedCategories) {
-            TabLayout.Tab auMenuTab = auCategoryMenuTabLayout.newTab();
-            auCategoryMenuTabLayout.addTab(auMenuTab.setText(auCategoryMenu));
-        }
+    private void initNewsFeedCategories() {
+        initNewsFeedCategoryTabs();
+        initNewsFeedCategoryMargins();
+        initOnCategoryTabSelectListener();
+    }
 
-        for (int i = 0; i < auCategoryMenuTabLayout.getTabCount(); i++) {
-            View tabView = ((ViewGroup) auCategoryMenuTabLayout.getChildAt(0)).getChildAt(i);
-            ViewGroup.MarginLayoutParams tabMargin = (ViewGroup.MarginLayoutParams) tabView.getLayoutParams();
-            tabMargin.setMargins(20, 0, 0, 0);
-            tabView.requestLayout();
-        }
-
-        auCategoryMenuTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+    private void initOnCategoryTabSelectListener() {
+        newsFeedCategoryTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 String categoryName = (String) tab.getText();
+                int categoryPosition = tab.getPosition() != 0 ? tab.getPosition() - 1 : tab.getPosition();
                 if (AUNewsFeedStaticCategory.ALL.toString().equalsIgnoreCase(categoryName)) {
-                    auNewsFeedContentRequestService.notifyContentOnCacheUpdate(content -> auNewsFeedList = content);
+                    newsFeedContentRequestService.notifyContentOnCacheUpdate(content -> newsFeeds = content);
                 } else if (AUNewsFeedStaticCategory.FAVOURITE.toString().equalsIgnoreCase(categoryName)) {
-                    auNewsFeedFavouriteContentRequestService.notifyContentOnCacheUpdate(content -> {
-                        auNewsFeedList = content;
+                    newsFeedFavouriteContentRequestService.notifyContentOnCacheUpdate(content -> {
+                        newsFeeds = content;
                     });
                 } else {
-                    auNewsFeedList = auNewsFeedContentRequestService
-                            .getAuBaseORM()
-                            .findAllBy(AUItem.CATEGORY, categoryName);
-                    if (auNewsFeedList.isEmpty()) {
-                        Toast.makeText(getContext(), "no items found for: " + categoryName, Toast.LENGTH_SHORT).show();
-                    }
+                    String categoryURL = rssChannels.get(categoryPosition).getUrl();
+                    newsFeeds = newsFeedContentRequestService.findAllBy(AUNewsFeedContentRequestService.AUNewsFeedSearchKey.CATEGORY_URL, categoryURL);
+                    newsFeedObservable = newsFeedContentRequestService.requestNewContent(new AURssChannel(categoryURL, categoryName));
+                    newsFeedObservable.subscribe(AUAllNewsFeedFragment.this::onSuccess, AUAllNewsFeedFragment.this::onError);
                 }
-                auNewsFeedRecyclerViewAdapter.setAuNewsFeedList(auNewsFeedList);
-                auNewsFeedRecyclerViewAdapter.notifyDataSetChanged();
+                newsFeedRecyclerViewAdapter.setAuNewsFeedList(newsFeeds);
+                newsFeedRecyclerViewAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -133,13 +130,51 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
 
             }
         });
+    }
 
+    private void initNewsFeedCategoryTabs() {
+        for (String rssChannelTabName : getRssChannelsTabNames()) {
+            TabLayout.Tab auMenuTab = newsFeedCategoryTabLayout.newTab();
+            newsFeedCategoryTabLayout.addTab(auMenuTab.setText(rssChannelTabName));
+        }
+        // specify 'favourite' news category menu
+        newsFeedCategoryTabLayout.addTab(newsFeedCategoryTabLayout.newTab().setText(AUNewsFeedStaticCategory.FAVOURITE.name()), 1);
+
+    }
+
+    private void initNewsFeedCategoryMargins() {
+        for (int i = 0; i < newsFeedCategoryTabLayout.getTabCount(); i++) {
+            View tabView = ((ViewGroup) newsFeedCategoryTabLayout.getChildAt(0)).getChildAt(i);
+            ViewGroup.MarginLayoutParams tabMargin = (ViewGroup.MarginLayoutParams) tabView.getLayoutParams();
+            tabMargin.setMargins(20, 0, 0, 0);
+            tabView.requestLayout();
+        }
+    }
+
+    private
+    @NonNull
+    List<String> getRssChannelsTabNames() {
+        List<String> rssChannelsTabNames = new ArrayList<>();
+        for (AURssChannel rssChannel : rssChannels) {
+            rssChannelsTabNames.add(rssChannel.getTitle());
+        }
+        return rssChannelsTabNames;
     }
 
 
     private void onSuccess(final List<AUNewsFeed> auNewsFeeds) {
-        auNewsFeedList = auNewsFeeds;
-        auNewsFeedRecyclerViewAdapter.notifyDataSetChanged();
+        notifyViewIfNotEmpty(auNewsFeeds);
+    }
+
+    private void notifyViewIfNotEmpty(List<AUNewsFeed> auNewsFeeds) {
+        if (!auNewsFeeds.isEmpty()) {
+            notifyView(auNewsFeeds);
+        }
+    }
+
+    private void notifyView(List<AUNewsFeed> auNewsFeeds) {
+        this.newsFeeds = auNewsFeeds;
+        newsFeedRecyclerViewAdapter.notifyDataSetChanged();
         stopRefreshing();
     }
 
@@ -170,9 +205,12 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         super.onDestroy();
     }
 
+
     @Override
     public void onRefresh() {
-        auNewsFeedObservable.subscribe(this::onSuccess, this::onError);
+        newsFeedContentRequestService
+                .requestNewContent()
+                .subscribe(this::onSuccess, this::onError);
     }
 
 }

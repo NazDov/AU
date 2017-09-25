@@ -51,10 +51,9 @@ public class AUScheduleTabFragment extends AUMainMenuTabFragment implements TabL
     }
 
     private void initAUScheduleTabs() {
-        LinkedList<AUMainMenuItem> auMainMenuItemList = new LinkedList<>(auMainMenuTab.getAuMainMenuItemList());
-        while (auMainMenuItemList.peekLast() != null) {
-            AUMainMenuItem auMainMenuItem = auMainMenuItemList.pollLast();
-            auScheduleTabLayout.addTab(auScheduleTabLayout.newTab().setText(auMainMenuItem.getTitle()));
+        List<AUMainMenuItem> mainMenuItems = auMainMenuTab.getAuMainMenuItemList();
+        for (AUMainMenuItem mainMenuItem: mainMenuItems) {
+            auScheduleTabLayout.addTab(auScheduleTabLayout.newTab().setText(mainMenuItem.getTitle()));
         }
         auScheduleTabFragmentViewPagerAdapter = new AUScheduleTabFragmentViewPagerAdapter(getChildFragmentManager(), auScheduleTabLayout.getTabCount());
         auScheduleViewPager.setAdapter(auScheduleTabFragmentViewPagerAdapter);

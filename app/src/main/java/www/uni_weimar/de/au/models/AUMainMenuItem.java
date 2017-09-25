@@ -2,6 +2,7 @@ package www.uni_weimar.de.au.models;
 
 import java.util.UUID;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -17,6 +18,7 @@ public class AUMainMenuItem extends RealmObject implements AUItem {
     private String id = UUID.randomUUID().toString();
     private String title;
     private String url;
+    private RealmList<AURssChannel> auRssChannels;
 
     public String getId() {
         return id;
@@ -62,5 +64,13 @@ public class AUMainMenuItem extends RealmObject implements AUItem {
         result = 31 * result + getTitle().hashCode();
         result = 31 * result + getUrl().hashCode();
         return result;
+    }
+
+    public void setAURssItems(RealmList<AURssChannel> AURssChannels) {
+        this.auRssChannels = AURssChannels;
+    }
+
+    public RealmList<AURssChannel> getAuRssChannels() {
+        return auRssChannels;
     }
 }

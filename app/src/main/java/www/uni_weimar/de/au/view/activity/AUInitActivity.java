@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,8 +21,11 @@ import www.uni_weimar.de.au.models.AUFacultyHeader;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
+import www.uni_weimar.de.au.utils.AUUtilityDefaultLinksFactory;
 
 import static www.uni_weimar.de.au.application.AUApplicationConfiguration.hasInternetConnection;
+import static www.uni_weimar.de.au.utils.AUUtilityDefaultLinksFactory.getDefaultLink;
+import static www.uni_weimar.de.au.utils.AUUtilityDefaultLinksFactory.getDefaultResource;
 
 /**
  * Created by ndovhuy on 26.06.2017.
@@ -31,6 +35,8 @@ public class AUInitActivity extends AppCompatActivity {
 
     @InjectView(R.id.au_init_text)
     TextView auInitTextView;
+    @InjectView(R.id.au_init_img)
+    ImageView auInitImageView;
     private Disposable auFacultyDisposable;
     private Disposable auMainMenuDisposable;
     private Realm realm;
@@ -40,6 +46,7 @@ public class AUInitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.au_screen_loader);
         ButterKnife.inject(this);
+        auInitImageView.setImageResource(getDefaultResource(R.drawable.loader));
         initSystemMainMenuComponents(this);
     }
 
@@ -52,11 +59,11 @@ public class AUInitActivity extends AppCompatActivity {
     public void initSystemMainMenuComponents(Activity activity) {
         realm = Realm.getDefaultInstance();
         if (!hasInternetConnection(activity) || hasCacheableData()) {
-            new Handler().postDelayed(this::callAUMainMenuActivity, 100);
+            new Handler().postDelayed(this::callAUMainMenuActivity, 2000);
             return;
         }
         auMainMenuDisposable = AUMainMenuContentRequestService
-                .of(realm, getResources().getString(R.string.MAIN_MENU))
+                .of(realm, getDefaultLink(R.string.MAIN_MENU))
                 .requestNewContent()
                 .subscribe(this::onMainMenuLoaded, this::onError);
     }

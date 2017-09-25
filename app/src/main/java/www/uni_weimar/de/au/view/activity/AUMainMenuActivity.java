@@ -51,7 +51,7 @@ public class AUMainMenuActivity extends AppCompatActivity implements View.OnClic
     private static final int CAFETERIA_MENUTAB_ITEM_ID = 2;
     private static final int LIBRARY_MENUTAB_ITEM_ID = 3;
     public static final String NEWS_MENUTAB_TITLE = "News";
-    public static final String COURSES_MENUTAB_TITLE = "Veranstaltungen";
+    public static final String COURSES_MENUTAB_TITLE = "Courses";
     public static final String CAFETERIA_MENUTAB_TITLE = "Cafeteria";
     public static final String LIBRARY_MENUTAB_TITLE = "Library";
     @InjectView(R.id.au_main_menu_nav_view)

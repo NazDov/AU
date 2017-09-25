@@ -16,7 +16,8 @@ public class AUNewsFeed extends RealmObject implements AUItem {
     private String title;
     private String guid;
     private String author;
-    private String category;
+    private String categoryUrl;
+    private String categoryName;
     private String desciption;
     private String pubDate;
     private String imgUrl;
@@ -54,12 +55,12 @@ public class AUNewsFeed extends RealmObject implements AUItem {
         this.author = author;
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategoryUrl() {
+        return categoryUrl;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryUrl(String categoryUrl) {
+        this.categoryUrl = categoryUrl;
     }
 
     public String getPubDate() {
@@ -86,6 +87,14 @@ public class AUNewsFeed extends RealmObject implements AUItem {
         this.desciption = desciption;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -95,7 +104,7 @@ public class AUNewsFeed extends RealmObject implements AUItem {
                 Objects.equal(getTitle(), that.getTitle()) &&
                 Objects.equal(getGuid(), that.getGuid()) &&
                 Objects.equal(getAuthor(), that.getAuthor()) &&
-                Objects.equal(getCategory(), that.getCategory()) &&
+                Objects.equal(getCategoryUrl(), that.getCategoryUrl()) &&
                 Objects.equal(getDesciption(), that.getDesciption()) &&
                 Objects.equal(getPubDate(), that.getPubDate()) &&
                 Objects.equal(getImgUrl(), that.getImgUrl());
@@ -103,7 +112,7 @@ public class AUNewsFeed extends RealmObject implements AUItem {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getLink(), getTitle(), getGuid(), getAuthor(), getCategory(), getDesciption(), getPubDate(), getImgUrl());
+        return Objects.hashCode(getLink(), getTitle(), getGuid(), getAuthor(), getCategoryUrl(), getDesciption(), getPubDate(), getImgUrl());
     }
 
     @Override
@@ -113,10 +122,12 @@ public class AUNewsFeed extends RealmObject implements AUItem {
                 ", title='" + title + '\'' +
                 ", guid='" + guid + '\'' +
                 ", author='" + author + '\'' +
-                ", category='" + category + '\'' +
+                ", categoryUrl='" + categoryUrl + '\'' +
                 ", desciption='" + desciption + '\'' +
                 ", pubDate='" + pubDate + '\'' +
                 ", imgUrl='" + imgUrl + '\'' +
                 '}';
     }
+
+
 }

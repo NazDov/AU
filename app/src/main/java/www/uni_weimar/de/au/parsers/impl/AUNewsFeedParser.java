@@ -1,6 +1,5 @@
 package www.uni_weimar.de.au.parsers.impl;
 
-import android.content.Context;
 import android.util.Log;
 
 import org.jsoup.Jsoup;
@@ -10,14 +9,11 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import www.uni_weimar.de.au.R;
-import www.uni_weimar.de.au.application.AUApplicationConfiguration;
 import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.models.AUNewsFeed;
+import www.uni_weimar.de.au.models.AURssChannel;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.inter.AUParser;
 
@@ -31,26 +27,40 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
 
     private static String TAG = AUNewsFeedParser.class.getSimpleName();
     private String newsFeedUrl;
+    private AURssChannel auRssChannel;
 
     private AUNewsFeedParser(String url) {
         this.newsFeedUrl = url;
     }
 
+    private AUNewsFeedParser(AURssChannel rssChannel) {
+        this.auRssChannel = rssChannel;
+        this.newsFeedUrl = rssChannel.getUrl();
+    }
+
     public static AUNewsFeedParser of(String url) {
-        checkNotNull(url);
+        url = checkNotNull(url);
         return new AUNewsFeedParser(url);
     }
 
+    public static AUParser<AUNewsFeed> of(AURssChannel rssChannel) {
+        rssChannel = checkNotNull(rssChannel);
+        return new AUNewsFeedParser(rssChannel);
+    }
+
+    public List<AUNewsFeed> parseAU(AURssChannel auRssChannel) throws AUParseException {
+        this.auRssChannel = checkNotNull(auRssChannel);
+        return parseAU(auRssChannel.getUrl());
+
+    }
 
     @Override
     public List<AUNewsFeed> parseAU(String url) throws AUParseException {
         List<AUNewsFeed> auNewsFeeds = new ArrayList<>();
         if (url == null) {
-            checkNotNull(newsFeedUrl);
             url = newsFeedUrl;
         }
         Document document;
-        Set<String> newsFeedCategories = new HashSet<>();
         try {
             document = Jsoup.connect(url).get();
             Elements newsFeedItems = document.getElementsByTag(AUItem.ITEM);
@@ -62,9 +72,8 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
                 auNewsFeed.setLink(itemLink);
                 String itemAuthor = newsFeedItem.getElementsByTag(AUItem.AUTHOR).text();
                 auNewsFeed.setAuthor(itemAuthor);
-                String itemCategory = newsFeedItem.getElementsByTag(AUItem.CATEGORY).text();
-                auNewsFeed.setCategory(itemCategory);
-                newsFeedCategories.add(itemCategory);
+                auNewsFeed.setCategoryUrl(url);
+                auNewsFeed.setCategoryName(auRssChannel != null ? auRssChannel.getTitle() : "All");
                 String itemDescription = newsFeedItem.getElementsByTag(AUItem.DESCR).text();
                 auNewsFeed.setDesciption(itemDescription);
                 String itemPubDate = newsFeedItem.getElementsByTag(AUItem.PUB_DATE).text();
@@ -74,17 +83,11 @@ public class AUNewsFeedParser implements AUParser<AUNewsFeed> {
                 auNewsFeed.setImgUrl(itemImgUrl);
                 auNewsFeeds.add(auNewsFeed);
             }
-            Log.v(TAG, newsFeedCategories.toString());
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
             throw new AUParseException(e.getMessage());
         }
         return auNewsFeeds;
-    }
-
-
-    public String getNewsFeedUrl() {
-        return newsFeedUrl;
     }
 
     @Override

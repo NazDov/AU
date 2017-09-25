@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">AU</string>
+    <string name="weimar_app_name">AU Weimar</string>
+    <string name="lmu_app_name">AU LMU</string>
     <string name="MAIN_MENU">http://ec2-35-157-27-16.eu-central-1.compute.amazonaws.com/menu.xml</string>
     <string name="ALL_NEWS">https://www.uni-weimar.de/de/universitaet/aktuell/pinnwaende/rss/</string>
     <string name="WEIMAR_COURSES_URL">https://www.uni-weimar.de/qisserver/rds?state=wtree&amp;search=1&amp;category=veranstaltung.browse&amp;navigationPosition=lectures%2Clectureindex&amp;breadcrumb=lectureindex&amp;topitem=lectures&amp;subitem=lectureindex</string>
@@ -74,4 +75,7 @@
     <string name="lorem_ipsum_dolor_sit_amen">lorem ipsum dolor sit amen</string>
     <string name="DEFAULT_CAFETERIA_URL">http://www.studentenwerk-muenchen.de/mensa/speiseplan/speiseplan_421_-de.html</string>
     <string name="DEFAULT_CAFETERIA_LINK_MASK">http://www.studentenwerk-muenchen.de</string>
+    <string name="event_name">Event name</string>
+    <string name="event_time">Event time</string>
+    <string name="event_place">Event place</string>
 </resources>

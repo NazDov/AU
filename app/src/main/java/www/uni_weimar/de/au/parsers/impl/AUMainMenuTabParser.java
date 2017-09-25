@@ -1,7 +1,5 @@
 package www.uni_weimar.de.au.parsers.impl;
 
-import android.util.Log;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,6 +13,7 @@ import io.realm.RealmList;
 import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.models.AUMainMenuItem;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
+import www.uni_weimar.de.au.models.AURssChannel;
 import www.uni_weimar.de.au.parsers.exception.AUParseException;
 import www.uni_weimar.de.au.parsers.inter.AUParser;
 
@@ -42,10 +41,9 @@ public class AUMainMenuTabParser implements AUParser<AUMainMenuTab> {
     @Override
     public List<AUMainMenuTab> parseAU(String url) throws AUParseException {
         List<AUMainMenuTab> auMainMenuTabList = new ArrayList<>();
-        String allNewsUrl = "";
         if (url == null) {
             checkNotNull(this.mainMenuURL);
-            url= this.mainMenuURL;
+            url = this.mainMenuURL;
         }
         Document document;
         try {
@@ -60,7 +58,21 @@ public class AUMainMenuTabParser implements AUParser<AUMainMenuTab> {
                     String tabItemUrl = tabItem.attr(AUItem.URL);
                     AUMainMenuItem auMainMenuItem = new AUMainMenuItem();
                     auMainMenuItem.setTitle(tabItemTitle);
-                    auMainMenuItem.setUrl(tabItemTitle.equals(ALL_NEWS) ? allNewsUrl : tabItemUrl);
+                    auMainMenuItem.setUrl(tabItemUrl);
+                    if (ALL_NEWS.equals(tabItemTitle)) {
+                        RealmList<AURssChannel> auRssChannels = new RealmList<>();
+                        Elements rssElements = tabItem.children();
+                        if (!rssElements.isEmpty()) {
+                            for (Element rssElement : rssElements) {
+                                String rssTitle = rssElement.attr(AUItem.TITLE);
+                                String rssURL = rssElement.attr(AUItem.URL);
+                                AURssChannel auRssChannel = new AURssChannel(rssURL, rssTitle);
+                                auRssChannels.add(auRssChannel);
+                            }
+                        }
+                        auMainMenuItem.setAURssItems(auRssChannels);
+                    }
+
                     mainMenuTabItems.add(auMainMenuItem);
                 }
                 AUMainMenuTab auMainMenuTab = AUMainMenuTab.of(tabTitle, mainMenuTabItems);

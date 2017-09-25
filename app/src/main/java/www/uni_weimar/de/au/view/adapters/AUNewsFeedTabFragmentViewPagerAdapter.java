@@ -2,7 +2,6 @@ package www.uni_weimar.de.au.view.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import www.uni_weimar.de.au.view.fragments.AUAllNewsFeedFragment;
@@ -13,11 +12,11 @@ import www.uni_weimar.de.au.view.fragments.AUMyNewsFeedFragment;
  */
 public class AUNewsFeedTabFragmentViewPagerAdapter extends FragmentStatePagerAdapter  {
 
-    private int tabCount;
+    private int mTabCount;
 
     public AUNewsFeedTabFragmentViewPagerAdapter(FragmentManager fm, int tabCount) {
         super(fm);
-        this.tabCount = tabCount;
+        this.mTabCount = tabCount;
     }
 
     @Override
@@ -37,6 +36,6 @@ public class AUNewsFeedTabFragmentViewPagerAdapter extends FragmentStatePagerAda
 
     @Override
     public int getCount() {
-        return tabCount;
+        return mTabCount;
     }
 }

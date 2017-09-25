@@ -35,8 +35,7 @@ public class AUNewsFeedORM implements AUBaseORM<AUNewsFeed> {
     public List<AUNewsFeed> addAll(List<AUNewsFeed> items) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        realm.delete(AUNewsFeed.class);
-        items = realm.copyToRealm(items);
+        items = realm.copyToRealmOrUpdate(items);
         realm.commitTransaction();
         return items;
     }

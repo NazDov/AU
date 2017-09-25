@@ -88,7 +88,7 @@ public class AUEventItemDetailsActivity extends AppCompatActivity {
         auLecturerName.setText(auFacultyEvent.getEventLecturer());
         auEventDescriptionName.setText(auFacultyEvent.getEventDescription());
         spinner.setVisibility(View.GONE);
-        adapter = new AUEventScheduleItemRecyclerViewAdapter(auFacultyEvent.getAuEventScheduleList());
+        adapter = new AUEventScheduleItemRecyclerViewAdapter(auFacultyEvent.getAuEventScheduleList(), this);
         auEventScheduleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         auEventScheduleRecyclerView.setAdapter(adapter);
     }
