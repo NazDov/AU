@@ -2,6 +2,7 @@ package www.uni_weimar.de.au.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
@@ -21,6 +22,7 @@ import www.uni_weimar.de.au.models.AUFacultyHeader;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.models.AUNewsFeed;
 import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
+import www.uni_weimar.de.au.utils.AUManifestPermissionManager;
 import www.uni_weimar.de.au.utils.AUUtilityDefaultLinksFactory;
 
 import static www.uni_weimar.de.au.application.AUApplicationConfiguration.hasInternetConnection;

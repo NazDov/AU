@@ -1,5 +1,7 @@
 package www.uni_weimar.de.au.parsers.impl;
 
+import android.widget.Toast;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,6 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 import io.realm.RealmList;
+import www.uni_weimar.de.au.application.AUApplicationConfiguration;
 import www.uni_weimar.de.au.models.AUFacultyEvent;
 import www.uni_weimar.de.au.models.AUFacultyEventSchedule;
 import www.uni_weimar.de.au.models.AUItem;
@@ -28,6 +31,7 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
     private static final String SEMESTER = "Semester";
     private static final String LECTURER_SELECTOR = "a[href*='personal.pid']";
     private static final String EVENT_SCHEDULE_ID_SELECTOR = "a[href*='veranstaltung.veranstid']";
+    private static final String MOODLE_ID_SELECTOR = "a[href*='moodle']";
     private static final String EVENT_TYPE = "Veranstaltungsart";
     private static final String EVENT_NUMBER = "Veranstaltungsnummer";
     private static final String EVENT_RHYTMUS = "Rhythmus";
@@ -106,10 +110,14 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
         return select == null || select.isEmpty() ? null : select.get(0).text();
     }
 
-    private String parseEventScheduleID(Element trItem){
+    private String parseMoodleLink(Document html) {
+        Elements moodleLinkElements = html.select(MOODLE_ID_SELECTOR);
+        return moodleLinkElements == null || moodleLinkElements.isEmpty() ? null : moodleLinkElements.text();
+    }
+
+    private String parseEventScheduleID(Element trItem) {
         Elements eventScheduleIdElements = trItem.select(EVENT_SCHEDULE_ID_SELECTOR);
-        String s = returnUniqueLinkPart(eventScheduleIdElements.attr(AUItem.HREF));
-        return eventScheduleIdElements != null && !eventScheduleIdElements.isEmpty()? s : null;
+        return eventScheduleIdElements != null && !eventScheduleIdElements.isEmpty() ? returnUniqueLinkPart(eventScheduleIdElements.attr(AUItem.HREF)) : null;
     }
 
     private String parseEventName(Document html) {

@@ -16,6 +16,7 @@ import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUFacultyEventSchedule;
 import www.uni_weimar.de.au.models.AUFavouriteEventSchedule;
 import www.uni_weimar.de.au.orm.AUEventScheduleFavouriteORM;
+import www.uni_weimar.de.au.utils.AUCalendarEventScheduleQueryHandler;
 
 /**
  * Created by nazar on 06.08.17.
@@ -25,6 +26,7 @@ public class AUEventScheduleItemRecyclerViewAdapter extends RecyclerView.Adapter
 
     private static final String EVENT_SCHEDULE_ID = "eventScheduleId";
     private final List<AUFacultyEventSchedule> facultyEventSchedules;
+    private final AUCalendarEventScheduleQueryHandler calendarEventScheduleQueryHandler;
     private final AUEventScheduleFavouriteORM scheduleFavouriteORM;
     private final Context context;
 
@@ -32,6 +34,7 @@ public class AUEventScheduleItemRecyclerViewAdapter extends RecyclerView.Adapter
         this.facultyEventSchedules = facultyEventSchedules;
         scheduleFavouriteORM = new AUEventScheduleFavouriteORM(Realm.getDefaultInstance());
         this.context = context;
+        calendarEventScheduleQueryHandler = new AUCalendarEventScheduleQueryHandler(context.getContentResolver(), context);
     }
 
     @Override
@@ -76,6 +79,7 @@ public class AUEventScheduleItemRecyclerViewAdapter extends RecyclerView.Adapter
                     removeFromFavouriteEventSchedule((ImageView) favImage, selectedEventSchedule);
                 } else {
                     addToFavouriteEventSchedule((ImageView) favImage, selectedEventSchedule);
+                    calendarEventScheduleQueryHandler.insertCalendarEvent(selectedEventSchedule);
                 }
             });
         }

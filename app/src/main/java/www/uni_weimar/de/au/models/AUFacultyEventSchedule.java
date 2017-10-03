@@ -182,6 +182,7 @@ public class AUFacultyEventSchedule extends RealmObject implements AUItem, Compa
         private String eventURL;
         private String eventName;
 
+
         public EventScheduleBuilder setEventScheduleDay(String eventScheduleDay) {
             this.eventScheduleDay = eventScheduleDay;
             return this;

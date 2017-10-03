@@ -23,6 +23,7 @@ import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUFacultyEvent;
 import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.service.impl.AUEventContentRequestService;
+import www.uni_weimar.de.au.utils.AUManifestPermissionManager;
 import www.uni_weimar.de.au.view.adapters.AUEventScheduleItemRecyclerViewAdapter;
 
 public class AUEventItemDetailsActivity extends AppCompatActivity {
@@ -70,6 +71,7 @@ public class AUEventItemDetailsActivity extends AppCompatActivity {
                 .notifyContentOnCacheUpdate(this::onSuccess, EVENT_URL, eventURL)
                 .requestNewContent()
                 .subscribe(this::onSuccess, this::onError);
+        AUManifestPermissionManager.verifyStoragePermissions(this);
     }
 
     private void onError(Throwable throwable) {

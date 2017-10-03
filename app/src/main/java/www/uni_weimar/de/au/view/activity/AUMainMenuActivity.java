@@ -31,6 +31,7 @@ import butterknife.InjectView;
 import io.reactivex.disposables.Disposable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
+import www.uni_weimar.de.au.application.AUApplicationConfiguration;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
 import www.uni_weimar.de.au.service.impl.AUMainMenuContentRequestService;
 import www.uni_weimar.de.au.utils.AUActivityFragmentStateStorage;

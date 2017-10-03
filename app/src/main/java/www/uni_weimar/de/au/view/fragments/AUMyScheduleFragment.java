@@ -69,7 +69,6 @@ public class AUMyScheduleFragment extends Fragment implements SwipeRefreshLayout
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getContext(), "AUMyScheduleFragment onResume()", Toast.LENGTH_SHORT).show();
         initFavouriteEventScheduleItemsList();
     }
 

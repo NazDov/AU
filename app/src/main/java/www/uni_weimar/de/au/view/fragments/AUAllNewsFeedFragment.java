@@ -113,8 +113,10 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
                 } else {
                     String categoryURL = rssChannels.get(categoryPosition).getUrl();
                     newsFeeds = newsFeedContentRequestService.findAllBy(AUNewsFeedContentRequestService.AUNewsFeedSearchKey.CATEGORY_URL, categoryURL);
-                    newsFeedObservable = newsFeedContentRequestService.requestNewContent(new AURssChannel(categoryURL, categoryName));
-                    newsFeedObservable.subscribe(AUAllNewsFeedFragment.this::onSuccess, AUAllNewsFeedFragment.this::onError);
+                    newsFeedContentRequestService
+                            .requestNewContent(new AURssChannel(categoryURL, categoryName))
+                            .subscribe(AUAllNewsFeedFragment.this::onSuccess,
+                                    AUAllNewsFeedFragment.this::onError);
                 }
                 newsFeedRecyclerViewAdapter.setAuNewsFeedList(newsFeeds);
                 newsFeedRecyclerViewAdapter.notifyDataSetChanged();
