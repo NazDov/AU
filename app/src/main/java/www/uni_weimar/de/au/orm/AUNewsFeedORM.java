@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 import www.uni_weimar.de.au.models.AUNewsFeed;
 
 /**
@@ -35,8 +36,7 @@ public class AUNewsFeedORM implements AUBaseORM<AUNewsFeed> {
     public List<AUNewsFeed> addAll(List<AUNewsFeed> items) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        realm.delete(AUNewsFeed.class);
-        items = realm.copyToRealm(items);
+        items = realm.copyToRealmOrUpdate(items);
         realm.commitTransaction();
         return items;
     }
@@ -57,7 +57,7 @@ public class AUNewsFeedORM implements AUBaseORM<AUNewsFeed> {
 
     @Override
     public List<AUNewsFeed> findAll() {
-        return realm.where(AUNewsFeed.class).findAll();
+        return realm.where(AUNewsFeed.class).findAllSorted("timeElapsed", Sort.ASCENDING);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class AUNewsFeedORM implements AUBaseORM<AUNewsFeed> {
 
     @Override
     public List<AUNewsFeed> findAllBy(String key, String name) {
-        return realm.where(AUNewsFeed.class).equalTo(key, name).findAll();
+        return realm.where(AUNewsFeed.class).equalTo(key, name).findAllSorted("timeElapsed", Sort.ASCENDING);
     }
 
 

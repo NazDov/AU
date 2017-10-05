@@ -272,7 +272,7 @@ public class AUCalendarEventScheduleQueryHandler extends AsyncQueryHandler {
     private void buildRRULE(StringBuilder recurringEventRRULEBuilder, Map<CalendarParams, Integer> calendarParams) {
         int year = calendarParams.get(CalendarParams.YEAR);
         int month = calendarParams.get(CalendarParams.MONTH);
-        int day = calendarParams.get(CalendarParams.DAY);
+        int day = calendarParams.get(CalendarParams.DAY) + 1;
         month = month + 1;
         String monthF;
         String dayF;

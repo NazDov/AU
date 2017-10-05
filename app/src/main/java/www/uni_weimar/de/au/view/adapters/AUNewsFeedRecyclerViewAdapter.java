@@ -15,11 +15,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import www.uni_weimar.de.au.R;
@@ -88,13 +90,21 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
     }
 
     private void populateTimeAfterPubIndicator(NewsFeedVH holder, Date dateOfPublication, Date currentDate) {
-        long duration = currentDate.getTime() - dateOfPublication.getTime();
-        long diffInHours = TimeUnit.MILLISECONDS.toHours(duration);
-        long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration - TimeUnit.HOURS.toMillis(diffInHours));
+        long timeElapsed = currentDate.getTime() - dateOfPublication.getTime();
+        long diffInHours = TimeUnit.MILLISECONDS.toHours(timeElapsed);
+        long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(timeElapsed - TimeUnit.HOURS.toMillis(diffInHours));
         if (diffInHours != 0) {
-            holder.newsFeedTimeSince.setText(Long.toString(diffInHours) + " h " + Long.toString(diffInMinutes) + " min ago ");
+            if (diffInHours >= 24) {
+                double dih = diffInHours * 1.0 / 24 * 1.0;
+                double dim = (diffInMinutes * 1.0 / 60 * 1.0) / 24 * 1.0;
+                double diffInDays = dih + dim;
+                String formattedDifInDays = new DecimalFormat("#.#").format(diffInDays);
+                holder.newsFeedTimeSince.setText(String.format("%s %s", formattedDifInDays, context.getString(R.string.DAYS_AGO_TAG)));
+            } else {
+                holder.newsFeedTimeSince.setText(String.format("%s h %s min ago ", Long.toString(diffInHours), Long.toString(diffInMinutes)));
+            }
         } else {
-            holder.newsFeedTimeSince.setText(Long.toString(diffInMinutes) + " min ago ");
+            holder.newsFeedTimeSince.setText(String.format("%s %s", Long.toString(diffInMinutes), context.getString(R.string.MINS_AGO_TAG)));
         }
     }
 

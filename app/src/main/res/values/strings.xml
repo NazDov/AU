@@ -78,4 +78,6 @@
     <string name="event_name">Event name</string>
     <string name="event_time">Event time</string>
     <string name="event_place">Event place</string>
+    <string name="DAYS_AGO_TAG">days ago</string>
+    <string name="MINS_AGO_TAG">min ago</string>
 </resources>

@@ -21,6 +21,7 @@ public class AUNewsFeed extends RealmObject implements AUItem {
     private String desciption;
     private String pubDate;
     private String imgUrl;
+    private Double timeElapsed;
 
 
     public String getGuid() {
@@ -45,6 +46,10 @@ public class AUNewsFeed extends RealmObject implements AUItem {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public double getTimeElapsed() {
+        return timeElapsed;
     }
 
     public String getAuthor() {
@@ -107,12 +112,21 @@ public class AUNewsFeed extends RealmObject implements AUItem {
                 Objects.equal(getCategoryUrl(), that.getCategoryUrl()) &&
                 Objects.equal(getDesciption(), that.getDesciption()) &&
                 Objects.equal(getPubDate(), that.getPubDate()) &&
-                Objects.equal(getImgUrl(), that.getImgUrl());
+                Objects.equal(getImgUrl(), that.getImgUrl())
+                && Objects.equal(getTimeElapsed(), that.getTimeElapsed());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getLink(), getTitle(), getGuid(), getAuthor(), getCategoryUrl(), getDesciption(), getPubDate(), getImgUrl());
+        return Objects.hashCode(getLink(),
+                getTitle(),
+                getGuid(),
+                getAuthor(),
+                getCategoryUrl(),
+                getDesciption(),
+                getPubDate(),
+                getImgUrl(),
+                getTimeElapsed());
     }
 
     @Override
@@ -130,4 +144,7 @@ public class AUNewsFeed extends RealmObject implements AUItem {
     }
 
 
+    public void setTimeElapsed(double timeElapsed) {
+        this.timeElapsed = timeElapsed;
+    }
 }

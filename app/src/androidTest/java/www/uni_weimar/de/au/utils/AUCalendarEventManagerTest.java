@@ -26,7 +26,7 @@ import static www.uni_weimar.de.au.utils.AUCalendarEventScheduleQueryHandler.*;
  */
 @RunWith(AndroidJUnit4.class)
 @SmallTest
-public class AUCalendarEventScheduleQueryHandlerTest {
+public class AUCalendarEventManagerTest {
 
     AUCalendarEventScheduleQueryHandler eventScheduleQueryHandler;
     private String eventDuration;
@@ -134,7 +134,7 @@ public class AUCalendarEventScheduleQueryHandlerTest {
         String actualRecurCalRuleFirst = eventScheduleQueryHandler.getRecurringCalendarRule(facultyEventScheduleFirst);
         String expRecurCalRuleFirst = "FREQ=WEEKLY;COUNT=20;WKST=SU;BYDAY=TU";
         String actualRecurCalRuleSecond = eventScheduleQueryHandler.getRecurringCalendarRule(facultyEventScheduleSecond);
-        String expRecurCalRuleSecond = "FREQ=WEEKLY;UNTIL=20180126T000000Z;WKST=SU;BYDAY=TU";
+        String expRecurCalRuleSecond = "FREQ=WEEKLY;UNTIL=20180127T000000Z;WKST=SU;BYDAY=TU";
         assertEquals(expRecurCalRuleFirst, actualRecurCalRuleFirst);
         assertEquals(expRecurCalRuleSecond, actualRecurCalRuleSecond);
     }
