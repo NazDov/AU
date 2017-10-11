@@ -60,6 +60,5 @@ public class AUCafeteriaMainMenuPagerAdapter extends FragmentStatePagerAdapter {
 
     public void setAuCafeteriaMenuItemFragments(List<AUCafeteriaMenuItemFragment> auCafeteriaMenuItemFragments) {
         this.auCafeteriaMenuItemFragments = auCafeteriaMenuItemFragments;
-        notifyDataSetChanged();
     }
 }

@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import www.uni_weimar.de.au.models.AUItem;
 import www.uni_weimar.de.au.service.impl.AUFacultyContentRequestService;
 import www.uni_weimar.de.au.view.activity.AUEventItemDetailsActivity;
 import www.uni_weimar.de.au.view.adapters.AUFacultyRecyclerViewAdapter;
+import www.uni_weimar.de.au.view.components.AUSpinner;
 
 import static www.uni_weimar.de.au.utils.AUUtilityDefaultLinksFactory.*;
 
@@ -46,6 +48,9 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
     ProgressBar progressBar;
     @InjectView(R.id.goToPreviousFacultyHeaderWrapper)
     LinearLayout goToPreviousFacultyHeader;
+    @InjectView(R.id.auCoursesSpinnerId)
+    ImageView spinnerView;
+    AUSpinner auSpinner;
     AUFacultyContentRequestService auFacultyContentRequestService;
     AUFacultyRecyclerViewAdapter auFacultyRecyclerViewAdapter;
     private Realm realm;
@@ -67,6 +72,8 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.au_all_schedule_layout, container, false);
         ButterKnife.inject(this, root);
+        auSpinner = new AUSpinner(spinnerView);
+        auSpinner.startSpinner();
         progressBar.setVisibility(View.INVISIBLE);
         realm = Realm.getDefaultInstance();
         auFacultyHeaderText.setText(getDefaultLink(R.string.AU_FACULTY_TOP_HEADER));
@@ -78,6 +85,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
             if (AUItem.EVENT.equals(auItem.getAutype())) {
                 forwardToEventPage(auItem);
             } else {
+                auSpinner.startSpinner();
                 readAUFacultyDataFromCacheBy(auItem.getTitle());
                 requestAUFacultyDataFromService(auItem);
             }
@@ -127,6 +135,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
                     updateAUFacultyRecyclerViewAdapter();
                     auFacultyContentRequestService.update(auItem);
                     progressBar.setVisibility(View.INVISIBLE);
+                    auSpinner.stopSpinner();
                 }, this::onError);
         auFacultyHeaderText.setText(auItem.getTitle());
     }
@@ -151,6 +160,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         updateCachedAUFacultyHeaderList();
         updateAUFacultyRecyclerViewAdapter();
         stopRefreshing();
+        auSpinner.stopSpinner();
     }
 
     private void onError(Throwable throwable) {
@@ -161,6 +171,7 @@ public class AUAllScheduleFragment extends Fragment implements SwipeRefreshLayou
         auFacultyHeaderList = auFacultyHeaders;
         updateAUFacultyRecyclerViewAdapter();
         stopRefreshing();
+        auSpinner.stopSpinner();
     }
 
     private void auFacultyNotifyContentOnCacheUpdate() {

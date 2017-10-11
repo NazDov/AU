@@ -54,9 +54,6 @@ public class AUMyNewsFeedFragment extends Fragment implements SwipeRefreshLayout
 
     private void requestAuNewsFeedContent() {
         auNewsFeedFavouriteContentRequestService.notifyContentOnCacheUpdate(content -> {
-            if (content == null || content.isEmpty()) {
-                Toast.makeText(getContext(), "No favourite items found", Toast.LENGTH_SHORT).show();
-            }
             auNewsFeedFavourites = content;
             auMyNewsFeedSwipeRefreshLayout.setRefreshing(false);
         });

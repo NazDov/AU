@@ -145,7 +145,6 @@ public class AUNewsFeedRecyclerViewAdapter extends RecyclerView.Adapter<AUNewsFe
                 }
             });
             newsFeedImage.setOnClickListener(v -> {
-                Toast.makeText(context, "opening " + auNewsFeedList.get(getAdapterPosition()).getTitle(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, AUNewsFeedItemDetailedActivity.class);
                 intent.putExtra("AUNewsFeedItemLink", auNewsFeedList.get(getAdapterPosition()).getLink());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

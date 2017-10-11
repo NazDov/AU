@@ -91,4 +91,9 @@ public class AUMainMenuTabParser implements AUParser<AUMainMenuTab> {
     public List<AUMainMenuTab> parseAU() throws AUParseException {
         return parseAU(mainMenuURL);
     }
+
+    @Override
+    public void setUrl(String url) {
+        this.mainMenuURL = url;
+    }
 }

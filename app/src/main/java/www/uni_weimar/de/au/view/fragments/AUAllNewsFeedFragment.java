@@ -22,6 +22,7 @@ import io.reactivex.Observable;
 import io.realm.Realm;
 import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUNewsFeed;
+import www.uni_weimar.de.au.models.AUNewsFeedDefaultCategory;
 import www.uni_weimar.de.au.models.AUNewsFeedFavourite;
 import www.uni_weimar.de.au.models.AURssChannel;
 import www.uni_weimar.de.au.orm.AUNewsFeedFavouriteORM;
@@ -52,6 +53,7 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
     View rootView;
     AURssORM rssOrm;
     List<AURssChannel> rssChannels;
+    private AURssChannel auRssChannel;
 
     public static AUAllNewsFeedFragment newInstance() {
         return new AUAllNewsFeedFragment();
@@ -64,6 +66,7 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         realm = Realm.getDefaultInstance();
         rssOrm = new AURssORM(realm);
         rssChannels = rssOrm.findAll();
+        auRssChannel = rssChannels.get(0);
     }
 
     @Nullable
@@ -74,7 +77,6 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         newsFeedSwipeRefreshLayout.setOnRefreshListener(this);
         newsFeedFavouriteORM = new AUNewsFeedFavouriteORM(realm);
         newsFeedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        AURssChannel auRssChannel = rssChannels.get(0);
         newsFeedContentRequestService = new AUNewsFeedContentRequestService(realm, new AURssChannel(auRssChannel.getUrl(), auRssChannel.getTitle()));
         newsFeedFavouriteContentRequestService = new AUNewsFeedFavouriteContentRequestService(realm);
         newsFeedContentRequestService.notifyContentOnCacheUpdate(content -> newsFeeds = content);
@@ -98,28 +100,11 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         initOnCategoryTabSelectListener();
     }
 
-    private void initOnCategoryTabSelectListener() {
+    protected void initOnCategoryTabSelectListener() {
         newsFeedCategoryTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                String categoryName = (String) tab.getText();
-                int categoryPosition = tab.getPosition() != 0 ? tab.getPosition() - 1 : tab.getPosition();
-                if (AUNewsFeedStaticCategory.ALL.toString().equalsIgnoreCase(categoryName)) {
-                    newsFeedContentRequestService.notifyContentOnCacheUpdate(content -> newsFeeds = content);
-                } else if (AUNewsFeedStaticCategory.FAVOURITE.toString().equalsIgnoreCase(categoryName)) {
-                    newsFeedFavouriteContentRequestService.notifyContentOnCacheUpdate(content -> {
-                        newsFeeds = content;
-                    });
-                } else {
-                    String categoryURL = rssChannels.get(categoryPosition).getUrl();
-                    newsFeeds = newsFeedContentRequestService.findAllBy(AUNewsFeedContentRequestService.AUNewsFeedSearchKey.CATEGORY_URL, categoryURL);
-                    newsFeedContentRequestService
-                            .requestNewContent(new AURssChannel(categoryURL, categoryName))
-                            .subscribe(AUAllNewsFeedFragment.this::onSuccess,
-                                    AUAllNewsFeedFragment.this::onError);
-                }
-                newsFeedRecyclerViewAdapter.setAuNewsFeedList(newsFeeds);
-                newsFeedRecyclerViewAdapter.notifyDataSetChanged();
+                switchTab(tab);
             }
 
             @Override
@@ -134,11 +119,42 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         });
     }
 
-    private void initNewsFeedCategoryTabs() {
+    protected void switchTab(TabLayout.Tab tab) {
+        String categoryName = (String) tab.getText();
+        int categoryPosition = tab.getPosition() != 0 ? tab.getPosition() - 1 : tab.getPosition();
+        switchTabByCategoryNameAndPosition(categoryName, categoryPosition);
+    }
+
+    void switchTabByCategoryNameAndPosition(String categoryName, int categoryPosition) {
+        if (AUNewsFeedStaticCategory.ALL.toString().equalsIgnoreCase(categoryName)) {
+            newsFeedContentRequestService.notifyContentOnCacheUpdate(content -> newsFeeds = content);
+        } else if (AUNewsFeedStaticCategory.FAVOURITE.toString().equalsIgnoreCase(categoryName)) {
+            newsFeedFavouriteContentRequestService.notifyContentOnCacheUpdate(content -> {
+                newsFeeds = content;
+            });
+        } else {
+            switchRssChannel(categoryName, categoryPosition);
+        }
+        newsFeedRecyclerViewAdapter.setAuNewsFeedList(newsFeeds);
+        newsFeedRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    private void switchRssChannel(String categoryName, int categoryPosition) {
+        String categoryURL = rssChannels.get(categoryPosition).getUrl();
+        newsFeeds = newsFeedContentRequestService
+                .findAllBy(AUNewsFeedContentRequestService.AUNewsFeedSearchKey.CATEGORY_URL, categoryURL);
+        newsFeedContentRequestService
+                .requestNewContent(new AURssChannel(categoryURL, categoryName))
+                .subscribe(AUAllNewsFeedFragment.this::onSuccess,
+                        AUAllNewsFeedFragment.this::onError);
+    }
+
+    protected void initNewsFeedCategoryTabs() {
         for (String rssChannelTabName : getRssChannelsTabNames()) {
             TabLayout.Tab auMenuTab = newsFeedCategoryTabLayout.newTab();
             newsFeedCategoryTabLayout.addTab(auMenuTab.setText(rssChannelTabName));
         }
+
         // specify 'favourite' news category menu
         newsFeedCategoryTabLayout.addTab(newsFeedCategoryTabLayout.newTab().setText(AUNewsFeedStaticCategory.FAVOURITE.name()), 1);
 
@@ -153,7 +169,6 @@ public class AUAllNewsFeedFragment extends Fragment implements SwipeRefreshLayou
         }
     }
 
-    private
     @NonNull
     List<String> getRssChannelsTabNames() {
         List<String> rssChannelsTabNames = new ArrayList<>();

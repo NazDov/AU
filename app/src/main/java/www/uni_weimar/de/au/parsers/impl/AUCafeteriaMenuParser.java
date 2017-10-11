@@ -28,21 +28,25 @@ public class AUCafeteriaMenuParser implements AUParser<AUCafeteriaMenu> {
     private static final String MENU_SCHEDULE_LIST_ITEM = "c-schedule__list-item";
     private static final String MENU_ITEM_TAG = ".stwm-artname";
     private static final String MENU_ITEM_DESCRIPTION = ".js-schedule-dish-description";
-    private final String url;
+    private String url;
+
+    public AUCafeteriaMenuParser() {
+
+    }
 
     private AUCafeteriaMenuParser(String url) {
         this.url = url;
     }
 
     public static AUCafeteriaMenuParser of(String url) {
-        checkNotNull(url);
+        url = checkNotNull(url);
         return new AUCafeteriaMenuParser(url);
     }
 
 
     @Override
     public List<AUCafeteriaMenu> parseAU(String url) throws AUParseException {
-        checkNotNull(url);
+        url = checkNotNull(url);
         Document htmlDoc;
         List<AUCafeteriaMenu> auCafeteriaMenuList = new RealmList<>();
         AUCafeteriaMenu auCafeteriaMenu;
@@ -82,5 +86,10 @@ public class AUCafeteriaMenuParser implements AUParser<AUCafeteriaMenu> {
     @Override
     public List<AUCafeteriaMenu> parseAU() throws AUParseException {
         return parseAU(this.url);
+    }
+
+    @Override
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

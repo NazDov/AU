@@ -73,6 +73,7 @@
     <string name="WEIMAR_FACULTY_TOP_HEADER">Veranstaltungsverzeichnis der Bauhaus-Universität Weimar</string>
     <string name="LMU_FACULTY_TOP_HEADER">Vorlesungsverzeichnis (WiSe 2017/18)</string>
     <string name="lorem_ipsum_dolor_sit_amen">lorem ipsum dolor sit amen</string>
+    <string name="DEFAULT_WEIMAR_CAFETERIA_URL">http://www.stw-thueringen.de/deutsch/mensen/einrichtungen/weimar/mensa-am-park.html</string>
     <string name="DEFAULT_CAFETERIA_URL">http://www.studentenwerk-muenchen.de/mensa/speiseplan/speiseplan_421_-de.html</string>
     <string name="DEFAULT_CAFETERIA_LINK_MASK">http://www.studentenwerk-muenchen.de</string>
     <string name="event_name">Event name</string>

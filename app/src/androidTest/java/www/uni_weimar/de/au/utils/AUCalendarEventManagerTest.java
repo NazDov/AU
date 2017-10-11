@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.Map;
 
 import www.uni_weimar.de.au.models.AUFacultyEventSchedule;
+import www.uni_weimar.de.au.parsers.exception.AUParseException;
+import www.uni_weimar.de.au.parsers.impl.AUCafeteriaWeimarMenuParser;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertEquals;
@@ -42,6 +44,10 @@ public class AUCalendarEventManagerTest {
         eventDuration = "von 16.12.2017";
         eventTime = "15:00 bis 18:00 s.t.";
     }
+
+
+    @Test
+    public void testDebug() {}
 
     @Test
     public void testExtractFormattedDateTimeString() {
@@ -110,7 +116,7 @@ public class AUCalendarEventManagerTest {
     }
 
     @Test
-    public void testGetCalendarId(){
+    public void testGetCalendarId() {
         int calendarId = eventScheduleQueryHandler.getCalendarID();
         System.out.println(calendarId);
     }

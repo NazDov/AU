@@ -35,7 +35,6 @@ public class AUCafeteriaListFragment extends Fragment {
     List<AUCafeteria> auCafeterias;
     AUCafeteriaListRecyclerViewAdapter adapter;
     AUCafeteriaTabFragment.AUCafeteriaTabFragmentReplacer mSwitchFragmentStateListener;
-    AUSpinner auSpinner;
 
     public static AUCafeteriaListFragment newInstance(AUCafeteriaTabFragment.AUCafeteriaTabFragmentReplacer mListener) {
         AUCafeteriaListFragment fragment = new AUCafeteriaListFragment();
@@ -58,8 +57,6 @@ public class AUCafeteriaListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.au_cafeteria_list, container, false);
         ButterKnife.inject(this, rootView);
         realmUI = Realm.getDefaultInstance();
-        auSpinner = new AUSpinner(getActivity(), R.mipmap.cafeteria_spinner);
-        auSpinner.show();
         adapter = new AUCafeteriaListRecyclerViewAdapter(auCafeterias);
         adapter.setOnItemChangeListener(auItem -> {
             Toast.makeText(getContext(), "opening menu for " + auItem.getName(), Toast.LENGTH_SHORT).show();
@@ -82,8 +79,5 @@ public class AUCafeteriaListFragment extends Fragment {
     private void onSuccess(List<AUCafeteria> auCafeterias) {
         this.auCafeterias = auCafeterias;
         adapter.setCafeterias(auCafeterias);
-        if (auSpinner.isShowing()) {
-            auSpinner.dismiss();
-        }
     }
 }

@@ -10,7 +10,13 @@ public enum AUDays {
     TUE("Di."),
     WED("Mi."),
     THU("Do."),
-    FR("Fr.");
+    FR("Fr."),
+
+    MONTAG("Montag"),
+    DIENSTAG("Dienstag"),
+    MITTWOCH("Mittwoch"),
+    DONNERSTAG("Donnerstag"),
+    FREITAG("Freitag");
 
     private final String tag;
 

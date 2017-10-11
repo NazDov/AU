@@ -27,6 +27,11 @@ public class AURssChannel extends RealmObject implements AUItem, Serializable {
         this.title = rssTitle;
     }
 
+    public AURssChannel(AURssChannel auRssChannel) {
+        this.url = auRssChannel.getUrl();
+        this.title = auRssChannel.getTitle();
+    }
+
 
     public String getUrl() {
         return url;

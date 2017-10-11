@@ -30,9 +30,11 @@ import www.uni_weimar.de.au.service.impl.AUCafeteriaMenuContentRequestService;
 import www.uni_weimar.de.au.utils.AUActivityFragmentStateStorage;
 import www.uni_weimar.de.au.utils.AUInstanceFactory;
 import www.uni_weimar.de.au.view.adapters.AUCafeteriaMainMenuPagerAdapter;
+import www.uni_weimar.de.au.view.components.AUSpinner;
 import www.uni_weimar.de.au.view.fragments.tabs.AUCafeteriaTabFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static www.uni_weimar.de.au.utils.AUUtilityDefaultLinksFactory.getDefaultLink;
 
 /**
  * Created by ndovhuy on 04.08.2017.
@@ -44,6 +46,7 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
     ViewPager auCafeteriaViewPager;
     @InjectView(R.id.cafeteriaSpinnerImageID)
     ImageView spinner;
+    AUSpinner auSpinner;
     Realm realmUI;
     private List<AUCafeteriaMenu> auCafeteriaMenus;
     private AUCafeteria auCafeteria;
@@ -53,8 +56,6 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
 
 
     public static AUCafeteriaMenuProgramFragment newInstance(AUCafeteria auCafeteria, AUCafeteriaTabFragment.AUCafeteriaTabFragmentReplacer fragmentSwitcher) {
-        checkNotNull(auCafeteria);
-        checkNotNull(fragmentSwitcher);
         AUCafeteriaMenuProgramFragment fragment = new AUCafeteriaMenuProgramFragment();
         fragment.auCafeteria = auCafeteria;
         fragment.auFragmentReplacer = fragmentSwitcher;
@@ -83,13 +84,13 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.au_cafeteria_menu_program_layout, container, false);
         ButterKnife.inject(this, rootView);
-        spinner.setVisibility(View.VISIBLE);
-        startSpinner();
+        auSpinner = new AUSpinner(spinner);
+        auSpinner.startSpinner();
         realmUI = Realm.getDefaultInstance();
         auCafeteriaMenuPagerAdapter = new AUCafeteriaMainMenuPagerAdapter(getChildFragmentManager(), cafeteriaMenuItemFragments);
         auCafeteriaViewPager.setAdapter(auCafeteriaMenuPagerAdapter);
         auCafeteriaViewPager.addOnPageChangeListener(this);
-        String auCafeteriaURL = getString(R.string.DEFAULT_CAFETERIA_URL);
+        String auCafeteriaURL = getDefaultLink(R.string.DEFAULT_CAFETERIA_URL);
         if (auCafeteria != null) {
             auCafeteriaURL = getString(R.string.DEFAULT_CAFETERIA_LINK_MASK) + auCafeteria.getUrl();
         }
@@ -100,16 +101,6 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
                 .subscribe(this::onSuccess, this::onError);
         return rootView;
     }
-
-    private void startSpinner() {
-        RotateAnimation anim = new RotateAnimation(0.0f, 360.0f , Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
-        anim.setDuration(1000);
-        anim.setInterpolator(new LinearInterpolator());
-        anim.setRepeatMode(Animation.INFINITE);
-        spinner.setAnimation(anim);
-        spinner.startAnimation(anim);
-    }
-
 
     @Override
     public void onDestroy() {
@@ -128,19 +119,14 @@ public class AUCafeteriaMenuProgramFragment extends Fragment implements ViewPage
 
     private void onSuccess(List<AUCafeteriaMenu> auCafeteriaMenus) {
         updateViewPager(auCafeteriaMenus);
-        stopSpinner();
-    }
-
-    private void stopSpinner() {
-        new Handler().postDelayed(()->{
-            spinner.setVisibility(View.GONE);
-        },500);
+        auSpinner.stopSpinner();
     }
 
     private void updateViewPager(List<AUCafeteriaMenu> content) {
         auCafeteriaMenus = content;
         cafeteriaMenuItemFragments = initAUCafeteriaMenuItemFragments();
         auCafeteriaMenuPagerAdapter.setAuCafeteriaMenuItemFragments(cafeteriaMenuItemFragments);
+        auCafeteriaMenuPagerAdapter.notifyDataSetChanged();
         auCafeteriaViewPager.setCurrentItem(getTodayCafeteriaMenuItemPosition());
     }
 

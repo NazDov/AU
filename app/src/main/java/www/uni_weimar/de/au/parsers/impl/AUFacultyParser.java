@@ -130,5 +130,10 @@ public class AUFacultyParser implements AUParser<AUFacultyHeader> {
         return parseAU(url);
     }
 
+    @Override
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
 
 }

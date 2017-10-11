@@ -61,12 +61,14 @@ public class AUInitActivity extends AppCompatActivity {
     public void initSystemMainMenuComponents(Activity activity) {
         realm = Realm.getDefaultInstance();
         if (!hasInternetConnection(activity) || hasCacheableData()) {
-            new Handler().postDelayed(this::callAUMainMenuActivity, 1000);
+            new Handler().postDelayed(this::callAUMainMenuActivity, 500);
             return;
         }
-        auMainMenuDisposable = AUMainMenuContentRequestService
-                .of(realm, getDefaultLink(R.string.MAIN_MENU))
-                .requestNewContent()
+        AUMainMenuContentRequestService contentRequestService = AUMainMenuContentRequestService
+                .of(realm, getDefaultLink(R.string.MAIN_MENU));
+        contentRequestService
+                .notifyContentOnCacheUpdate(this::onMainMenuLoaded);
+        contentRequestService.requestNewContent()
                 .subscribe(this::onMainMenuLoaded, this::onError);
     }
 

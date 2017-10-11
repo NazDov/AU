@@ -75,7 +75,7 @@ public class AUMyScheduleFragment extends Fragment implements SwipeRefreshLayout
     public void onCacheUpdate(List<AUFacultyEventSchedule> content) {
         facultyEventSchedules = content;
         if (facultyEventSchedules.isEmpty()) {
-            Toast.makeText(getContext(), "no items found", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "no items found", Toast.LENGTH_SHORT).show();
         }
         eventSchedulesRecyclerViewAdapter.setEventSchedules(facultyEventSchedules);
         eventSchedulesRecyclerViewAdapter.notifyDataSetChanged();

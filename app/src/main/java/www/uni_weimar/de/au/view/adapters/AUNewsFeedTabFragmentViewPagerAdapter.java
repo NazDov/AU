@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import www.uni_weimar.de.au.utils.AUFragmentFactory;
 import www.uni_weimar.de.au.view.fragments.AUAllNewsFeedFragment;
 import www.uni_weimar.de.au.view.fragments.AUMyNewsFeedFragment;
 
@@ -23,11 +24,11 @@ public class AUNewsFeedTabFragmentViewPagerAdapter extends FragmentStatePagerAda
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return AUAllNewsFeedFragment.newInstance();
+                return AUFragmentFactory.getFragment(AUAllNewsFeedFragment.class);
             case 1:
                 return new AUMyNewsFeedFragment();
             default:
-                return AUAllNewsFeedFragment.newInstance();
+                return AUFragmentFactory.getFragment(AUAllNewsFeedFragment.class);
         }
 
     }

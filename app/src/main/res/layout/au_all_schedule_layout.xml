@@ -51,4 +51,13 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <ImageView
+        android:id="@+id/auCoursesSpinnerId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@mipmap/courses_spinner"
+        android:layout_marginTop="200dp"
+        />
+
 </android.support.design.widget.CoordinatorLayout>

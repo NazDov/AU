@@ -62,10 +62,9 @@ public class AUFacultyHeaderParserTest {
 
     @Test
     public void testAUEventParser() {
-
         try {
-            AUCafeteriaListParser
-                    .of("http://www.studentenwerk-muenchen.de/mensa/speiseplan/speiseplan_421_-de.html")
+            AUCafeteriaWeimarMenuParser
+                    .of("http://www.stw-thueringen.de/deutsch/mensen/einrichtungen/weimar/mensa-am-park.html")
                     .parseAU();
         } catch (AUParseException e) {
             e.printStackTrace();

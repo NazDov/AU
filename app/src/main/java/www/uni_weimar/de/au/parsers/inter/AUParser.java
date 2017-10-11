@@ -15,5 +15,5 @@ public interface AUParser<T extends RealmObject> {
 
     List<T> parseAU() throws AUParseException;
 
-
+    void setUrl(String url);
 }

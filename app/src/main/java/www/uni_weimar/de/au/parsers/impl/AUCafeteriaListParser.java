@@ -23,7 +23,7 @@ public class AUCafeteriaListParser implements AUParser<AUCafeteria> {
 
     private static final String CAFETERIA_LIST_TAG = "js-speiseplaene-liste";
     private static final String LI_STANDORT = "li.standort";
-    private final String url;
+    private String url;
 
     private AUCafeteriaListParser(String url) {
         this.url = url;
@@ -60,5 +60,10 @@ public class AUCafeteriaListParser implements AUParser<AUCafeteria> {
     @Override
     public List<AUCafeteria> parseAU() throws AUParseException {
         return parseAU(this.url);
+    }
+
+    @Override
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

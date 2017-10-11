@@ -19,6 +19,7 @@ public class AUCafeteriaMenuItem extends RealmObject implements AUItem {
     private String id = UUID.randomUUID().toString();
     private String auMenuItemTag;
     private String auMenuItemDescription;
+    private String auMenuItemPrice;
 
 
     public AUCafeteriaMenuItem() {
@@ -50,6 +51,14 @@ public class AUCafeteriaMenuItem extends RealmObject implements AUItem {
         this.auMenuItemDescription = auMenuItemDescription;
     }
 
+    public String getAuMenuItemPrice() {
+        return auMenuItemPrice;
+    }
+
+    public void setAuMenuItemPrice(String auMenuItemPrice) {
+        this.auMenuItemPrice = auMenuItemPrice;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,12 +66,13 @@ public class AUCafeteriaMenuItem extends RealmObject implements AUItem {
         AUCafeteriaMenuItem that = (AUCafeteriaMenuItem) o;
         return Objects.equal(id, that.id) &&
                 Objects.equal(getAuMenuItemTag(), that.getAuMenuItemTag()) &&
-                Objects.equal(getAuMenuItemDescription(), that.getAuMenuItemDescription());
+                Objects.equal(getAuMenuItemDescription(), that.getAuMenuItemDescription()) &&
+                Objects.equal(getAuMenuItemPrice(), that.getAuMenuItemPrice());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, getAuMenuItemTag(), getAuMenuItemDescription());
+        return Objects.hashCode(id, getAuMenuItemTag(), getAuMenuItemDescription(), getAuMenuItemPrice());
     }
 
     @Override
@@ -71,6 +81,7 @@ public class AUCafeteriaMenuItem extends RealmObject implements AUItem {
                 .add("id", id)
                 .add("auMenuItemTag", auMenuItemTag)
                 .add("auMenuItemDescription", auMenuItemDescription)
+                .add("auMenuItemPrice", auMenuItemPrice)
                 .toString();
     }
 }

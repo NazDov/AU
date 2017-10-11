@@ -38,7 +38,7 @@ public class AUCafeteriaMenuItemRecyclerViewAdapter extends RecyclerView.Adapter
         AUCafeteriaMenuItem auCafeteriaMenuItem = auCafeteriaMenuItemList.get(position);
         holder.auCafeteriaMenuName.setText(auCafeteriaMenuItem.getAuMenuItemTag());
         holder.auCafeteriaMenuDescription.setText(auCafeteriaMenuItem.getAuMenuItemDescription());
-
+        holder.auCafeteriaMenuPrice.setText(auCafeteriaMenuItem.getAuMenuItemPrice());
     }
 
     @Override
@@ -50,6 +50,7 @@ public class AUCafeteriaMenuItemRecyclerViewAdapter extends RecyclerView.Adapter
 
         TextView auCafeteriaMenuName;
         TextView auCafeteriaMenuDescription;
+        TextView auCafeteriaMenuPrice;
         ImageView auCafeteriaMenuLikeBtn;
         boolean isSelected;
 
@@ -58,6 +59,7 @@ public class AUCafeteriaMenuItemRecyclerViewAdapter extends RecyclerView.Adapter
             auCafeteriaMenuName = (TextView) itemView.findViewById(R.id.au_cafeteria_menu_name);
             auCafeteriaMenuDescription = (TextView) itemView.findViewById(R.id.au_cafeteria_menu_description);
             auCafeteriaMenuLikeBtn = (ImageView) itemView.findViewById(R.id.au_cafeteria_item_like);
+            auCafeteriaMenuPrice = (TextView) itemView.findViewById(R.id.au_cafeteria_item_price);
             auCafeteriaMenuLikeBtn.setOnClickListener(v -> {
                 AUCafeteriaMenuItem selectedMenuItem = auCafeteriaMenuItemList.get(getAdapterPosition());
                 if (!isSelected) {

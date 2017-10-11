@@ -46,7 +46,7 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
     private static final String TD_LEHR_PERSON_SELECTOR = "td:nth-child(8)";
     private static final String TD_MAX_PART_SELECTOR = "td:nth-child(11)";
     private static final String EVENT_NAME_SELECTOR = "h1";
-    private final String eventURL;
+    private String eventURL;
     private String eventName;
 
     private AUEventParser(String eventURL) {
@@ -138,5 +138,10 @@ public class AUEventParser implements AUParser<AUFacultyEvent> {
     @Override
     public List<AUFacultyEvent> parseAU() throws AUParseException {
         return parseAU(eventURL);
+    }
+
+    @Override
+    public void setUrl(String url) {
+        this.eventURL = url;
     }
 }

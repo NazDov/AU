@@ -19,11 +19,14 @@ import www.uni_weimar.de.au.R;
 import www.uni_weimar.de.au.models.AUCafeteria;
 import www.uni_weimar.de.au.models.AUMainMenuItem;
 import www.uni_weimar.de.au.models.AUMainMenuTab;
+import www.uni_weimar.de.au.parsers.impl.AUCafeteriaWeimarMenuParser;
 import www.uni_weimar.de.au.utils.AUInstanceFactory;
 import www.uni_weimar.de.au.view.adapters.AUCafeteriaTabViewPagerAdapter;
 import www.uni_weimar.de.au.view.fragments.AUCafeteriaListFragment;
 import www.uni_weimar.de.au.view.fragments.AUCafeteriaMenuProgramFragment;
 import www.uni_weimar.de.au.view.fragments.AUCafeteriaMyFavouritesFragment;
+
+import static www.uni_weimar.de.au.utils.AUUtilityDefaultLinksFactory.getDefaultLink;
 
 /**
  * Created by ndovhuy on 04.08.2017.
@@ -84,9 +87,18 @@ public class AUCafeteriaTabFragment extends AUMainMenuTabFragment implements Tab
 
     private List<Fragment> getAUCafeteriaTabFragments() {
         List<Fragment> auCafeteriaTabFragments = new ArrayList<>();
-        auCafeteriaTabFragments.add(AUCafeteriaListFragment.newInstance(tabFragmentSwitcher));
-        auCafeteriaTabFragments.add(AUCafeteriaMyFavouritesFragment.newInstance());
+        if (isWeimarAPP()) {
+            auCafeteriaTabFragments.add(AUCafeteriaMenuProgramFragment.newInstance(null, tabFragmentSwitcher));
+            auCafeteriaTabFragments.add(AUCafeteriaMyFavouritesFragment.newInstance());
+        }else{
+            auCafeteriaTabFragments.add(AUCafeteriaListFragment.newInstance(tabFragmentSwitcher));
+            auCafeteriaTabFragments.add(AUCafeteriaMyFavouritesFragment.newInstance());
+        }
         return auCafeteriaTabFragments;
+    }
+
+    private boolean isWeimarAPP() {
+        return getDefaultLink(R.string.DEFAULT_CAFETERIA_URL).equals(getActivity().getString(R.string.DEFAULT_WEIMAR_CAFETERIA_URL));
     }
 
 
