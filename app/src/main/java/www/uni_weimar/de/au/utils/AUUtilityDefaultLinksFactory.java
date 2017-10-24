@@ -25,7 +25,7 @@ public class AUUtilityDefaultLinksFactory {
         return getDefaultResource(linkId, null);
     }
 
-    static String getDefaultLink(@NonNull Integer linkId, String defVal) {
+    public static String getDefaultLink(@NonNull Integer linkId, String defVal) {
         String defaultLinkVal = defaultAULinks.get(linkId);
         if (defaultLinkVal == null && defVal != null) {
             defaultLinkVal = defaultAULinks.put(linkId, defVal);
@@ -39,7 +39,7 @@ public class AUUtilityDefaultLinksFactory {
      * @param defVal
      * @return
      */
-    static int getDefaultResource(@NonNull Integer linkId, Integer defVal) {
+    public static int getDefaultResource(@NonNull Integer linkId, Integer defVal) {
         Integer defaultLinkVal = defaultAUResources.get(linkId);
         if (defaultLinkVal == null && defVal != null) {
             defaultAUResources.put(linkId, defVal);

@@ -7,7 +7,7 @@ apply plugin: 'jacoco'
 jacoco {
     toolVersion = "0.7.5.201505241946"
 }
-ext.UNI = project.hasProperty("UNI") ? project.property("UNI") : "WEIMAR";
+ext.UNI = project.hasProperty("UNI") ? project.property("UNI") : "LMU";
 ext.appId = "au.de." + UNI + ".www"
 ext.appName = "AU " + UNI
 ext.appIcon = UNI == "WEIMAR" ? "@mipmap/weimar_ic_launcher" : "@mipmap/lmu_ic_launcher"

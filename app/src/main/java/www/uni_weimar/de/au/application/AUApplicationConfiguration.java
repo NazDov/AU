@@ -1,28 +1,18 @@
 package www.uni_weimar.de.au.application;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
-import java.util.List;
 import java.util.TimeZone;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import www.uni_weimar.de.au.R;
-import www.uni_weimar.de.au.models.AUMainMenuTab;
-import www.uni_weimar.de.au.orm.AUMainMenuTabORM;
-import www.uni_weimar.de.au.parsers.exception.AUParseException;
-import www.uni_weimar.de.au.parsers.impl.AUMainMenuTabParser;
-import www.uni_weimar.de.au.utils.AUUtilityUniversityPropertyReader;
+import www.uni_weimar.de.au.utils.config.AUConfigPropertyInitializer;
 import www.uni_weimar.de.au.utils.SSLUtilities;
-import www.uni_weimar.de.au.view.activity.AUMainMenuActivity;
 
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -43,7 +33,7 @@ public class AUApplicationConfiguration extends Application {
         Log.i(TAG, "realm database configured");
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+2:00"));
         if (Build.VERSION.SDK_INT < LOLLIPOP) SSLUtilities.trustAllCerts();
-        AUUtilityUniversityPropertyReader.configureAUProperties(getApplicationContext());
+        AUConfigPropertyInitializer.configureAUProperties(getApplicationContext());
     }
 
 

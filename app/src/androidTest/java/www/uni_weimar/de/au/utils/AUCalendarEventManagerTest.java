@@ -115,11 +115,6 @@ public class AUCalendarEventManagerTest {
         assertSame(0, actualNum3);
     }
 
-    @Test
-    public void testGetCalendarId() {
-        int calendarId = eventScheduleQueryHandler.getCalendarID();
-        System.out.println(calendarId);
-    }
 
     @Test
     public void testGetRecurringCalendarRule() {

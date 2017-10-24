@@ -101,7 +101,7 @@ public class AUNewsFeedParserTest {
         Elements categoryElementsMock = mock(Elements.class);
         when(mockElement.getElementsByTag(AUItem.CATEGORY)).thenReturn(categoryElementsMock);
         when(categoryElementsMock.text()).thenReturn(category);
-        String pubDate = "pubDate";
+        String pubDate = "Sat, 21 Oct 2017 15:13:19 CEST";
         Elements pubDateElementsMock = mock(Elements.class);
         when(mockElement.getElementsByTag(AUItem.PUB_DATE)).thenReturn(pubDateElementsMock);
         when(pubDateElementsMock.text()).thenReturn(pubDate);
@@ -116,7 +116,7 @@ public class AUNewsFeedParserTest {
         auNewsFeed.setLink(link);
         auNewsFeed.setDesciption(descr);
         auNewsFeed.setTitle(title);
-        auNewsFeed.setCategoryUrl(category);
+        auNewsFeed.setCategoryUrl(newsFeedUrl);
         auNewsFeed.setPubDate(pubDate);
         expAuNewsFeedList.add(auNewsFeed);
         List<AUNewsFeed> actualAuNewsFeedList = null;
